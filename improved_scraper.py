@@ -158,7 +158,7 @@ def get_course_classes(soup):
 def process_all(term_id):
 	directory_path = TERM_CODE_DICT[term_id]
 	cur_files = os.listdir(directory_path)
-	out_file_name = directory_path.lower()+'.txt'
+	out_file_name = directory_path.lower()+'.json'
 	out_file = open(out_file_name, 'w')
 	out_file.write('[\n')
 	for i, file_name in enumerate(cur_files):
