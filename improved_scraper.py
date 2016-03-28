@@ -158,12 +158,15 @@ def get_course_classes(soup):
 def process_all(term_id):
 	directory_path = TERM_CODE_DICT[term_id]
 	cur_files = os.listdir(directory_path)
-	print '['
-	for file_name in cur_files:
+	out_file_name = directory_path.lower()+'.txt'
+	out_file = open(out_file_name, 'w')
+	out_file.write('[\n')
+	for i, file_name in enumerate(cur_files):
 		file_path = '%s/%s' % (directory_path, file_name)
 		f = open(file_path)
 		page = f.read()
-		json.dump(scrape_page(page), sys.stdout)
-		print ','
-	print ']'
+		json.dump(scrape_page(page), out_file)
+		if i < len(cur_files) - 1:
+			out_file.write(',\n')
+	out_file.write(']\n')
 # process_all(1164)
