@@ -78,11 +78,15 @@ def flatten(dd):
 def get_course_details(soup):
   "Returns a dict of {courseid, area, title, descrip, prereqs}."
   # import pdb; pdb.set_trace()
-  course_num_soup = soup('strong')[1]
-  pdf_npdf = clean(course_num_soup.findNext('em').string)
-  area = clean(course_num_soup.findNext().string)
-  if pdf_npdf == area:
-  	area = ''
+  try:
+    area = clean(soup('strong')[1].next_sibling)
+  except TypeError:
+    area = ''
+  # course_num_soup = soup('strong')[1]
+  # pdf_npdf = clean(course_num_soup.findNext('em').string)
+  # area = clean(course_num_soup.findNext().string)
+  # if pdf_npdf == area:
+  # 	area = ''
   if re.match(r'^\((LA|SA|HA|EM|EC|QR|STN|STL)\)$', area):
     area = area[1:-1]
   else:
