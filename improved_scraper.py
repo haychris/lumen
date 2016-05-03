@@ -21,6 +21,7 @@ PROF_URL_REGEX = re.compile(r'dirinfo\.xml\?uid=(?P<id>\d+)')
 LISTING_REGEX = re.compile(r'(?P<dept>[A-Z]{3})\s+(?P<num>\d{3})')
 
 def get_course_ids(term_id):
+  "Returns all course ids by looking at the registrar listing of all classes for the term term_id"
 	course_listings_url = COURSE_LISTINGS_URL_TEMPLATE.format(term=term_id)
 	course_listings_page = urllib2.urlopen(course_listings_url).read()
 	soup = BeautifulSoup(course_listings_page, "lxml")
@@ -29,6 +30,8 @@ def get_course_ids(term_id):
 	return set(courseids)
 
 def fetch_all(term_id):
+  """Fetches all class pages in the registrar for the term term_id, 
+  and stores the html files in a directory named by TERM_CODES_NAMES for the term specified"""
 	courseids = get_course_ids(term_id)
 	directory_path = TERM_CODE_DICT[term_id]
 	if not os.path.exists(directory_path):
