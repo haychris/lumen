@@ -1,17 +1,59 @@
 import sys
+from collections import defaultdict
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
+import pandas as pd
 import numpy as np
 
 from sklearn.cluster import KMeans, AffinityPropagation, DBSCAN
 from sklearn.decomposition import NMF, LatentDirichletAllocation
+"""
+Takes in *_features.csv as input, outputs
+"""
 
-from process_all_data import get_class_dict, get_doc_list, get_tfidf_matrix
+
+feature_df = pd.read_csv(sys.argv[1])
+doc_list = open(sys.argv[1]).read().replace('"', '').replace(',', ' ').split('\n')
 
 
+"""
+Creates dictionary where class name is the key (ex: "ORF 350"). 
+Value is a cleaned version of the line in the csv.
+"""
+f = open(sys.argv[1])
+header = f.readline()
+column_keys = header.split(',')
+class_key = 'all_listings_string'
+class_key_col_num = column_keys.index(class_key)
 
-CLASS_DICT = get_class_dict()
-DOC_LIST = get_doc_list(CLASS_DICT)
-vectorizer, X = get_tfidf_matrix(DOC_LIST)
+class_dict = defaultdict(str)
+cleaned_class_dict = defaultdict(str)
+for line in f:
+	split = line.split(',')
+	class_listing = split[class_key_col_num].replace('"', '')
+	# Since a class can go under multiple class names (ELE 206 COS 306), add each class separately as a key
+	classes = class_listing.split()
+	for i in range(0,len(classes), 2):
+		class_dict[classes[i] + classes[i+1]] = line
+		cleaned_class_dict[classes[i] + classes[i+1]] = line.replace('"', '').replace(',', ' ')
 
+
+"""
+Creates a Tfidf matrix of word counts per document. 
+Uses english stop words. 
+Word must appear in at least 2 docs, and no more than 50 percent of all docs in order to be included.
+"""
+vectorizer = TfidfVectorizer(input='content', max_df=0.5, stop_words='english', use_idf=True, min_df=2)
+vectorizer.fit(doc_list)
+X = vectorizer.transform(doc_list)
+
+# counter = CountVectorizer(input='content')
+# count_matrix = counter.fit_transform(doc_list)
+
+# tfidf_transform = TfidfTransformer()
+# tfidf_transform.fit(count_matrix)
+# tfidf_matrix = tfidf_transform.transform(count_matrix)
+# X = tfidf_matrix
 
 ##### K-MEANS #####
 K = 12
@@ -63,7 +105,7 @@ print n_clusters_
 
 
 ############ CREATE RECOMMENDATIONS ############
-g = open(sys.argv[1])
+g = open(sys.argv[2])
 docs = []
 ratings = []
 for line in g:

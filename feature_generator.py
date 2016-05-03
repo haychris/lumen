@@ -15,7 +15,7 @@ for class_data in json_data:
 
 
 # features = ['courseid', 'title', 'prof_string', 'all_listings_string', 'area', 'prereqs', 'descrip']
-features = ['courseid', 'title', 'all_listings_string', 'area', 'prereqs', 'descrip']
+features = ['termid', 'courseid', 'title', 'all_listings_string', 'area', 'prereqs', 'descrip']
 
 
 ##### CONSTRUCT FEATURES CSV ####

@@ -22,32 +22,32 @@ LISTING_REGEX = re.compile(r'(?P<dept>[A-Z]{3})\s+(?P<num>\d{3})')
 
 def get_course_ids(term_id):
   "Returns all course ids by looking at the registrar listing of all classes for the term term_id"
-	course_listings_url = COURSE_LISTINGS_URL_TEMPLATE.format(term=term_id)
-	course_listings_page = urllib2.urlopen(course_listings_url).read()
-	soup = BeautifulSoup(course_listings_page, "lxml")
-	links = soup('a', href=COURSE_URL_REGEX)
-	courseids = [COURSE_URL_REGEX.search(a['href']).group('id') for a in links]
-	return set(courseids)
+  course_listings_url = COURSE_LISTINGS_URL_TEMPLATE.format(term=term_id)
+  course_listings_page = urllib2.urlopen(course_listings_url).read()
+  soup = BeautifulSoup(course_listings_page, "lxml")
+  links = soup('a', href=COURSE_URL_REGEX)
+  courseids = [COURSE_URL_REGEX.search(a['href']).group('id') for a in links]
+  return set(courseids)
 
 def fetch_all(term_id):
   """Fetches all class pages in the registrar for the term term_id, 
   and stores the html files in a directory named by TERM_CODES_NAMES for the term specified"""
-	courseids = get_course_ids(term_id)
-	directory_path = TERM_CODE_DICT[term_id]
-	if not os.path.exists(directory_path):
-		os.makedirs(directory_path)
+  courseids = get_course_ids(term_id)
+  directory_path = TERM_CODE_DICT[term_id]
+  if not os.path.exists(directory_path):
+    os.makedirs(directory_path)
 
-	cur_files = os.listdir(directory_path)
-	print '%d of %d files already indexed' % (len(cur_files), len(courseids))
-	for i, courseid in enumerate(courseids):
-		if '{courseid}.html'.format(courseid=courseid) not in cur_files:
-			print 'Retrieving index #: %d, courseid:%s' % (i, courseid)
-			course_url = COURSE_URL_TEMPLATE.format(term=term_id, courseid=courseid)
-			course_page = urllib2.urlopen(course_url).read()
+  cur_files = os.listdir(directory_path)
+  print '%d of %d files already indexed' % (len(cur_files), len(courseids))
+  for i, courseid in enumerate(courseids):
+    if '{courseid}.html'.format(courseid=courseid) not in cur_files:
+      print 'Retrieving index #: %d, courseid:%s' % (i, courseid)
+      course_url = COURSE_URL_TEMPLATE.format(term=term_id, courseid=courseid)
+      course_page = urllib2.urlopen(course_url).read()
 
-			file_path = '{directory_path}/{courseid}.html'.format(directory_path=directory_path, courseid=courseid)
-			f = open(file_path, 'w')
-			f.write(course_page)
+      file_path = '{directory_path}/{courseid}.html'.format(directory_path=directory_path, courseid=courseid)
+      f = open(file_path, 'w')
+      f.write(course_page)
 
 
 def scrape_page(page):
@@ -163,17 +163,19 @@ def get_course_classes(soup):
 
 
 def process_all(term_id):
-	directory_path = TERM_CODE_DICT[term_id]
-	cur_files = os.listdir(directory_path)
-	out_file_name = directory_path.lower()+'.json'
-	out_file = open(out_file_name, 'w')
-	out_file.write('[\n')
-	for i, file_name in enumerate(cur_files):
-		file_path = '%s/%s' % (directory_path, file_name)
-		f = open(file_path)
-		page = f.read()
-		json.dump(scrape_page(page), out_file)
-		if i < len(cur_files) - 1:
-			out_file.write(',\n')
-	out_file.write(']\n')
+  directory_path = TERM_CODE_DICT[term_id]
+  cur_files = os.listdir(directory_path)
+  out_file_name = directory_path.lower()+'.json'
+  out_file = open(out_file_name, 'w')
+  out_file.write('[\n')
+  for i, file_name in enumerate(cur_files):
+    file_path = '%s/%s' % (directory_path, file_name)
+    f = open(file_path)
+    page = f.read()
+    page_data = scrape_page(page)
+    page_data['termid'] = str(term_id)
+    json.dump(page_data, out_file)
+    if i < len(cur_files) - 1:
+      out_file.write(',\n')
+  out_file.write(']\n')
 # process_all(1164)

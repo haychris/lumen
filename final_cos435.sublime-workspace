@@ -1,0 +1,836 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"count",
+				"count_matrix"
+			],
+			[
+				"fea",
+				"feature_filename"
+			],
+			[
+				"san",
+				"sanitized_string"
+			],
+			[
+				"class",
+				"class_data"
+			],
+			[
+				"dir",
+				"directory_path"
+			],
+			[
+				"cur",
+				"cur_files"
+			],
+			[
+				"set",
+				"set_trace"
+			],
+			[
+				"area",
+				"area_soup"
+			],
+			[
+				"find",
+				"findNext"
+			],
+			[
+				"file",
+				"file_name"
+			],
+			[
+				"cou",
+				"courseid"
+			],
+			[
+				"cour",
+				"courseids"
+			],
+			[
+				"cours",
+				"courseid"
+			],
+			[
+				"TERM",
+				"TERM_CODES_NAMES"
+			],
+			[
+				"course",
+				"course_page"
+			],
+			[
+				"term",
+				"term_id"
+			],
+			[
+				"TER",
+				"TERM_CODES"
+			],
+			[
+				"speed",
+				"speedDifference"
+			],
+			[
+				"use",
+				"useBrakes"
+			],
+			[
+				"init",
+				"initialSpeed"
+			],
+			[
+				"car_",
+				"car_2_speed"
+			],
+			[
+				"car",
+				"car_2_speed"
+			],
+			[
+				"resta",
+				"restartRequested"
+			],
+			[
+				"page",
+				"pagerank_update"
+			],
+			[
+				"byte",
+				"byte_list_to_data"
+			],
+			[
+				"pull",
+				"pull_byte_list"
+			],
+			[
+				"scra",
+				"scrape_line"
+			],
+			[
+				"scrape",
+				"scrape_log"
+			],
+			[
+				"data",
+				"data_to_bytes"
+			],
+			[
+				"p",
+				"pyplot"
+			],
+			[
+				"log",
+				"log_dict"
+			],
+			[
+				"out",
+				"output_file"
+			],
+			[
+				"cross",
+				"cross_val_score"
+			],
+			[
+				"small",
+				"small_scores"
+			],
+			[
+				"ALL",
+				"ALL_SCORES"
+			],
+			[
+				"ALL_",
+				"ALL_PARAMS"
+			],
+			[
+				"fil",
+				"file_to_scrape"
+			],
+			[
+				"par",
+				"params_score_dict"
+			],
+			[
+				"top",
+				"top_unique_params"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "scraper.py",
+			"settings":
+			{
+				"buffer_size": 6625,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "improved_scraper.py",
+			"settings":
+			{
+				"buffer_size": 6487,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "feature_generator.py",
+			"settings":
+			{
+				"buffer_size": 1175,
+				"line_ending": "Unix",
+				"name": "import json"
+			}
+		},
+		{
+			"file": "spring_16_features.csv",
+			"settings":
+			{
+				"buffer_size": 650798,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "from __future__ import print_function\n\nimport sys\nfrom sklearn.feature_extraction.text import CountVectorizer\nfrom sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer\nimport pandas as pd\n\nfrom sklearn.cluster import KMeans\n\nfeature_df = pd.read_csv(sys.argv[1])\n\nf = open(sys.argv[1])\nheader = f.readline()\ndoc_list = f.read().replace('\"', '').replace(',', ' ').split('\\n')\n\nvectorizer = TfidfVectorizer(input='content', max_df=0.5, stop_words='english', use_idf=True)\nX = vectorizer.fit_transform(doc_list)\n\n# counter = CountVectorizer(input='content')\n# count_matrix = counter.fit_transform(doc_list)\n\n# tfidf_transform = TfidfTransformer()\n# tfidf_transform.fit(count_matrix)\n# tfidf_matrix = tfidf_transform.transform(count_matrix)\n\n\n# X = tfidf_matrix\nK = 9\nkm = KMeans(n_clusters=K, init='k-means++', max_iter=100, n_init=1)\nkm.fit(X)\n\norder_centroids = km.cluster_centers_.argsort()[:, ::-1]\nterms = vectorizer.get_feature_names()\n\nprint \"Most predictive words for each cluster:\"\nfor i in range(K):\n	print(\"Cluster %d:\" % i, end='')\n	for ind in order_centroids[i, :10]:\n		print(' %s' % terms[ind], end='')\n	print()\n\n\n################### Recommendations ####################\ng = open(sys.argv[2])\n",
+			"file": "recommender.py",
+			"file_size": 1094,
+			"file_write_time": 131040400101846019,
+			"settings":
+			{
+				"buffer_size": 1224,
+				"line_ending": "Unix",
+				"name": "from sklearn.feature_extraction.text import CountV"
+			}
+		},
+		{
+			"file": "/home/christopher/class_projects/COS333/Assignment5/reg.py",
+			"settings":
+			{
+				"buffer_size": 5068,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/christopher/class_projects/COS333/Assignment5/reg1.py",
+			"settings":
+			{
+				"buffer_size": 6353,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Spring_16/007998.html",
+			"settings":
+			{
+				"buffer_size": 14723,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Spring_16/003245.html",
+			"settings":
+			{
+				"buffer_size": 13288,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "@asyncio.coroutine\ndef print_page(url):  \n    response = yield from aiohttp.request('GET', url)\n    body = yield from response.read_and_close(decode=True)\n    print(body)\n\n\n",
+			"settings":
+			{
+				"buffer_size": 173,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/christopher/class_projects/COS435"
+	],
+	"file_history":
+	[
+		"/home/christopher/class_projects/COS435/spring_16.json",
+		"/home/christopher/data_bin/summary_car_data.txt",
+		"/home/christopher/class_projects/COS435/spring_16.txt",
+		"/home/christopher/class_projects/COS435/out.txt",
+		"/home/christopher/class_projects/COS435/Spring_16/003255.html",
+		"/home/christopher/class_projects/COS435/Spring_16/003248.html",
+		"/home/christopher/class_projects/COS435/Spring_16/004160.html",
+		"/home/christopher/class_projects/COS435/Spring_16/004158.html",
+		"/home/christopher/class_projects/COS435/Spring_16/004168.html",
+		"/home/christopher/class_projects/COS435/Spring_16/000157.html",
+		"/home/christopher/class_projects/COS435/Spring_15/000157.html",
+		"/home/christopher/class_projects/COS435/Spring_16/009558.html",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/learning/policy.cpp",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/learning/policy.h",
+		"/home/christopher/projects/DeepDriving/torcs_data_plotter.py",
+		"/home/christopher/Documents/projectProp.txt",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/modules/graphic/ssggraph/grmain.cpp",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/windows/include/GL/glut.h",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/tgfclient/gui.cpp",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/raceengineclient/style.xsl",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/racescreens/racescreens.h",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/tgfclient/screen.xml",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/tgfclient/tgfclient.cpp",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/drivers/chenyi/chenyi.2lane",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/raceengineclient/raceinit.h",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/raceman/Makefile",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/racescreens/racemenu.cpp",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/raceengineclient/raceinit.cpp",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/raceengineclient/raceengine.xml",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/raceengineclient/racemain.h",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/racescreens/carsetupscreen.cpp",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/libs/learning/learn_debug.h",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/raceman/endrace.xml",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/src/drivers/berniw/berniw.cpp",
+		"/home/christopher/projects/DeepDriving/torcs-1.3.6/config.log",
+		"/home/christopher/projects/p13/src/cnn_controller/torcs_code/pre_trained/driving_mean_1F.binaryproto",
+		"/home/christopher/projects/p13/src/cnn_controller/torcs_code/pre_trained/driving_run_1F.prototxt",
+		"/home/christopher/projects/p13/src/caffe/Makefile.config",
+		"/home/christopher/projects/p13/src/caffe/cmake/ConfigGen.cmake",
+		"/home/christopher/projects/p13/src/cnn_controller/CMakeLists.txt",
+		"/home/christopher/projects/p13/src/caffe/CMakeLists.txt",
+		"/home/christopher/projects/p13/src/caffe/package.xml",
+		"/home/christopher/projects/p13/src/cnn_controller/src/cnn_controller/cnn_controller.h",
+		"/home/christopher/projects/p13/src/drive_by_wire/CMakeLists.txt",
+		"/home/christopher/projects/p13/src/cnn_controller/need_files",
+		"/home/christopher/projects/p13/src/mission_control/p13_launch.sh",
+		"/home/christopher/projects/p13/src/mission_control/package.xml",
+		"/home/christopher/projects/p13/src/CMakeLists.txt",
+		"/home/christopher/projects/p13/src/cnn_controller/src/cnn_controller/image_converter.cpp",
+		"/home/christopher/projects/DeepDriving/Caffe_driving/torcs/pre_trained/driving_train_1F_iter_140000.caffemodel",
+		"/home/christopher/test_scripts/err.py",
+		"/home/christopher/test_scripts/pagerank.py",
+		"/home/christopher/projects/p13/data/merge.sh",
+		"/home/christopher/projects/p13/data/merger.py",
+		"/home/christopher/projects/p13/data/rerouter.py",
+		"/home/christopher/projects/p13/data/canalyzer.py",
+		"/home/christopher/projects/p13/data/candump_scraper.py",
+		"/home/christopher/projects/p13/data/plotter.py",
+		"/home/christopher/projects/p13/data/output_analyzer.py",
+		"/home/christopher/projects/p13/data/hs2/candump-2016-02-15_205355.log",
+		"/home/christopher/projects/p13/data/can_analyzer.py",
+		"/home/christopher/test_scripts/pagerank",
+		"/home/christopher/projects/p13/data/counter.py",
+		"/home/christopher/projects/p13/data/copyrouter.sh",
+		"/home/christopher/projects/p13/data/reroute.sh",
+		"/home/christopher/projects/p13/data/collect_candump.sh",
+		"/home/christopher/projects/p13/data/hs2/candump-2016-02-03_182827.log",
+		"/home/christopher/projects/p13/data/hs2/candump-2016-02-04_185821.log",
+		"/home/christopher/projects/p13/data/dup_log.py",
+		"/home/christopher/projects/p13/data/hs2/candump-2016-02-04_191013.log",
+		"/home/christopher/projects/p13/data/defaults.py",
+		"/home/christopher/projects/p13/data/hs1/candump-2016-02-03_182856.log",
+		"/home/christopher/projects/p13/data/hs2/wheel_center2left2right2center.log",
+		"/home/christopher/projects/p13/data/hs2/candump-2016-02-03_182653.log",
+		"/home/christopher/projects/p13/data/hs2/candump-2016-02-04_192016.log",
+		"/home/christopher/projects/p13/data/images/hs2_possible_steering_ids.png",
+		"/home/christopher/class_projects/MAE345/hw7/ml.py",
+		"/home/christopher/class_projects/MAE345/hw7/plotter.py",
+		"/home/christopher/projects/p13/data/requirements.txt"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"uid",
+			"uuid",
+			"prereqs\"",
+			"307",
+			"309",
+			"if",
+			"\"prereqs\": \"",
+			"time",
+			"request",
+			"tTrkLocPos",
+			"tPublicCar",
+			"speed",
+			"std",
+			"startpos",
+			"grid",
+			"initgrid",
+			"RE_STATE_PRE_RACE",
+			"ReInit",
+			"ReInfo",
+			"onPress",
+			"GLUT_KEY_F2",
+			"curKey->name",
+			"F2",
+			"reonestep",
+			"tCarCtrl",
+			"pos",
+			"_pos",
+			"pos",
+			"restart",
+			"pause",
+			"lock",
+			"lap",
+			"-1",
+			"caffe_test_net",
+			"level",
+			"argv[3",
+			"argv[4]",
+			"argv[2]",
+			"argv[1]",
+			"730#",
+			"085#",
+			"085",
+			"085#",
+			"085",
+			"byte_list",
+			"076",
+			"sorted",
+			"cross_val_score"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"folders":
+	[
+		{
+			"path": "/home/christopher/class_projects/COS435"
+		}
+	],
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "scraper.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6625,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								100,
+								100
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "improved_scraper.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6487,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3811,
+								3811
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 999.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "feature_generator.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1175,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1175,
+								1175
+							]
+						],
+						"settings":
+						{
+							"auto_name": "import json",
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "spring_16_features.csv",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 650798,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								63,
+								63
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "recommender.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1224,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1224,
+								1224
+							]
+						],
+						"settings":
+						{
+							"auto_name": "from sklearn.feature_extraction.text import CountV",
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 54.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/home/christopher/class_projects/COS333/Assignment5/reg.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5068,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3463,
+								3463
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1632.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/home/christopher/class_projects/COS333/Assignment5/reg1.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6353,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4678,
+								4678
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1938.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "Spring_16/007998.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14723,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3451.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "Spring_16/003245.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13288,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3811.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 173,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								173,
+								173
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 296.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
