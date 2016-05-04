@@ -69,8 +69,8 @@ def load_user_ratings(filename, course_id_lookup, course_doc_dict):
 	course_ids = []
 	ratings = []
 	for line in f:
-		department, class_number, rating = line.split()
-		course_id_list = course_id_lookup[department + class_number]
+		class_name, rating = line.split()
+		course_id_list = course_id_lookup[class_name]
 		for course in course_id_list:
 			course_ids.append(course)
 			ratings.append(float(rating))
@@ -100,7 +100,7 @@ def recommend(vectorizer, trained_clusterer, course_ids, ratings, docs, course_d
 			recommendations.append((course_id, rating))
 	return recommendations
 
-COURSE_IDS, RATINGS, DOCS = load_user_ratings('chay_ratings.txt', COURSE_ID_LOOKUP_DICT, COURSE_DOC_DICT)
+COURSE_IDS, RATINGS, DOCS = load_user_ratings(sys.argv[1], COURSE_ID_LOOKUP_DICT, COURSE_DOC_DICT)
 RECOMMENDATIONS = recommend(VECTORIZER, lda, COURSE_IDS, RATINGS, DOCS, COURSE_DOC_DICT)
 print 'Top 20 recommendations:'
 for course_id, rating in RECOMMENDATIONS[:20]:
