@@ -147,4 +147,19 @@ def get_tfidf_matrix(doc_list):
 	X = vectorizer.transform(doc_list)
 	return vectorizer, X
 
+def get_all(filename, generate=False):
+	# import cPickle as pickle
+	if generate:
+		from cloud.serialization.cloudpickle import dump
+		class_dict = get_class_dict()
+		course_id_lookup_dict, class_number_lookup_dict = get_course_id_lookup_dict(class_dict)
+		course_doc_dict, doc_list = get_doc_list(class_dict)
+		vectorizer, tfidf_mat = get_tfidf_matrix(doc_list)
+		dump((class_dict, course_id_lookup_dict, class_number_lookup_dict, course_doc_dict, doc_list, vectorizer, tfidf_mat), open(filename, 'wb'))
+	else:
+		import cPickle as pickle
+		class_dict, course_id_lookup_dict, class_number_lookup_dict, course_doc_dict, doc_list, vectorizer, tfidf_mat = pickle.load(open(filename, 'rb'))
+	return class_dict, course_id_lookup_dict, class_number_lookup_dict, course_doc_dict, doc_list, vectorizer, tfidf_mat
+
+
 
