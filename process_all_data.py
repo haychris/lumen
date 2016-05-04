@@ -76,6 +76,8 @@ def add_registrar(file_name, class_dict):
 		cur_course_dict["title"] = line_dict["title"]
 		cur_course_dict["prereqs"] = line_dict["prereqs"]
 		cur_course_dict["descrip"] = line_dict["descrip"]
+
+
 def create_documents(class_dict):
 	for term_dict in class_dict.values():
 		for course_dict in term_dict.values():
@@ -101,17 +103,48 @@ def get_class_dict():
 
 	return class_dict
 
+def get_course_id_lookup_dict(class_dict):
+	course_id_lookup_dict = defaultdict(list)
+	class_number_lookup_dict = defaultdict(list)
+	for term_dict in class_dict.values():
+		for course_id, course_dict in term_dict.items():
+			class_listing = course_dict["all_listings_string"]
+			if isinstance(class_listing, list):
+				class_listing = ' '.join(class_listing)
+			classes = class_listing.split()
+			for i in range(0,len(classes), 2):
+				course_id_lookup_dict[classes[i] + classes[i+1]].append(course_id)
+				class_number_lookup_dict[course_id].append(classes[i] + classes[i+1])
+			if len(classes) == 0:
+				course_id_lookup_dict[course_dict["SUBJECT"] + course_dict["CATALOG_NBR"]].append(course_id)
+				class_number_lookup_dict[course_id].append(course_dict["SUBJECT"] + course_dict["CATALOG_NBR"])
+	return course_id_lookup_dict, class_number_lookup_dict
+			
+
 def get_doc_list(class_dict):
 	doc_dict = defaultdict(list)
 	for term_dict in class_dict.values():
 		for course_id, course_dict in term_dict.items():
 			doc_dict[course_id].append(course_dict['document'])
 	doc_list = [' '.join(docs) for docs in doc_dict.values()]
-	return doc_list
+	course_doc_dict = {course_id:' '.join(docs) for course_id, docs in doc_dict.items()}
+	return course_doc_dict, doc_list
+
+from nltk import word_tokenize          
+from nltk.stem import WordNetLemmatizer 
+
+class LemmaTokenizer(object):
+	def __init__(self):
+		self.wnl = WordNetLemmatizer()
+	def __call__(self, doc):
+		tokens =  [self.wnl.lemmatize(t) for t in word_tokenize(doc)]
+		return [w.lower() for w in tokens if w.isalpha()]
 
 def get_tfidf_matrix(doc_list):
 	from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
-	vectorizer = TfidfVectorizer(input='content', max_df=0.5, stop_words='english', use_idf=True, min_df=2)
+	vectorizer = TfidfVectorizer(input='content', max_df=0.9, stop_words='english', use_idf=True, min_df=2, tokenizer=LemmaTokenizer())
 	vectorizer.fit(doc_list)
 	X = vectorizer.transform(doc_list)
 	return vectorizer, X
+
+

@@ -4,13 +4,14 @@ import numpy as np
 from sklearn.cluster import KMeans, AffinityPropagation, DBSCAN
 from sklearn.decomposition import NMF, LatentDirichletAllocation
 
-from process_all_data import get_class_dict, get_doc_list, get_tfidf_matrix
+from process_all_data import get_class_dict, get_course_id_lookup_dict, get_doc_list, get_tfidf_matrix
 
 
 
 CLASS_DICT = get_class_dict()
-DOC_LIST = get_doc_list(CLASS_DICT)
-vectorizer, X = get_tfidf_matrix(DOC_LIST)
+COURSE_ID_LOOKUP_DICT, CLASS_NUMBER_LOOKUP_DICT = get_course_id_lookup_dict(CLASS_DICT)
+COURSE_DOC_DICT, DOC_LIST = get_doc_list(CLASS_DICT)
+VECTORIZER, X = get_tfidf_matrix(DOC_LIST)
 
 
 ##### K-MEANS #####
@@ -19,7 +20,7 @@ km = KMeans(n_clusters=K, init='k-means++', max_iter=100, n_init=1)
 km.fit(X)
 
 order_centroids = km.cluster_centers_.argsort()[:, ::-1]
-terms = vectorizer.get_feature_names()
+terms = VECTORIZER.get_feature_names()
 
 for i in range(K):
 	print "Cluster %d:" % i,
@@ -41,7 +42,7 @@ def print_top_words(model, feature_names, n_top_words):
 ### NMF model ###
 nmf = NMF(n_components=K, random_state=1, alpha=.1, l1_ratio=.5).fit(X)
 
-tfidf_feature_names = vectorizer.get_feature_names()
+tfidf_feature_names = VECTORIZER.get_feature_names()
 print_top_words(nmf, tfidf_feature_names, 10)
 
 ### LDA model ###
@@ -49,7 +50,7 @@ lda = LatentDirichletAllocation(n_topics=K, max_iter=5,
                                 learning_method='online', learning_offset=50.,
                                 random_state=0)
 lda.fit(X)
-tf_feature_names = vectorizer.get_feature_names()
+tf_feature_names = VECTORIZER.get_feature_names()
 print_top_words(lda, tf_feature_names, 10)
 
 ### DBSCAN ###
@@ -63,29 +64,47 @@ print n_clusters_
 
 
 ############ CREATE RECOMMENDATIONS ############
-g = open(sys.argv[1])
-docs = []
-ratings = []
-for line in g:
-	the_class, rating = line.split()
-	doc = cleaned_class_dict[the_class]
-	if doc is not '':
-		docs.append(doc)
-		ratings.append(float(rating))
+def load_user_ratings(filename, course_id_lookup, course_doc_dict):
+	f = open(filename)
+	course_ids = []
+	ratings = []
+	for line in f:
+		department, class_number, rating = line.split()
+		course_id_list = course_id_lookup[department + class_number]
+		for course in course_id_list:
+			course_ids.append(course)
+			ratings.append(float(rating))
 
-lda_docs = lda.transform(vectorizer.transform(docs))
-cluster_scores = np.zeros(K)
-mean_rating = 3
-for lda_doc, rating in zip(lda_docs, ratings):
-	probs = lda_doc / sum(lda_doc)
-	cluster_scores[:] += (rating-mean_rating)*probs
+	
+	docs = [course_doc_dict[course_id] for course_id in course_ids]
+	return course_ids, ratings, docs
 
-lda_all_classes = lda.transform(vectorizer.transform(cleaned_class_dict.values()))
-class_ratings = []
-for lda_class in lda_all_classes:
-	class_ratings.append(np.dot(lda_class, cluster_scores))
+def recommend(vectorizer, trained_clusterer, course_ids, ratings, docs, course_doc_dict):
+	trained_clusterer_docs = trained_clusterer.transform(vectorizer.transform(docs))
+	cluster_scores = np.zeros(K)
+	mean_rating = 3
+	for trained_clusterer_doc, rating in zip(trained_clusterer_docs, ratings):
+		probs = trained_clusterer_doc / sum(trained_clusterer_doc)
+		cluster_scores[:] += (rating-mean_rating)*probs
+
+	trained_clusterer_all_classes = trained_clusterer.transform(vectorizer.transform(course_doc_dict.values()))
+	class_ratings = []
+	for trained_clusterer_class in trained_clusterer_all_classes:
+		class_ratings.append(np.dot(trained_clusterer_class, cluster_scores))
 
 
-class_rankings = sorted(list(zip(class_ratings, cleaned_class_dict.keys())), reverse=True)
-for rating, class_name in class_rankings[:20] + class_rankings[-20:]:
-	print class_name, rating
+	class_rankings = sorted(list(zip(class_ratings, course_doc_dict.keys())), reverse=True)
+	recommendations = []
+	for rating, course_id in class_rankings:
+		if course_id not in course_ids:
+			recommendations.append((course_id, rating))
+	return recommendations
+
+COURSE_IDS, RATINGS, DOCS = load_user_ratings('chay_ratings.txt', COURSE_ID_LOOKUP_DICT, COURSE_DOC_DICT)
+RECOMMENDATIONS = recommend(VECTORIZER, lda, COURSE_IDS, RATINGS, DOCS, COURSE_DOC_DICT)
+print 'Top 20 recommendations:'
+for course_id, rating in RECOMMENDATIONS[:20]:
+		print CLASS_NUMBER_LOOKUP_DICT[course_id], rating
+print 'Bottom 20 recommendations:'
+for course_id, rating in RECOMMENDATIONS[-20:]:
+		print CLASS_NUMBER_LOOKUP_DICT[course_id], rating
