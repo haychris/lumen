@@ -18,6 +18,9 @@ def process_query():
 def process_recommendation():
 	return render_template('courseHistInput.html')
 
+@app.route('/recommendResults')
+def process_recommendedResults():
+  return render_template('courseHistResult.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
