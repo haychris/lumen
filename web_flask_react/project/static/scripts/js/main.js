@@ -57,3 +57,7 @@ React.render(
 
 
 },{}]},{},[1])
+
+var showInputForms = React.createClass({
+
+});

@@ -83,7 +83,7 @@ img {
  * Course history input page *
  *****************************/
 #yearInput {
-  margin-top: 1%;
+  margin-top: 10px;
   background-color: LimeGreen;
   font-size: 1.5em;
   line-height: 50px;
@@ -112,11 +112,25 @@ img {
 }
 
 #courseHistExplain {
-  margin-top: 1%;
+  margin-top: 10px;
 }
 
 #courseHistInput {
-  margin-top: 1%;
+  margin-top: 10px;
+}
+
+#yr1L {
+  background-color: blue;
+  float: left;
+  height: 100px;
+  width: 50%;
+}
+
+#yr1R {
+  background-color: red;
+  float: right;
+  height: 100px;
+  width: 50%;
 }
 
 #getRecommendationsButton {
@@ -130,6 +144,11 @@ img {
 /******************************
  * Course history result page *
  ******************************/
+
+#editCourseHistButton {
+  margin-top: 5px;
+  font-size: 0.75em;
+}
 
 /*********************
  * Query result page *
