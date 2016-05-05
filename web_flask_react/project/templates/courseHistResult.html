@@ -1,22 +1,6 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>COS435 Project</title>
-    <link type="text/css" rel="stylesheet" href="static/courseHistResult_style.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  </head>
-  <body>
-    <!-- Scripts -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.0/react.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.0/JSXTransformer.js"></script>
+{% extends "base.html" %}
 
-    <div class="projectTitle">
-      <div id="projectName">
-          <img id="projectLogo" src="img/logo.jpg">
-        Project
-      </div>
-    </div>
-
+{% block content %}
     <div>
       Based on your past courses, we recommend...
     </div>
@@ -34,6 +18,4 @@
     </div>
 
     <div id="loadMoreButton" onclick="">Load More</div>
-
-  </body>
-</html>
+{% endblock content %}

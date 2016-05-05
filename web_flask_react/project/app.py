@@ -8,12 +8,15 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-
 @app.route('/query')
-def hello():
+def process_query():
 	query = request.args.get('query')
-	print query
+	print 'Query: ', query
 	return render_template('queryResult.html')
+
+@app.route('/recommend')
+def process_recommendation():
+	return render_template('courseHistInput.html')
 
 
 if __name__ == '__main__':
