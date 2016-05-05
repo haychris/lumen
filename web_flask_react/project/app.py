@@ -22,6 +22,5 @@ def get_user_ratings():
 def process_recommendations():
 	return render_template('courseHistResult.html')
 
-
 if __name__ == '__main__':
     app.run(debug=True)

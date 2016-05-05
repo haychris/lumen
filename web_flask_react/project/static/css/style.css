@@ -1,6 +1,5 @@
 body {
-  font-family: Tahoma, Geneva, sans-serif; 
-  background-image: url("../img/bkgd.jpg");
+  font-family: Tahoma, Geneva, sans-serif;
   background-size: cover;
   margin: 0;
   padding: 0;
@@ -120,8 +119,11 @@ img {
   margin-top: 1%;
 }
 
-#saveCourseHistButton {
+#getRecommendationsButton {
   background-color: tomato;
+  font-size: 1.5em;
+  margin: 0 42% 0 42%;
+  padding: 10px 0 10px 0;
 }
 
 
