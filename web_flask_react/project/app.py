@@ -14,9 +14,13 @@ def process_query():
 	print 'Query: ', query
 	return render_template('queryResult.html')
 
-@app.route('/recommend')
-def process_recommendation():
+@app.route('/userratings')
+def get_user_ratings():
 	return render_template('courseHistInput.html')
+
+@app.route('/recommend')
+def process_recommendations():
+	return render_template('courseHistResult.html')
 
 
 if __name__ == '__main__':
