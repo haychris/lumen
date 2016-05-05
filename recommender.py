@@ -10,9 +10,9 @@ from process_all_data import get_all
 CLASS_DICT, COURSE_ID_LOOKUP_DICT, CLASS_NUMBER_LOOKUP_DICT, COURSE_DOC_DICT, DOC_LIST, VECTORIZER, X = get_all('recommender_data.pickle', False)
 
 ##### K-MEANS #####
-K = 60
+K = 50
 def get_kmeans(dat_matrix, vectorizer):
-	km = KMeans(n_clusters=K, init='k-means++', max_iter=100, n_init=1)
+	km = KMeans(n_clusters=K, init='k-means++', max_iter=300, n_init=20)
 	km.fit(dat_matrix)
 
 	order_centroids = km.cluster_centers_.argsort()[:, ::-1]
@@ -83,7 +83,7 @@ def load_user_ratings(filename, course_id_lookup, course_doc_dict):
 	return course_ids, ratings, docs
 
 def recommend(vectorizer, cluster_func, course_ids, ratings, docs, course_doc_dict):
-	import pdb; pdb.set_trace()
+	# import pdb; pdb.set_trace()
 	trained_clusterer_docs = cluster_func(vectorizer.transform(docs))
 	cluster_scores = np.zeros(K)
 	mean_rating = 3
@@ -91,12 +91,13 @@ def recommend(vectorizer, cluster_func, course_ids, ratings, docs, course_doc_di
 		probs = trained_clusterer_doc / sum(trained_clusterer_doc)
 		cluster_scores[:] += (rating-mean_rating)*probs
 
-	import pdb; pdb.set_trace()
+	# import pdb; pdb.set_trace()
 
 	trained_clusterer_all_classes = cluster_func(vectorizer.transform(course_doc_dict.values()))
 	class_ratings = []
 	for trained_clusterer_class in trained_clusterer_all_classes:
-		class_ratings.append(np.dot(trained_clusterer_class, cluster_scores))
+		probs = trained_clusterer_class / sum(trained_clusterer_class)
+		class_ratings.append(np.dot(probs, cluster_scores))
 
 
 	class_rankings = sorted(list(zip(class_ratings, course_doc_dict.keys())), reverse=True)
@@ -104,7 +105,7 @@ def recommend(vectorizer, cluster_func, course_ids, ratings, docs, course_doc_di
 	for rating, course_id in class_rankings:
 		if course_id not in course_ids:
 			recommendations.append((course_id, rating))
-	import pdb; pdb.set_trace()
+	# import pdb; pdb.set_trace()
 	return recommendations
 
 from sklearn.utils.extmath import row_norms, squared_norm
@@ -121,10 +122,10 @@ KM = get_kmeans(X, VECTORIZER)
 COURSE_IDS, RATINGS, DOCS = load_user_ratings(sys.argv[1], COURSE_ID_LOOKUP_DICT, COURSE_DOC_DICT)
 # lda = get_lda()
 # RECOMMENDATIONS = recommend(VECTORIZER, lda.transform, COURSE_IDS, RATINGS, DOCS, COURSE_DOC_DICT)
-RECOMMENDATIONS = recommend(VECTORIZER, lambda x: -1*KM.transform(x), COURSE_IDS, RATINGS, DOCS, COURSE_DOC_DICT)
+RECOMMENDATIONS = recommend(VECTORIZER, lambda x: 1./(KM.transform(x)**3+0.05), COURSE_IDS, RATINGS, DOCS, COURSE_DOC_DICT)
 
-print 'Top 20 recommendations:'
-for course_id, rating in RECOMMENDATIONS[:20]:
+print 'Top 40 recommendations:'
+for course_id, rating in RECOMMENDATIONS[:40]:
 		print CLASS_NUMBER_LOOKUP_DICT[course_id], rating
 print 'Bottom 20 recommendations:'
 for course_id, rating in RECOMMENDATIONS[-20:]:
