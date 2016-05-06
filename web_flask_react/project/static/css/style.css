@@ -116,6 +116,7 @@ img {
 
 #courseHistExplain {
   margin-top: 10px;
+  font-size: 1.5em;
 }
 
 #courseHistInput {
@@ -145,6 +146,15 @@ img {
 .yearStyle {
   min-height: 100px;
   overflow:hidden;
+}
+
+#addSemesterButton {
+  background-color: gray;
+  font-size: 1.5em;
+  height: 50px;
+  width: 200px;
+  margin: 0 auto 0 auto;
+  padding: 10px 0 10px 0;
 }
 
 #getRecommendationsButton {

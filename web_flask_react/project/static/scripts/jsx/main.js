@@ -1,57 +1,22 @@
-var YearSelect = React.createClass({
+var AddSemester = React.createClass({
   getInitialState: function() {
-    return {year: null};
+    return{clickCount: 0};
   },
-  freshmanSelect: function(event) {
-    this.setState({year: "frosh"});
-  },
-  sophomoreSelect: function(event) {
-    this.setState({year: "soph"});
-  },
-  juniorSelect: function(event) {
-    this.setState({year: "junr"});
-  },
-  render: function() {
-    //If a freshman, highlight that box and hide the sophomore/junior course input divs
-    if (this.state.year == "frosh") {
-      document.getElementById('freshman').setAttribute("style", "background-color: white;");
-      document.getElementById('sophomore').setAttribute("style", "background-color: gray;");
-      document.getElementById('junior').setAttribute("style", "background-color: gray;");
-      document.getElementById('freshmanYear').setAttribute("style", "");
-      document.getElementById('sophomoreYear').setAttribute("style", "display:none;");
-      document.getElementById('juniorYear').setAttribute("style", "display:none;");
-    }
-    //If a sophomore, highlight that box and hide the junior course input divs
-    if (this.state.year == "soph") {
-      document.getElementById('freshman').setAttribute("style", "background-color: gray;");
-      document.getElementById('sophomore').setAttribute("style", "background-color: white;");
-      document.getElementById('junior').setAttribute("style", "background-color: gray;");
-      document.getElementById('freshmanYear').setAttribute("style", "");
+  appendSemester: function(event) {
+    this.setState(function(previousState, currentProps) {
+      return {clickCount: previousState.clickCount + 1};
+    });
+    if (this.state.clickCount == 0) {
       document.getElementById('sophomoreYear').setAttribute("style", "");
-      document.getElementById('juniorYear').setAttribute("style", "display:none;");
     }
-    //If a junior, highlight that box and show all course input divs
-    if (this.state.year == "junr") {
-      document.getElementById('freshman').setAttribute("style", "background-color: gray;");
-      document.getElementById('sophomore').setAttribute("style", "background-color: gray;");
-      document.getElementById('junior').setAttribute("style", "background-color: white;");
-      document.getElementById('freshmanYear').setAttribute("style", "");
-      document.getElementById('sophomoreYear').setAttribute("style", "");
+    else if (this.state.clickCount == 1) {
       document.getElementById('juniorYear').setAttribute("style", "");
     }
+    else return;
+  },
+  render: function() {
     return (
-      <div>
-      What year are you?<br/>
-        <div id="freshman" onClick={this.freshmanSelect}>
-          2019
-        </div>
-        <div id="sophomore" onClick={this.sophomoreSelect}>
-          2018
-        </div>
-        <div id="junior" onClick={this.juniorSelect}>
-          2017
-        </div>
-      </div>
+      <div onClick={this.appendSemester}>ADD SEMESTER</div>
     );
   }
 });
@@ -194,7 +159,7 @@ var AddCourseJS = React.createClass({
   }
 });
 
-ReactDOM.render(<YearSelect />, document.getElementById('yearInput'));
+ReactDOM.render(<AddSemester />, document.getElementById('addSemesterButton'));
 ReactDOM.render(<AddCourseFF />, document.getElementById('froshFallAddButton'));
 ReactDOM.render(<AddCourseFS />, document.getElementById('froshSpringAddButton'));
 ReactDOM.render(<AddCourseSF />, document.getElementById('sophFallAddButton'));

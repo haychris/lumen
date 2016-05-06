@@ -1,58 +1,23 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var YearSelect = React.createClass({displayName: "YearSelect",
+var AddSemester = React.createClass({displayName: "AddSemester",
   getInitialState: function() {
-    return {year: null};
+    return{clickCount: 0};
   },
-  freshmanSelect: function(event) {
-    this.setState({year: "frosh"});
-  },
-  sophomoreSelect: function(event) {
-    this.setState({year: "soph"});
-  },
-  juniorSelect: function(event) {
-    this.setState({year: "junr"});
-  },
-  render: function() {
-    //If a freshman, highlight that box and hide the sophomore/junior course input divs
-    if (this.state.year == "frosh") {
-      document.getElementById('freshman').setAttribute("style", "background-color: white;");
-      document.getElementById('sophomore').setAttribute("style", "background-color: gray;");
-      document.getElementById('junior').setAttribute("style", "background-color: gray;");
-      document.getElementById('freshmanYear').setAttribute("style", "");
-      document.getElementById('sophomoreYear').setAttribute("style", "display:none;");
-      document.getElementById('juniorYear').setAttribute("style", "display:none;");
-    }
-    //If a sophomore, highlight that box and hide the junior course input divs
-    if (this.state.year == "soph") {
-      document.getElementById('freshman').setAttribute("style", "background-color: gray;");
-      document.getElementById('sophomore').setAttribute("style", "background-color: white;");
-      document.getElementById('junior').setAttribute("style", "background-color: gray;");
-      document.getElementById('freshmanYear').setAttribute("style", "");
+  appendSemester: function(event) {
+    this.setState(function(previousState, currentProps) {
+      return {clickCount: previousState.clickCount + 1};
+    });
+    if (this.state.clickCount == 0) {
       document.getElementById('sophomoreYear').setAttribute("style", "");
-      document.getElementById('juniorYear').setAttribute("style", "display:none;");
     }
-    //If a junior, highlight that box and show all course input divs
-    if (this.state.year == "junr") {
-      document.getElementById('freshman').setAttribute("style", "background-color: gray;");
-      document.getElementById('sophomore').setAttribute("style", "background-color: gray;");
-      document.getElementById('junior').setAttribute("style", "background-color: white;");
-      document.getElementById('freshmanYear').setAttribute("style", "");
-      document.getElementById('sophomoreYear').setAttribute("style", "");
+    else if (this.state.clickCount == 1) {
       document.getElementById('juniorYear').setAttribute("style", "");
     }
+    else return;
+  },
+  render: function() {
     return (
-      React.createElement("div", null, 
-      "What year are you?", React.createElement("br", null), 
-        React.createElement("div", {id: "freshman", onClick: this.freshmanSelect}, 
-          "2019"
-        ), 
-        React.createElement("div", {id: "sophomore", onClick: this.sophomoreSelect}, 
-          "2018"
-        ), 
-        React.createElement("div", {id: "junior", onClick: this.juniorSelect}, 
-          "2017"
-        )
-      )
+      React.createElement("div", {onClick: this.appendSemester}, "ADD SEMESTER")
     );
   }
 });
@@ -195,7 +160,7 @@ var AddCourseJS = React.createClass({displayName: "AddCourseJS",
   }
 });
 
-ReactDOM.render(React.createElement(YearSelect, null), document.getElementById('yearInput'));
+ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemesterButton'));
 ReactDOM.render(React.createElement(AddCourseFF, null), document.getElementById('froshFallAddButton'));
 ReactDOM.render(React.createElement(AddCourseFS, null), document.getElementById('froshSpringAddButton'));
 ReactDOM.render(React.createElement(AddCourseSF, null), document.getElementById('sophFallAddButton'));
