@@ -133,6 +133,34 @@ img {
   width: 50%;
 }
 
+#yr2L {
+  background-color: green;
+  float: left;
+  height: 100px;
+  width: 50%;
+}
+
+#yr2R {
+  background-color: purple;
+  float: right;
+  height: 100px;
+  width: 50%;
+}
+
+#yr3L {
+  background-color: white;
+  float: left;
+  height: 100px;
+  width: 50%;
+}
+
+#yr3R {
+  background-color: gray;
+  float: right;
+  height: 100px;
+  width: 50%;
+}
+
 #getRecommendationsButton {
   background-color: tomato;
   font-size: 1.5em;
