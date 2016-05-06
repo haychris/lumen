@@ -92,6 +92,7 @@ img {
 
 #freshman {
   background-color: DarkOrchid;
+  border: 1px solid black;
   width: 200px;
   height: 50px;
   display: inline-block;
@@ -99,6 +100,7 @@ img {
 
 #sophomore {
   background-color: Gold;
+  border: 1px solid black;
   width: 200px;
   height: 50px;
   display: inline-block;
@@ -106,6 +108,7 @@ img {
 
 #junior {
   background-color: Tan;
+  border: 1px solid black;
   width: 200px;
   height: 50px;
   display: inline-block;
@@ -117,54 +120,39 @@ img {
 
 #courseHistInput {
   margin-top: 10px;
+  min-height: 100%;
+  position: relative;
 }
 
-#yr1L {
-  background-color: blue;
+.semesterTitle {
+  font-size: 1.5em;
+}
+
+.fallSemester {
+//  background-color: blue;
   float: left;
-  height: 100px;
   width: 50%;
+  margin-top: 10px;
 }
 
-#yr1R {
-  background-color: red;
+.springSemester {
+ // background-color: red;
   float: right;
-  height: 100px;
   width: 50%;
+  margin-top: 10px;
 }
 
-#yr2L {
-  background-color: green;
-  float: left;
-  height: 100px;
-  width: 50%;
-}
-
-#yr2R {
-  background-color: purple;
-  float: right;
-  height: 100px;
-  width: 50%;
-}
-
-#yr3L {
-  background-color: white;
-  float: left;
-  height: 100px;
-  width: 50%;
-}
-
-#yr3R {
-  background-color: gray;
-  float: right;
-  height: 100px;
-  width: 50%;
+.yearStyle {
+  min-height: 100px;
+  overflow:hidden;
 }
 
 #getRecommendationsButton {
   background-color: tomato;
   font-size: 1.5em;
-  margin: 0 42% 0 42%;
+  height: 50px;
+  width: 200px;
+  margin: 0 auto 0 auto;
   padding: 10px 0 10px 0;
 }
 

@@ -19,11 +19,6 @@ max_results = 20
 def index():
     return render_template('index.html')
 
-@app.route('/hello')
-def hello():
-    return render_template('hello.html')
-
-
 @app.route('/query')
 def process_query():
 	query = request.args.get('query')
