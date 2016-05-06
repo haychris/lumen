@@ -149,6 +149,18 @@ img {
   background-color: tomato;
 }
 
+#classInfo {
+  width: 200px;
+  float: left;
+  display:inline-block;
+}
+
+#evaluation {
+  width: 400px;
+  float: right;
+  display:inline-block;
+}
+
 #loadMoreButton {
   font-size: 1em;
   margin: 10px 45% 0 45%;

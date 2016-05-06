@@ -5,17 +5,31 @@
       Based on your past courses, we recommend...
     </div>
 
-    <div class="result">
-      Result
-    </div>
+    {% for result in results %}
+      <div class="result">
 
-    <div class="result">
-      Compooter
-    </div>
+        <div style="width: 20%; float:left">
+          <div style="height: 50%; float:top">
+            {{result.get_course_listings()}}
+          </div>
+          <div style="height: 50%; float:bottom">
+            <div style="height: 80%; float:top">
+              {{result.get_title()}}
+            </div>
+            <div style="height: 20%; float:bottom">
+              (Details)
+            </div>
+          </div>
+        </div>
 
-    <div class="result">
-      Result
-    </div>
+        <div style="width: 80%; float:right">
+           {{result.get_ratings()}}
+        </div>
+
+      </div>
+    {% else %}
+      <p>No results.</p>
+    {% endfor %}
 
     <div id="loadMoreButton" onclick="">Load More</div>
     <div id="editCourseHistButton" onclick="location.href='userratings'">Want to edit your course/major info?</div>

@@ -1,6 +1,9 @@
 import sys
 from collections import defaultdict
 import pandas as pd
+import numpy as np
+
+from sklearn.cluster import KMeans
 
 def add_ratings(file_name, class_dict):
 	f = open(file_name)
@@ -118,6 +121,10 @@ def get_course_id_lookup_dict(class_dict):
 			if len(classes) == 0:
 				course_id_lookup_dict[course_dict["SUBJECT"] + course_dict["CATALOG_NBR"]].append(course_id)
 				class_number_lookup_dict[course_id].append(course_dict["SUBJECT"] + course_dict["CATALOG_NBR"])
+	for key, value in course_id_lookup_dict.items():
+		course_id_lookup_dict[key] = list(set(value))
+	for key, value in class_number_lookup_dict.items():
+		class_number_lookup_dict[key] = list(set(value))
 	return course_id_lookup_dict, class_number_lookup_dict
 			
 
@@ -126,8 +133,8 @@ def get_doc_list(class_dict):
 	for term_dict in class_dict.values():
 		for course_id, course_dict in term_dict.items():
 			doc_dict[course_id].append(course_dict['document'])
-	doc_list = [' '.join(docs) for docs in doc_dict.values()]
 	course_doc_dict = {course_id:' '.join(docs) for course_id, docs in doc_dict.items()}
+	doc_list = course_doc_dict.values()
 	return course_doc_dict, doc_list
 
 from nltk import word_tokenize          
@@ -160,6 +167,51 @@ def get_all(filename, generate=False):
 		import cPickle as pickle
 		class_dict, course_id_lookup_dict, class_number_lookup_dict, course_doc_dict, doc_list, vectorizer, tfidf_mat = pickle.load(open(filename, 'rb'))
 	return class_dict, course_id_lookup_dict, class_number_lookup_dict, course_doc_dict, doc_list, vectorizer, tfidf_mat
+
+
+recommender_necessities_filename = 'recommender_necessities.pickle'
+search_necessities_filename = 'search_necessities.pickle'
+course_info_necessities_filename = 'course_info_necessities.pickle'
+def process_website_necessities():
+	class_dict = get_class_dict()
+	course_doc_dict, doc_list = get_doc_list(class_dict)
+	vectorizer, tfidf_mat = get_tfidf_matrix(doc_list)
+
+	k = 50
+	km = KMeans(n_clusters=k, init='k-means++', max_iter=300, n_init=20)
+	km.fit(tfidf_mat)
+
+	similarity_func = lambda x: 1./(km.transform(x)**3+0.05)
+
+	similarities_all_classes = similarity_func(vectorizer.transform(course_doc_dict.values()))
+	course_cluster_probs_dict = {}
+	for course_id, cur_class_similarities in zip(course_doc_dict.keys(), similarities_all_classes):
+		probs = cur_class_similarities / sum(cur_class_similarities)
+		course_cluster_probs_dict[course_id] = probs
+
+
+	course_id_lookup_dict, class_number_lookup_dict = get_course_id_lookup_dict(class_dict)
+
+	from cloud.serialization.cloudpickle import dump
+	dump((course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k), open(recommender_necessities_filename, 'wb'))
+
+	feat_names = vectorizer.get_feature_names()
+	word_dict = {}
+	for i, name in enumerate(feat_names):
+		word_dict[name] = i
+
+	dump((tfidf_mat, word_dict, course_doc_dict), open(search_necessities_filename, 'wb'))
+
+	course_info_dict = {}
+	for course_id in class_number_lookup_dict.keys():
+		term_info_dict = {}
+		for term_id, term_dict in class_dict.items():
+			if course_id in term_dict:
+				term_info_dict[term_id] = class_dict[term_id][course_id]
+		course_info_dict[course_id] = term_info_dict
+	dump(course_info_dict, open(course_info_necessities_filename, 'wb'))
+
+
 
 
 
