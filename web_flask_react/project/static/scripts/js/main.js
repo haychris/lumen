@@ -7,17 +7,20 @@ var AddSemester = React.createClass({displayName: "AddSemester",
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    if (this.state.clickCount == 0) {
+
+    if (this.state.clickCount == 0)
       document.getElementById('sophomoreYear').setAttribute("style", "");
-    }
-    else if (this.state.clickCount == 1) {
+    else if (this.state.clickCount == 1)
       document.getElementById('juniorYear').setAttribute("style", "");
-    }
+
     else return;
   },
   render: function() {
+    if (this.state.clickCount > 1) {
+      return null;
+    }
     return (
-      React.createElement("div", {onClick: this.appendSemester}, "ADD SEMESTER")
+      React.createElement("div", {id: "addSemesterButtonStyle", onClick: this.appendSemester}, "ADD SEMESTER")
     );
   }
 });
