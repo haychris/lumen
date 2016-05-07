@@ -1,7 +1,7 @@
 //Constants
 var oneRating = "Hate";
 var twoRating = "Dislike";
-var threeRating = "OK";
+var threeRating = "Meh";
 var fourRating = "Like";
 var fiveRating = "Amazing";
 
@@ -21,12 +21,14 @@ function saveToCookie() {
     var courseRating = ratingTextToNum(allCourseRatings[i].innerHTML);
 
     if (courseName != "")
-      cookieContent = cookieContent + allCourseNames[i].id + ":" + courseName + "," + "r:" + courseRating + "|";
+      cookieContent = cookieContent + /*allCourseNames[i].id +*/ "n:" + courseName + "," + "r:" + courseRating + "|";
 
   }
   cookieContent = cookieContent.substring(0, cookieContent.length-1);
 
-  document.cookie = "CourseInfo=" + cookieContent+ "; expires=" + d.toUTCString();
+  document.cookie = "CourseInfo=" + cookieContent + "; expires=" + d.toUTCString();
+  document.cookie = "Major=" + document.getElementById("major").value + "; expires=" + d.toUTCString();
+  document.cookie = "Certificate=" + document.getElementById("cert").value + "; expires=" + d.toUTCString();
   console.log("Cookie set:" + hasCookie());
 }
 
@@ -36,18 +38,16 @@ function ratingTextToNum(text) {
     return 1;
   else if (text == twoRating)
     return 2;
-  else if (text == threeRating)
-    return 3;
   else if (text == fourRating)
     return 4;
   else if (text == fiveRating)
     return 5;
   else
-    return -1;
+    return 3;
 }
 
 function hasCookie() {
-  if (document.cookie.split("=")[0] != "CourseInfo") {
+  if (document.cookie.indexOf("CourseInfo") == -1) {
     return false;
   }
 
