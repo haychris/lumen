@@ -1,0 +1,13 @@
+{% macro courseEntryArea() %}
+{% for number in range(1,5) %}
+<div class="courseEntry">
+	<div class="courseName">
+		<input class="courseName" type="text" placeholder="Course {{number}}"/>
+	</div>
+
+	<div class="courseRating">
+		<div class="slider"></div>
+	</div>
+</div>
+{% endfor %}
+{% endmacro %}

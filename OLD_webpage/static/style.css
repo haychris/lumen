@@ -1,0 +1,169 @@
+body {
+  font-family: Tahoma, Geneva, sans-serif; 
+  background-image: url("../img/bkgd.jpg");
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.projectTitleMain {
+//  background-color: DodgerBlue;
+  overflow: hidden;
+  margin-top: 10%;
+  margin-left: 35%;
+  margin-right: 35%;
+}
+
+.projectTitleSmall {
+//  background-color: DodgerBlue;
+  overflow:hidden;
+  margin-top: 1%;
+  margin-left: 42%;
+  margin-right: 42%;
+}
+
+#projectNameMain {
+  font-size: 4em;
+  border: none;
+}
+
+#projectNameSmall {
+  font-size: 3em;
+  border: none;
+}
+
+#projectLogo {
+  float: left;
+  width: 75px;
+  height: 75px;
+}
+
+#projectDescription {
+  font-size: 1em;
+}
+
+.queryEntry {
+//  background-color: LimeGreen;
+  margin-top: 5%;
+}
+
+/**************
+ * Index page *
+ **************/
+#queryText {
+  font-size: 1.5em;
+}
+
+#queryFormMain {
+  margin: 0 40% 0 40%;
+}
+
+.courseHistOption {
+//  background-color: tomato;
+  margin-top: 7%;
+}
+
+#courseHistText {
+  font-size: 1.5em;
+}
+
+#courseHistButton {
+  font-size: 1em;
+  margin: 0 42% 0 42%;
+  padding: 10px 0 10px 0;
+  background-color: red;
+}
+
+/*****************************
+ * Course history input page *
+ *****************************/
+#yearInput {
+  margin-top: 1%;
+  background-color: LimeGreen;
+  font-size: 1.5em;
+  line-height: 50px;
+  vertical-align: middle;
+}
+
+#freshman {
+  background-color: DarkOrchid;
+  width: 200px;
+  height: 50px;
+  display: inline-block;
+}
+
+#sophomore {
+  background-color: Gold;
+  width: 200px;
+  height: 50px;
+  display: inline-block;
+}
+
+#junior {
+  background-color: Tan;
+  width: 200px;
+  height: 50px;
+  display: inline-block;
+}
+
+#courseHistExplain {
+  margin-top: 1%;
+}
+
+#courseHistInput {
+  margin-top: 1%;
+}
+
+#saveCourseHistButton {
+  background-color: tomato;
+}
+
+
+/******************************
+ * Course history result page *
+ ******************************/
+
+/*********************
+ * Query result page *
+**********************/
+.queryEntry {
+//  background-color: LimeGreen;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+#queryForm {
+  margin: 0 40% 0 40%;
+}
+
+.result {
+  margin: 5px auto 0 auto;
+  width: 600px;
+  height: 150px;
+  background-color: tomato;
+}
+
+#classInfo {
+  width: 200px;
+  float: left;
+  display:inline-block;
+}
+
+#evaluation {
+  width: 400px;
+  float: right;
+  display:inline-block;
+}
+
+#loadMoreButton {
+  font-size: 1em;
+  margin: 10px 45% 0 45%;
+  padding: 10px 0 10px 0;
+  background-color: blue;
+}
