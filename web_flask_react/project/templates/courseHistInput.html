@@ -4,6 +4,9 @@
 {% block content %}
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+<script src="{{ url_for('static', filename='scripts/jquery-ui.min.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/jQueryUIScripts.js') }}"></script>
+
 <div id="courseHistExplain">
   To help us give you personalized recommendations, we need to know which courses you've liked so far!<br><br>
   What classes have you taken, and how would you rate them?
@@ -72,6 +75,7 @@
   </div>
 
 <!-- Other Buttons ************************************************************************-->
+
   <div id="addSemester"></div>
 
   <div>
@@ -98,6 +102,10 @@
 
   <div id="getRecommendationsButton" onclick="location.href='recommend'">
     Explore >
+  </div>
+
+  <div id="testCookie" onClick="saveToCookie()">
+  GEN COOKIE
   </div>
 </div>
 {% endblock content %}
