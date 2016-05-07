@@ -11,7 +11,12 @@ var gulp = require('gulp'),
 // tasks
 
 gulp.task('transform', function () {
-  return gulp.src('./project/static/scripts/jsx/main.js')
+  gulp.src('./project/static/scripts/jsx/indexJSX.js')
+    .pipe(browserify({transform: ['reactify']}))
+    .pipe(gulp.dest('./project/static/scripts/js'))
+    .pipe(size());
+
+  return gulp.src('./project/static/scripts/jsx/courseHistInputJSX.js')
     .pipe(browserify({transform: ['reactify']}))
     .pipe(gulp.dest('./project/static/scripts/js'))
     .pipe(size());
@@ -32,6 +37,6 @@ gulp.task('clean', function () {
 
 gulp.task('default', ['clean'], function() {
   gulp.start('transform');
-  gulp.start('transform_results');
-  gulp.watch('./project/static/scripts/jsx/main.js', ['transform']);
+  gulp.watch('./project/static/scripts/jsx/courseHistInputJSX.js', ['transform']);
+  gulp.watch('./project/static/scripts/jsx/indexJSX.js', ['transform']);
 });
