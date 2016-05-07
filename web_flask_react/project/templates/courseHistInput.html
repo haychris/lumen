@@ -4,8 +4,6 @@
 {% block content %}
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
-<script src="{{ url_for('static', filename='scripts/jquery-ui.min.js') }}"></script>
-<script src="{{ url_for('static', filename='scripts/jQueryUIScripts.js') }}"></script>
 
 <div id="courseHistExplain">
   To help us give you personalized recommendations, we need to know which courses you've liked so far!<br><br>
@@ -77,6 +75,7 @@
 <!-- Other Buttons ************************************************************************-->
 
   <div id="addSemester"></div>
+  <div id="deleteSemester" style="display:none"></div>
 
   <div>
     What is your major?
@@ -99,13 +98,12 @@
       </select>
     </form>
   </div>
-
-  <div id="getRecommendationsButton" onclick="location.href='recommend'">
-    Explore >
-  </div>
-
-  <div id="testCookie" onClick="saveToCookie()">
-  GEN COOKIE
-  </div>
 </div>
+
+<div id="getRecommendationsButton" class="getRecommendationsButtonStyle"></div>
+
+<script src="{{ url_for('static', filename='scripts/jquery-ui.min.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/jQueryUIScripts.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/js/courseHistInputJSX.js') }}"></script>
+
 {% endblock content %}

@@ -1,29 +1,62 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/***********************************************
- * Adds a semester div to courseHistInput.html *
- * Disables itself after being clicked twice   *
- ***********************************************/
+var semesterCount = 0;
+
+/**************************************************
+ * Reveals a semester div on courseHistInput.html *
+ * Disables itself after being clicked twice      *
+ **************************************************/
 var AddSemester = React.createClass({displayName: "AddSemester",
-  getInitialState: function() {
-    return{clickCount: 0};
-  },
   appendSemester: function(event) {
-    this.setState(function(previousState, currentProps) {
-      return {clickCount: previousState.clickCount + 1};
-    });
-
-    if (this.state.clickCount == 0)
+    if (semesterCount == 0) {
       document.getElementById('sophomoreYear').setAttribute("style", "");
-    else if (this.state.clickCount == 1)
+      document.getElementById('deleteSemester').setAttribute("style", "");
+    }
+    else if (semesterCount == 1) {
       document.getElementById('juniorYear').setAttribute("style", "");
+      document.getElementById('addSemester').setAttribute("style", "display: none");
+    }
 
-    else return;
+    semesterCount++;
+
+    return;
   },
   render: function() {
-    if (this.state.clickCount > 1)
-      return null;
     return (
       React.createElement("div", {id: "addSemesterButton", onClick: this.appendSemester}, "ADD SEMESTER")
+    );
+  }
+});
+
+/************************************************
+ * Hides a semester div on courseHistInput.html *
+ * Disables itself after being clicked twice    *
+ ************************************************/
+var DeleteSemester = React.createClass({displayName: "DeleteSemester",
+  removeSemester: function() {
+    if (semesterCount == 2) {
+      document.getElementById('juniorYear').setAttribute("style", "display: none");
+      document.getElementById('addSemester').setAttribute("style", "");
+
+      var deletedCourses = document.getElementById('juniorYear').getElementsByClassName("courseName");
+      for (var i = 0; i < deletedCourses.length; i++)
+        deletedCourses[i].value = "";
+    }
+    else if (semesterCount == 1) {
+      document.getElementById('sophomoreYear').setAttribute("style", "display: none");
+      document.getElementById('deleteSemester').setAttribute("style", "display: none");
+
+      var deletedCourses = document.getElementById('sophomoreYear').getElementsByClassName("courseName");
+      for (var i = 0; i < deletedCourses.length; i++)
+        deletedCourses[i].value = "";
+    }
+
+    semesterCount--;
+
+    return;
+  },
+  render: function() {
+    return (
+      React.createElement("div", {id: "deleteSemesterButton", onClick: this.removeSemester}, "DELETE SEMESTER")
     );
   }
 });
@@ -109,7 +142,7 @@ var AddCourseFS = React.createClass({displayName: "AddCourseFS",
     });
     var entry = genCourseEntry("FS", this.state.clickCount);
     document.getElementById('appendFS').appendChild(entry);
-    showSlider();
+    showSlider("FS"+this.state.clickCount+"S");
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -136,7 +169,7 @@ var AddCourseSF = React.createClass({displayName: "AddCourseSF",
     });
     var entry = genCourseEntry("SF", this.state.clickCount);
     document.getElementById('appendSF').appendChild(entry);
-    showSlider();
+    showSlider("SF"+this.state.clickCount+"S");
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -163,7 +196,7 @@ var AddCourseSS = React.createClass({displayName: "AddCourseSS",
     });
     var entry = genCourseEntry("SS", this.state.clickCount);
     document.getElementById('appendSS').appendChild(entry);
-    showSlider();
+    showSlider("SS"+this.state.clickCount+"S");
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -190,7 +223,7 @@ var AddCourseJF = React.createClass({displayName: "AddCourseJF",
     });
     var entry = genCourseEntry("JF", this.state.clickCount);
     document.getElementById('appendJF').appendChild(entry);
-    showSlider();
+    showSlider("JF"+this.state.clickCount+"S");
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -217,7 +250,7 @@ var AddCourseJS = React.createClass({displayName: "AddCourseJS",
     });
     var entry = genCourseEntry("JS", this.state.clickCount);
     document.getElementById('appendJS').appendChild(entry);
-    showSlider();
+    showSlider("JS"+this.state.clickCount+"S");
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -230,12 +263,56 @@ var AddCourseJS = React.createClass({displayName: "AddCourseJS",
   }
 });
 
-ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemester'), showSlider);
+/**************************************************
+ * Skips the course input page if a cookie exists *
+ **************************************************/
+var GetRecommendations = React.createClass({displayName: "GetRecommendations",
+  processCourseData: function() {
+    saveToCookie();
+    window.location= 'recommend';
+    return;
+  },
+  render: function() {
+    return (
+      React.createElement("div", {id: "getRecommendationsButtonStyle", onClick: this.processCourseData}, 
+        "Explore"
+      )
+    );
+  }
+});
+
+/*******************************************
+ * Parses the cookie and loads course info *
+  BUGGY
+  CAN'T LOAD MORE THAN INITAL FOUR COURSES
+ *******************************************/
+/*function getCookie() {
+  cookie = document.cookie;
+
+  if (cookie != "") {
+    var cookieData = cookie.split("=")[1].split("|");
+
+    for (var i = 0; i < cookieData.length; i++) {
+      var courseNameID = cookieData[i].split(",")[0].split(":")[0];
+      var courseRatingID = courseNameID.substring(0,3) + "S";
+      var courseName = cookieData[i].split(",")[0].split(":")[1];
+      var courseRating = cookieData[i].split(",")[1].split(":")[1];
+
+      document.getElementById(courseNameID).value = courseName;
+    }
+  }
+}
+getCookie();
+*/
+
+ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemester'));
+ReactDOM.render(React.createElement(DeleteSemester, null), document.getElementById('deleteSemester'));
 ReactDOM.render(React.createElement(AddCourseFF, null), document.getElementById('FFAddButton'));
 ReactDOM.render(React.createElement(AddCourseFS, null), document.getElementById('FSAddButton'));
 ReactDOM.render(React.createElement(AddCourseSF, null), document.getElementById('SFAddButton'));
 ReactDOM.render(React.createElement(AddCourseSS, null), document.getElementById('SSAddButton'));
 ReactDOM.render(React.createElement(AddCourseJF, null), document.getElementById('JFAddButton'));
 ReactDOM.render(React.createElement(AddCourseJS, null), document.getElementById('JSAddButton'));
+ReactDOM.render(React.createElement(GetRecommendations, null), document.getElementById('getRecommendationsButton'));
 
 },{}]},{},[1])

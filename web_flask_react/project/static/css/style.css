@@ -72,7 +72,7 @@ img {
   font-size: 1.5em;
 }
 
-#courseHistButton {
+#courseHistButtonStyle {
   font-size: 1em;
   margin: 0 42% 0 42%;
   padding: 10px 0 10px 0;
@@ -158,7 +158,16 @@ img {
   padding: 10px 0 10px 0;
 }
 
-#getRecommendationsButton {
+#deleteSemesterButton {
+  background-color: LimeGreen;
+  font-size: 1.5em;
+  height: 50px;
+  width: 200px;
+  margin: 0 auto 0 auto;
+  padding: 10px 0 10px 0;
+}
+
+.getRecommendationsButtonStyle {
   background-color: tomato;
   font-size: 1.5em;
   height: 50px;
