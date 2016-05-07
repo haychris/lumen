@@ -33,29 +33,38 @@ Returns a courseEntry div equivalent to:
 
   <div class="courseEntry">
     <div class="courseName">
-        <input class="courseName" type="text" placeholder="Course {{number}}"/>
+        <input id="FF1N" class="courseName" type="text" placeholder="Course {{number}}"/>
     </div>
 
     <div class="courseRating">
-      <div class="slider"></div>
+      <div id="FF1S" class="slider"></div>
     </div>
+    
+    <div id="FF1R" class="showRating">OK</div>
   </div>
  *****************************************************************************/
-function genCourseEntry(count) {
+function genCourseEntry(semester, count) {
   var entry = document.createElement("div");
   entry.setAttribute("class", "courseEntry");
   var courseName = entry.appendChild(document.createElement("div"));
   var courseRating = entry.appendChild(document.createElement("div"));
+  var showRating = entry.appendChild(document.createElement("div"));
 
   courseName.setAttribute("class", "courseName");
   var inputField = courseName.appendChild(document.createElement("input"));
   inputField.setAttribute("class", "courseName");
   inputField.type = "text";
   inputField.placeholder = "Course " + count;
+  inputField.id = semester + count + "N";
 
   courseRating.setAttribute("class", "courseRating");
-  courseRating.appendChild(document.createElement("div"));
-  courseRating.firstChild.setAttribute("class", "slider");
+  var slider = courseRating.appendChild(document.createElement("div"));
+  slider.setAttribute("class", "slider");
+  slider.id = semester + count + "S";
+
+  showRating.id = semester + count + "R";
+  showRating.setAttribute("class", "showRating");
+  showRating.innerHTML = "OK";
   return entry;
 }
 
@@ -71,9 +80,9 @@ var AddCourseFF = React.createClass({displayName: "AddCourseFF",
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry(this.state.clickCount);
+    var entry = genCourseEntry("FF", this.state.clickCount);
     document.getElementById('appendFF').appendChild(entry);
-    showSlider();
+    showSlider("FF"+this.state.clickCount+"S");
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -98,7 +107,7 @@ var AddCourseFS = React.createClass({displayName: "AddCourseFS",
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry(this.state.clickCount);
+    var entry = genCourseEntry("FS", this.state.clickCount);
     document.getElementById('appendFS').appendChild(entry);
     showSlider();
   },
@@ -125,7 +134,7 @@ var AddCourseSF = React.createClass({displayName: "AddCourseSF",
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry(this.state.clickCount);
+    var entry = genCourseEntry("SF", this.state.clickCount);
     document.getElementById('appendSF').appendChild(entry);
     showSlider();
   },
@@ -152,7 +161,7 @@ var AddCourseSS = React.createClass({displayName: "AddCourseSS",
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry(this.state.clickCount);
+    var entry = genCourseEntry("SS", this.state.clickCount);
     document.getElementById('appendSS').appendChild(entry);
     showSlider();
   },
@@ -179,7 +188,7 @@ var AddCourseJF = React.createClass({displayName: "AddCourseJF",
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry(this.state.clickCount);
+    var entry = genCourseEntry("JF", this.state.clickCount);
     document.getElementById('appendJF').appendChild(entry);
     showSlider();
   },
@@ -206,7 +215,7 @@ var AddCourseJS = React.createClass({displayName: "AddCourseJS",
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry(this.state.clickCount);
+    var entry = genCourseEntry("JS", this.state.clickCount);
     document.getElementById('appendJS').appendChild(entry);
     showSlider();
   },
@@ -220,12 +229,6 @@ var AddCourseJS = React.createClass({displayName: "AddCourseJS",
     );
   }
 });
-
-function saveToCookie() {
-  allCourseNames = document.getElementsByTagName('input');
-  for (var i = 0; i < allCourseNames.length; i++)
-    console.log(allCourseNames[i]);
-}
 
 ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemester'), showSlider);
 ReactDOM.render(React.createElement(AddCourseFF, null), document.getElementById('FFAddButton'));
