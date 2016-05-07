@@ -54,12 +54,12 @@ var AddCourseFF = React.createClass({displayName: "AddCourseFF",
       return {clickCount: previousState.clickCount + 1};
     });
     var entry = genCourseEntry(this.state.clickCount);
-    document.getElementById('appendFroshFall').appendChild(entry);
+    document.getElementById('appendFF').appendChild(entry);
     showSlider();
   },
   render: function () {
     if (this.state.clickCount > 7) {
-      document.getElementById('froshFallAddButton').removeAttribute("class");
+      document.getElementById('FFAddButton').removeAttribute("class");
       return null;
     }
     else return (
@@ -77,12 +77,14 @@ var AddCourseFS = React.createClass({displayName: "AddCourseFS",
       return {clickCount: previousState.clickCount + 1};
     });
     var entry = genCourseEntry(this.state.clickCount);
-    document.getElementById('appendFroshSpring').appendChild(entry);
+    document.getElementById('appendFS').appendChild(entry);
     showSlider();
   },
   render: function () {
-    if (this.state.clickCount > 7)
+    if (this.state.clickCount > 7) {
+      document.getElementById('FSAddButton').removeAttribute("class");
       return null;
+    }
     else return (
       React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
     );
@@ -98,12 +100,14 @@ var AddCourseSF = React.createClass({displayName: "AddCourseSF",
       return {clickCount: previousState.clickCount + 1};
     });
     var entry = genCourseEntry(this.state.clickCount);
-    document.getElementById('appendSophFall').appendChild(entry);
+    document.getElementById('appendSF').appendChild(entry);
     showSlider();
   },
   render: function () {
-    if (this.state.clickCount > 7)
+    if (this.state.clickCount > 7) {
+      document.getElementById('SFAddButton').removeAttribute("class");
       return null;
+    }
     else return (
       React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
     );
@@ -119,12 +123,14 @@ var AddCourseSS = React.createClass({displayName: "AddCourseSS",
       return {clickCount: previousState.clickCount + 1};
     });
     var entry = genCourseEntry(this.state.clickCount);
-    document.getElementById('appendSophSpring').appendChild(entry);
+    document.getElementById('appendSS').appendChild(entry);
     showSlider();
   },
   render: function () {
-    if (this.state.clickCount > 7)
+    if (this.state.clickCount > 7) {
+      document.getElementById('SSAddButton').removeAttribute("class");
       return null;
+    }
     else return (
       React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
     );
@@ -140,12 +146,14 @@ var AddCourseJF = React.createClass({displayName: "AddCourseJF",
       return {clickCount: previousState.clickCount + 1};
     });
     var entry = genCourseEntry(this.state.clickCount);
-    document.getElementById('appendJuniorFall').appendChild(entry);
+    document.getElementById('appendJF').appendChild(entry);
     showSlider();
   },
   render: function () {
-    if (this.state.clickCount > 7)
+    if (this.state.clickCount > 7) {
+      document.getElementById('JFAddButton').removeAttribute("class");
       return null;
+    }
     else return (
       React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
     );
@@ -161,12 +169,14 @@ var AddCourseJS = React.createClass({displayName: "AddCourseJS",
       return {clickCount: previousState.clickCount + 1};
     });
     var entry = genCourseEntry(this.state.clickCount);
-    document.getElementById('appendJuniorSpring').appendChild(entry);
+    document.getElementById('appendJS').appendChild(entry);
     showSlider();
   },
   render: function () {
-    if (this.state.clickCount > 7)
+    if (this.state.clickCount > 7) {
+      document.getElementById('JSAddButton').removeAttribute("class");
       return null;
+    }
     else return (
       React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
     );
@@ -174,11 +184,11 @@ var AddCourseJS = React.createClass({displayName: "AddCourseJS",
 });
 
 ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemesterButton'), showSlider);
-ReactDOM.render(React.createElement(AddCourseFF, null), document.getElementById('froshFallAddButton'));
-ReactDOM.render(React.createElement(AddCourseFS, null), document.getElementById('froshSpringAddButton'));
-ReactDOM.render(React.createElement(AddCourseSF, null), document.getElementById('sophFallAddButton'));
-ReactDOM.render(React.createElement(AddCourseSS, null), document.getElementById('sophSpringAddButton'));
-ReactDOM.render(React.createElement(AddCourseJF, null), document.getElementById('juniorFallAddButton'));
-ReactDOM.render(React.createElement(AddCourseJS, null), document.getElementById('juniorSpringAddButton'));
+ReactDOM.render(React.createElement(AddCourseFF, null), document.getElementById('FFAddButton'));
+ReactDOM.render(React.createElement(AddCourseFS, null), document.getElementById('FSAddButton'));
+ReactDOM.render(React.createElement(AddCourseSF, null), document.getElementById('SFAddButton'));
+ReactDOM.render(React.createElement(AddCourseSS, null), document.getElementById('SSAddButton'));
+ReactDOM.render(React.createElement(AddCourseJF, null), document.getElementById('JFAddButton'));
+ReactDOM.render(React.createElement(AddCourseJS, null), document.getElementById('JSAddButton'));
 
 },{}]},{},[1])
