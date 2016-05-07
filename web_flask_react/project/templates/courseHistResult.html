@@ -10,12 +10,12 @@
       <div class="result" onclick="showDiv{{loop.index}}()">
 
         <div style="width: 30%; height:100%;float:left; background:white">
-          <div style="height: 20%; position:relative; margin-top:5px">
-          <font size="4">
-            {{result.get_course_listings()}}
-          </font>
+          <div style="height: 30%; position:relative; padding-top:10px">
+            <font size="4">
+              {{result.get_course_listings()}}
+            </font>
           </div>
-          <div style="height: 80%; position:relative">
+          <div style="height: 70%; position:relative">
             <div style="height: 75%; display:block">
               {{result.get_title()}}
             </div>
@@ -28,13 +28,13 @@
         <div style="width:70%;height:100%;float: left">
           <div style="height: 30%; display:block">
            <div id="starRating_{{loop.index}}" style="display:inline"></div>
-           <div style="float:right; margin-right:10px; margin-top:5px">
+           <div style="float:right; margin-right:10px; padding-top:10px">
               <font size="4">
-              {{result.get_most_recent_overall_rating()}}
+              {{result.get_default_term_text()}}: {{result.get_most_recent_overall_rating()}}
               </font>
            </div>
           </div>
-          <div style="height: 70%; display:block">
+          <div style="height: 70%; display:block; padding-left:10px; padding-right:10px">
            {{result.get_comments()[0]}}
           </div>
         </div>
