@@ -1,4 +1,8 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/***********************************************
+ * Adds a semester div to courseHistInput.html *
+ * Disables itself after being clicked twice   *
+ ***********************************************/
 var AddSemester = React.createClass({displayName: "AddSemester",
   getInitialState: function() {
     return{clickCount: 0};
@@ -16,15 +20,27 @@ var AddSemester = React.createClass({displayName: "AddSemester",
     else return;
   },
   render: function() {
-    if (this.state.clickCount > 1) {
+    if (this.state.clickCount > 1)
       return null;
-    }
     return (
-      React.createElement("div", {id: "addSemesterButtonStyle", onClick: this.appendSemester}, "ADD SEMESTER")
+      React.createElement("div", {id: "addSemesterButton", onClick: this.appendSemester}, "ADD SEMESTER")
     );
   }
 });
 
+/*****************************************************************************
+Returns a courseEntry div equivalent to:
+
+  <div class="courseEntry">
+    <div class="courseName">
+        <input class="courseName" type="text" placeholder="Course {{number}}"/>
+    </div>
+
+    <div class="courseRating">
+      <div class="slider"></div>
+    </div>
+  </div>
+ *****************************************************************************/
 function genCourseEntry(count) {
   var entry = document.createElement("div");
   entry.setAttribute("class", "courseEntry");
@@ -32,9 +48,7 @@ function genCourseEntry(count) {
   var courseRating = entry.appendChild(document.createElement("div"));
 
   courseName.setAttribute("class", "courseName");
-  courseName.appendChild(document.createElement("form"));
-  courseName.firstChild.action = "query";
-  var inputField = courseName.firstChild.appendChild(document.createElement("input"));
+  var inputField = courseName.appendChild(document.createElement("input"));
   inputField.setAttribute("class", "courseName");
   inputField.type = "text";
   inputField.placeholder = "Course " + count;
@@ -45,6 +59,10 @@ function genCourseEntry(count) {
   return entry;
 }
 
+/***************************************************************************
+ * Adds a course entry field with ratings slider to FRESHMAN FALL semester *
+ * Button disabled after there are 7 courses                               *
+ ***************************************************************************/
 var AddCourseFF = React.createClass({displayName: "AddCourseFF",
   getInitialState: function() {
     return{clickCount: 5};
@@ -68,6 +86,10 @@ var AddCourseFF = React.createClass({displayName: "AddCourseFF",
   }
 });
 
+/*****************************************************************************
+ * Adds a course entry field with ratings slider to FRESHMAN SPRING semester *
+ * Button disabled after there are 7 courses                                 *
+ *****************************************************************************/
 var AddCourseFS = React.createClass({displayName: "AddCourseFS",
   getInitialState: function() {
     return{clickCount: 5};
@@ -91,6 +113,10 @@ var AddCourseFS = React.createClass({displayName: "AddCourseFS",
   }
 });
 
+/****************************************************************************
+ * Adds a course entry field with ratings slider to SOPHOMORE FALL semester *
+ * Button disabled after there are 7 courses                                *
+ ****************************************************************************/
 var AddCourseSF = React.createClass({displayName: "AddCourseSF",
   getInitialState: function() {
     return{clickCount: 5};
@@ -114,6 +140,10 @@ var AddCourseSF = React.createClass({displayName: "AddCourseSF",
   }
 });
 
+/******************************************************************************
+ * Adds a course entry field with ratings slider to SOPHOMORE SPRING semester *
+ * Button disabled after there are 7 courses                                  *
+ ******************************************************************************/
 var AddCourseSS = React.createClass({displayName: "AddCourseSS",
   getInitialState: function() {
     return{clickCount: 5};
@@ -137,6 +167,10 @@ var AddCourseSS = React.createClass({displayName: "AddCourseSS",
   }
 });
 
+/**************************************************************************
+ * Adds a course entry field with ratings slider to  JUNIOR FALL semester *
+ * Button disabled after there are 7 courses                              *
+ **************************************************************************/
 var AddCourseJF = React.createClass({displayName: "AddCourseJF",
   getInitialState: function() {
     return{clickCount: 5};
@@ -160,6 +194,10 @@ var AddCourseJF = React.createClass({displayName: "AddCourseJF",
   }
 });
 
+/***************************************************************************
+ * Adds a course entry field with ratings slider to JUNIOR SPRING semester *
+ * Button disabled after there are 7 courses                               *
+ ***************************************************************************/
 var AddCourseJS = React.createClass({displayName: "AddCourseJS",
   getInitialState: function() {
     return{clickCount: 5};
@@ -183,7 +221,13 @@ var AddCourseJS = React.createClass({displayName: "AddCourseJS",
   }
 });
 
-ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemesterButton'), showSlider);
+function saveToCookie() {
+  allCourseNames = document.getElementsByTagName('input');
+  for (var i = 0; i < allCourseNames.length; i++)
+    console.log(allCourseNames[i]);
+}
+
+ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemester'), showSlider);
 ReactDOM.render(React.createElement(AddCourseFF, null), document.getElementById('FFAddButton'));
 ReactDOM.render(React.createElement(AddCourseFS, null), document.getElementById('FSAddButton'));
 ReactDOM.render(React.createElement(AddCourseSF, null), document.getElementById('SFAddButton'));

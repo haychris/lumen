@@ -1,3 +1,7 @@
+/***********************************************
+ * Adds a semester div to courseHistInput.html *
+ * Disables itself after being clicked twice   *
+ ***********************************************/
 var AddSemester = React.createClass({
   getInitialState: function() {
     return{clickCount: 0};
@@ -15,15 +19,27 @@ var AddSemester = React.createClass({
     else return;
   },
   render: function() {
-    if (this.state.clickCount > 1) {
+    if (this.state.clickCount > 1)
       return null;
-    }
     return (
-      <div id="addSemesterButtonStyle" onClick={this.appendSemester}>ADD SEMESTER</div>
+      <div id="addSemesterButton" onClick={this.appendSemester}>ADD SEMESTER</div>
     );
   }
 });
 
+/*****************************************************************************
+Returns a courseEntry div equivalent to:
+
+  <div class="courseEntry">
+    <div class="courseName">
+        <input class="courseName" type="text" placeholder="Course {{number}}"/>
+    </div>
+
+    <div class="courseRating">
+      <div class="slider"></div>
+    </div>
+  </div>
+ *****************************************************************************/
 function genCourseEntry(count) {
   var entry = document.createElement("div");
   entry.setAttribute("class", "courseEntry");
@@ -31,9 +47,7 @@ function genCourseEntry(count) {
   var courseRating = entry.appendChild(document.createElement("div"));
 
   courseName.setAttribute("class", "courseName");
-  courseName.appendChild(document.createElement("form"));
-  courseName.firstChild.action = "query";
-  var inputField = courseName.firstChild.appendChild(document.createElement("input"));
+  var inputField = courseName.appendChild(document.createElement("input"));
   inputField.setAttribute("class", "courseName");
   inputField.type = "text";
   inputField.placeholder = "Course " + count;
@@ -44,6 +58,10 @@ function genCourseEntry(count) {
   return entry;
 }
 
+/***************************************************************************
+ * Adds a course entry field with ratings slider to FRESHMAN FALL semester *
+ * Button disabled after there are 7 courses                               *
+ ***************************************************************************/
 var AddCourseFF = React.createClass({
   getInitialState: function() {
     return{clickCount: 5};
@@ -67,6 +85,10 @@ var AddCourseFF = React.createClass({
   }
 });
 
+/*****************************************************************************
+ * Adds a course entry field with ratings slider to FRESHMAN SPRING semester *
+ * Button disabled after there are 7 courses                                 *
+ *****************************************************************************/
 var AddCourseFS = React.createClass({
   getInitialState: function() {
     return{clickCount: 5};
@@ -90,6 +112,10 @@ var AddCourseFS = React.createClass({
   }
 });
 
+/****************************************************************************
+ * Adds a course entry field with ratings slider to SOPHOMORE FALL semester *
+ * Button disabled after there are 7 courses                                *
+ ****************************************************************************/
 var AddCourseSF = React.createClass({
   getInitialState: function() {
     return{clickCount: 5};
@@ -113,6 +139,10 @@ var AddCourseSF = React.createClass({
   }
 });
 
+/******************************************************************************
+ * Adds a course entry field with ratings slider to SOPHOMORE SPRING semester *
+ * Button disabled after there are 7 courses                                  *
+ ******************************************************************************/
 var AddCourseSS = React.createClass({
   getInitialState: function() {
     return{clickCount: 5};
@@ -136,6 +166,10 @@ var AddCourseSS = React.createClass({
   }
 });
 
+/**************************************************************************
+ * Adds a course entry field with ratings slider to  JUNIOR FALL semester *
+ * Button disabled after there are 7 courses                              *
+ **************************************************************************/
 var AddCourseJF = React.createClass({
   getInitialState: function() {
     return{clickCount: 5};
@@ -159,6 +193,10 @@ var AddCourseJF = React.createClass({
   }
 });
 
+/***************************************************************************
+ * Adds a course entry field with ratings slider to JUNIOR SPRING semester *
+ * Button disabled after there are 7 courses                               *
+ ***************************************************************************/
 var AddCourseJS = React.createClass({
   getInitialState: function() {
     return{clickCount: 5};
@@ -182,7 +220,13 @@ var AddCourseJS = React.createClass({
   }
 });
 
-ReactDOM.render(<AddSemester />, document.getElementById('addSemesterButton'), showSlider);
+function saveToCookie() {
+  allCourseNames = document.getElementsByTagName('input');
+  for (var i = 0; i < allCourseNames.length; i++)
+    console.log(allCourseNames[i]);
+}
+
+ReactDOM.render(<AddSemester />, document.getElementById('addSemester'), showSlider);
 ReactDOM.render(<AddCourseFF />, document.getElementById('FFAddButton'));
 ReactDOM.render(<AddCourseFS />, document.getElementById('FSAddButton'));
 ReactDOM.render(<AddCourseSF />, document.getElementById('SFAddButton'));

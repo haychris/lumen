@@ -82,38 +82,6 @@ img {
 /*****************************
  * Course history input page *
  *****************************/
-#yearInput {
-  margin-top: 10px;
-  background-color: LimeGreen;
-  font-size: 1.5em;
-  line-height: 50px;
-  vertical-align: middle;
-}
-
-#freshman {
-  background-color: DarkOrchid;
-  border: 1px solid black;
-  width: 200px;
-  height: 50px;
-  display: inline-block;
-}
-
-#sophomore {
-  background-color: Gold;
-  border: 1px solid black;
-  width: 200px;
-  height: 50px;
-  display: inline-block;
-}
-
-#junior {
-  background-color: Tan;
-  border: 1px solid black;
-  width: 200px;
-  height: 50px;
-  display: inline-block;
-}
-
 #courseHistExplain {
   margin-top: 10px;
   font-size: 1.5em;
@@ -123,10 +91,6 @@ img {
   margin-top: 10px;
   min-height: 100%;
   position: relative;
-}
-
-.semesterTitle {
-  font-size: 1.5em;
 }
 
 .fallSemester {
@@ -141,6 +105,10 @@ img {
   float: right;
   width: 50%;
   margin-top: 10px;
+}
+
+.semesterTitle {
+  font-size: 1.5em;
 }
 
 .yearStyle {
@@ -177,7 +145,7 @@ img {
   clear: both;
 }
 
-#addSemesterButtonStyle {
+#addSemesterButton {
   background-color: gray;
   font-size: 1.5em;
   height: 50px;
