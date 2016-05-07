@@ -7,8 +7,8 @@ import re
 import json
 
 
-TERM_CODES = [1122,1124,1134,1142,1144,1154, 1162, 1164]
-TERM_CODES_NAMES = ['Fall_11', 'Spring_12', 'Spring_13','Fall_13', 'Spring_14','Spring_15', 'Fall_15', 'Spring_16']
+TERM_CODES = [1122,1124,1134,1142,1144,1152, 1154, 1162, 1164]
+TERM_CODES_NAMES = ['Fall_11', 'Spring_12', 'Spring_13','Fall_13', 'Spring_14', 'Fall_14', 'Spring_15', 'Fall_15', 'Spring_16']
 TERM_CODE_DICT = {code:name for code, name in zip(TERM_CODES, TERM_CODES_NAMES)}
 CURRENT_TERM_CODE = TERM_CODES[-1]
 

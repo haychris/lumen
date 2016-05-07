@@ -23,7 +23,7 @@ def index():
 def process_query():
 	query = request.args.get('query')
 	print 'Query: ', query
-	results = searcher.search(query.split())
+	results = searcher.search(query.lower().split())
 	return render_template('queryResult.html', results=results[:max_results])
 
 @app.route('/userratings')
@@ -32,6 +32,7 @@ def get_user_ratings():
 
 @app.route('/recommend')
 def process_recommendations():
+	# import pdb; pdb.set_trace()
 	recommendations = recommender.recommend(['ORF350', 'ORF245'], [5,5])
 	courses = [course_renderer.get_course(course_id) for course_id, rating in recommendations[:max_results]]
 	return render_template('courseHistResult.html', results=courses)

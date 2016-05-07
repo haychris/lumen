@@ -7,7 +7,7 @@
     </div>
 
     {% for result in results %}
-      <div class="result" onclick="showDiv{{loop.index}}()">
+      <div class="result" onclick="showDiv{{loop.index}}()" style="cursor: pointer">
 
         <div style="width: 30%; height:100%;float:left; background:white">
           <div style="height: 30%; position:relative; padding-top:10px">
@@ -52,7 +52,7 @@
           document.getElementById("starRating_{{loop.index}}").innerHTML = text; 
       </script>
 
-      <div class="result" id="result_hidden_{{loop.index}}" style="display:none; margin-top:0; background:white">
+      <div class="result" id="result_hidden_{{loop.index}}" style="display:none; margin-top:0; background:white; height:150px">
         <div align="left" style="display:none">
           Lectures: {{result.get_all_ratings()[0]}}
         </div>
@@ -68,8 +68,13 @@
         <div align="left" style="display:none">
           Overall Quality of the Course: {{result.get_all_ratings()[4]}}
         </div>
-        <div id="chart_{{loop.index}}">
+        <div id="chart_{{loop.index}}"></div>
+<!--
+        <div id="term_tags"> 
+          <div style="display:inline">Fall '14</div>
+          <div style="display:inline">Fall '15</div>
         </div>
+-->
       </div>
 
       <script type="text/javascript">
