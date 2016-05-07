@@ -32,8 +32,16 @@ def get_user_ratings():
 
 @app.route('/recommend')
 def process_recommendations():
-	# import pdb; pdb.set_trace()
-	recommendations = recommender.recommend(['ORF350', 'ORF245'], [5,5])
+	courses = []
+	ratings = []
+	for entry in request.cookies['CourseInfo'].split('|'):
+		split = entry.split(':')
+		courses.append(split[1].split(',')[0].replace(' ', '').upper())
+		ratings.append(int(split[-1]))
+	# import pdb; pdb.set_trace()	
+	print courses
+	print ratings
+	recommendations = recommender.recommend(courses, ratings)
 	courses = [course_renderer.get_course(course_id) for course_id, rating in recommendations[:max_results]]
 	return render_template('courseHistResult.html', results=courses)
 

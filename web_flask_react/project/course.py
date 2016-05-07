@@ -16,6 +16,8 @@ class Course(object):
 			if len(self.term_info_dict[term_id]['EVAL']) > 0:
 				self.default_term = term_id
 				break
+		else:
+			self.default_term = sorted(term_info_dict.keys())[-1]
 
 	def get_default_term_text(self):
 		return self.term_ids[self.default_term]
