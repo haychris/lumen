@@ -9,7 +9,7 @@ var InputCourseHist = React.createClass({displayName: "InputCourseHist",
   },
   render: function() {
     return (
-      React.createElement("div", {id: "courseHistButtonStyle", onClick: this.checkCookie}, "Explore Recommendations")
+      React.createElement("div", {id: "courseHistButtonStyle", onClick: this.checkCookie}, "Enlighten me")
     );
   }
 });

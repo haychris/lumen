@@ -8,7 +8,7 @@ var InputCourseHist = React.createClass({
   },
   render: function() {
     return (
-      <div id="courseHistButtonStyle" onClick={this.checkCookie}>Explore Recommendations</div>
+      <div id="courseHistButtonStyle" onClick={this.checkCookie}>Enlighten me</div>
     );
   }
 });
