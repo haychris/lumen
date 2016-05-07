@@ -7,6 +7,10 @@
     <!-- styles -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {packages: ['corechart']});
+</script>
   </head>
   <body style="background-image:url({{ url_for('static', filename='images/bkgd.jpg') }})">
     <div class="projectTitleSmall"  onclick="location.href='/'">

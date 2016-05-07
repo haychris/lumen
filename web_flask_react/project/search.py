@@ -7,8 +7,17 @@ class Searcher(object):
 		self.doc_course_id_list = self.course_doc_dict.keys()
 
 	def search(self, term_list, num_results=20):
-		results = self.tfidf_mat[:,self.word_dict[term_list[0]]]
-		for term in term_list[1:]:
-			results += self.tfidf_mat[:,self.word_dict[term]]
-		sorted_docs = np.argsort(results.toarray(), axis=0)[::-1]
-		return [self.doc_course_id_list[doc_num] for doc_num in sorted_docs[:num_results]]
+			# results = self.tfidf_mat[:,self.word_dict[term_list[0]]]
+		# import pdb; pdb.set_trace()
+		results = np.zeros((self.tfidf_mat.shape[0],1))
+		for term in term_list:
+			try:
+				results += self.tfidf_mat[:,self.word_dict[term]]
+			except KeyError:
+				continue
+		sorted_docs = np.argsort(results[np.nonzero(results)])
+		# import pdb; pdb.set_trace()
+		try:
+			return [self.doc_course_id_list[sorted_docs[0,-(i+1)]] for i in range(min(num_results, sorted_docs.shape[1]))]
+		except IndexError:
+			return []

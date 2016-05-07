@@ -17,6 +17,14 @@ gulp.task('transform', function () {
     .pipe(size());
 });
 
+gulp.task('transform_results', function () {
+  return gulp.src('./project/static/scripts/jsx/results.js')
+    .pipe(browserify({transform: ['reactify']}))
+    .pipe(gulp.dest('./project/static/scripts/js'))
+    .pipe(size());
+});
+
+
 gulp.task('clean', function () {
   return gulp.src(['./project/static/scripts/js'], {read: false})
     .pipe(clean());
@@ -24,5 +32,6 @@ gulp.task('clean', function () {
 
 gulp.task('default', ['clean'], function() {
   gulp.start('transform');
+  gulp.start('transform_results');
   gulp.watch('./project/static/scripts/jsx/main.js', ['transform']);
 });
