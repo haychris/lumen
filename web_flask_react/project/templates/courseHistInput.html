@@ -1,119 +1,78 @@
 {% extends "base.html" %}
+{% from "macros.html" import courseEntryArea %}
 
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
 <div id="courseHistExplain">
   To help us give you personalized recommendations, we need to know which courses you've liked so far!<br><br>
   What classes have you taken, and how would you rate them?
 </div>
 
-<!--<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-<script src="{{ url_for('static', filename='bower_components/jquery-ui.min.js') }}"></script>
-
-
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script>
-  $(function() {
-    $( "#slider" ).slider({
-      value:100,
-      min: 0,
-      max: 500,
-      step: 50,
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.value );
-      }
-    });
-    $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
-  });
-</script>
-<div id="slider"></div>
-<div>SLIDER HERE</div>
-<p>
-  <label for="amount">Donation amount ($50 increments):</label>
-  <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-</p>
--->
-
 <div id="courseHistInput">
+<!-- Freshman Year **************************************************************************-->
   <div id="freshmanYear" class="yearStyle">
     <div class="fallSemester">
       <span class="semesterTitle">Freshman Fall</span>
-      <form action="query">
-        {% for number in range(1,5) %}
-        <p><input type="text" placeholder="Course {{number}}"/></p>
-        {% endfor %}
-        <div id="appendFroshFall"></div>
-      </form>
-      <div id="froshFallAddButton"></div>
+
+      {{ courseEntryArea() }}
+      
+      <div id="appendFroshFall"></div>
+
+      <div id="froshFallAddButton" class="addCourseButtonStyle"></div>
     </div>
+
     <div class="springSemester">
       <span class="semesterTitle">Freshman Spring</span>
-      <form action="query">
-        {% for number in range(1,5) %}
-        <p><input type="text" placeholder="Course {{number}}"/></p>
-        {% endfor %}
-        <div id="appendFroshSpring"></div>
-      </form>
-      <div id="froshSpringAddButton"></div>
+
+      {{ courseEntryArea() }}
+
+      <div id="appendFroshSpring"></div>
+      <div id="froshSpringAddButton" class="addCourseButtonStyle"></div>
     </div>
   </div>
 
+<!-- Sophomore Year **************************************************************************-->
   <div id="sophomoreYear" class="yearStyle" style="display: none;">
     <div class="fallSemester">
       <span class="semesterTitle">Sophomore Fall</span>
-      <form action="query">
 
-        {% for number in range(1,5) %}
-        <p><input type="text" placeholder="Course {{number}}"/></p>
-        {% endfor %}
+      {{ courseEntryArea() }}
 
-        <div id="appendSophFall"></div>
-      </form>
-      <div id="sophFallAddButton"></div>
+      <div id="appendSophFall"></div>
+      <div id="sophFallAddButton" class="addCourseButtonStyle"></div>
     </div>
     <div class="springSemester">
       <span class="semesterTitle">Sophomore Spring</span>
-      <form action="query">
 
-        {% for number in range(1,5) %}
-        <p><input type="text" placeholder="Course {{number}}"/></p>
-        {% endfor %}
+      {{ courseEntryArea() }}
 
-        <div id="appendSophSpring"></div>
-      </form>
-      <div id="sophSpringAddButton"></div>
+      <div id="appendSophSpring"></div>
+      <div id="sophSpringAddButton" class="addCourseButtonStyle"></div>
     </div>
   </div>
 
+<!-- Junior Year **************************************************************************-->
   <div id="juniorYear" class="yearStyle" style="display: none;">
     <div class="fallSemester">
       <span class="semesterTitle">Junior Fall</span>
-      <form action="query">
 
-        {% for number in range(1,5) %}
-        <p><input type="text" placeholder="Course {{number}}"/></p>
-        {% endfor %}
+      {{ courseEntryArea() }}
 
-        <div id="appendJuniorFall"></div>
-      </form>
-      <div id="juniorFallAddButton"></div>
+      <div id="appendJuniorFall"></div>
+      <div id="juniorFallAddButton" class="addCourseButtonStyle"></div>
     </div>
     <div class="springSemester">
       <span class="semesterTitle">Junior Spring</span>
-      <form action="query">
 
-        {% for number in range(1,5) %}
-        <p><input type="text" placeholder="Course {{number}}"/></p>
-        {% endfor %}
+      {{ courseEntryArea() }}
 
-        <div id="appendJuniorSpring"></div>
-      </form>
-      <div id="juniorSpringAddButton"></div>
+      <div id="appendJuniorSpring"></div>
+      <div id="juniorSpringAddButton" class="addCourseButtonStyle"></div>
     </div>
   </div>
 
+<!-- Other Buttons ************************************************************************-->
   <div id="addSemesterButton"></div>
   <div id="getRecommendationsButton" onclick="location.href='recommend'">
     Explore >
