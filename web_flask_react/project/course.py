@@ -1,4 +1,5 @@
 import cPickle as pickle
+import re
 
 class Course(object):
 	ratings_order = {'Lectures':0, 
@@ -53,9 +54,24 @@ class Course(object):
 	def get_most_recent_overall_rating(self):
 		ratings_list = self.term_info_dict[self.default_term]['EVAL']
 		if len(ratings_list) > 0:
-			return ratings_list[self.ratings_order['Overall Quality of the Course']][1]
+			try:
+				return ratings_list[self.ratings_order['Overall Quality of the Course']][1]
+			except IndexError:
+				# import pdb; pdb.set_trace()
+				return 0
 		else:
 			return 0
+
+	def get_highlighted_text(self, terms):
+		pattern = ' .*? '.join(terms)
+		doc =  self.term_info_dict[self.default_term]['document'].lower()
+		results = re.findall(pattern, doc)
+		# import pdb; pdb.set_trace()
+		if len(results) > 0:
+			return reduce(lambda x,y: x if len(x) < len(y) else y, results)
+		else:
+			# import pdb; pdb.set_trace()
+			return None
 
 class CourseRenderer(object):
 	def __init__(self, filename):

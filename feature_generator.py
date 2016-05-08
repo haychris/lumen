@@ -14,7 +14,7 @@ for class_data in json_data:
 	class_data['all_listings_string'] = seperator.join([listing['dept'] + ' ' + listing['number'] for listing in class_data['listings']])
 
 
-# features = ['courseid', 'title', 'prof_string', 'all_listings_string', 'area', 'prereqs', 'descrip']
+# features = ['termid', 'courseid', 'title', 'prof_string', 'all_listings_string', 'area', 'prereqs', 'descrip']
 features = ['termid', 'courseid', 'title', 'all_listings_string', 'area', 'prereqs', 'descrip']
 
 

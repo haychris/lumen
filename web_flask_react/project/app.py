@@ -23,8 +23,10 @@ def index():
 def process_query():
 	query = request.args.get('query')
 	print 'Query: ', query
-	results = searcher.search(query.lower().split())
-	return render_template('queryResult.html', results=results[:max_results])
+	terms = query.lower().split()
+	results = searcher.search(terms)
+	courses = [course_renderer.get_course(course_id) for course_id in results[:max_results]]
+	return render_template('queryResult.html', results=courses, terms=terms)
 
 @app.route('/userratings')
 def get_user_ratings():
