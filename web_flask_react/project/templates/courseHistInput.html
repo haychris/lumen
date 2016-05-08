@@ -1,4 +1,5 @@
 {% from "macros.html" import courseEntryArea %}
+{% from "macros.html" import hiddenCourseEntry %}
 
 <!DOCTYPE html>
 <html>
@@ -40,34 +41,8 @@
         {{ courseEntryArea("FF") }}
 
         <div id="appendFF"></div>
-        
-        <div class="courseEntry" style="display: none">
-          <div class="courseName">
-            <input id="FF5N" class="courseName" type="text" placeholder="Course {{number}}"/>
-          </div>
-          <div class="courseRating">
-            <div id="FF5S" class="slider"></div>
-          </div>
-          <div id="FF5R" class="showRating">Neutral</div>
-        </div>
-        <div class="courseEntry" style="display: none">
-          <div class="courseName">
-            <input id="FF6N" class="courseName" type="text" placeholder="Course {{number}}"/>
-          </div>
-          <div class="courseRating">
-            <div id="FF6S" class="slider"></div>
-          </div>
-          <div id="FF6R" class="showRating">Neutral</div>
-        </div>
-        <div class="courseEntry" style="display: none">
-          <div class="courseName">
-            <input id="FF7N" class="courseName" type="text" placeholder="Course {{number}}"/>
-          </div>
-          <div class="courseRating">
-            <div id="FF7S" class="slider"></div>
-          </div>
-          <div id="FF7R" class="showRating">Neutral</div>
-        </div>
+
+        {{ hiddenCourseEntry("FF") }}
 
         <div id="FFAddButton" class="addCourseButtonStyle"></div>
       </div>
@@ -78,6 +53,9 @@
         {{ courseEntryArea("FS") }}
 
         <div id="appendFS"></div>
+
+        {{ hiddenCourseEntry("FS") }}
+
         <div id="FSAddButton" class="addCourseButtonStyle"></div>
       </div>
     </div>
@@ -90,6 +68,9 @@
         {{ courseEntryArea("SF") }}
 
         <div id="appendSF"></div>
+
+        {{ hiddenCourseEntry("SF") }}
+        
         <div id="SFAddButton" class="addCourseButtonStyle"></div>
       </div>
       <div class="springSemester">
@@ -98,6 +79,9 @@
         {{ courseEntryArea("SS") }}
 
         <div id="appendSS"></div>
+
+        {{ hiddenCourseEntry("SS") }}
+        
         <div id="SSAddButton" class="addCourseButtonStyle"></div>
       </div>
     </div>
@@ -110,6 +94,9 @@
         {{ courseEntryArea("JF") }}
 
         <div id="appendJF"></div>
+
+        {{ hiddenCourseEntry("JF") }}
+        
         <div id="JFAddButton" class="addCourseButtonStyle"></div>
       </div>
       <div class="springSemester">
@@ -118,6 +105,9 @@
         {{ courseEntryArea("JS") }}
 
         <div id="appendJS"></div>
+
+        {{ hiddenCourseEntry("JS") }}
+        
         <div id="JSAddButton" class="addCourseButtonStyle"></div>
       </div>
     </div>

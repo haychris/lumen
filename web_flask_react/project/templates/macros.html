@@ -44,3 +44,33 @@ Naming format: Year + Semester + Course + Type
 	<div id="{{semester}}4R" class="showRating">Neutral</div>
 </div>
 {% endmacro %}
+
+{% macro hiddenCourseEntry(semester) %}
+<div class="courseEntry" style="display: none">
+  <div class="courseName">
+    <input id="{{semester}}5N" class="courseName" type="text" placeholder="Course 5"/>
+  </div>
+  <div class="courseRating">
+    <div id="{{semester}}5S" class="slider"></div>
+  </div>
+  <div id="{{semester}}5R" class="showRating">Neutral</div>
+</div>
+<div class="courseEntry" style="display: none">
+  <div class="courseName">
+    <input id="{{semester}}6N" class="courseName" type="text" placeholder="Course 6"/>
+  </div>
+  <div class="courseRating">
+    <div id="{{semester}}6S" class="slider"></div>
+  </div>
+  <div id="{{semester}}6R" class="showRating">Neutral</div>
+</div>
+<div class="courseEntry" style="display: none">
+  <div class="courseName">
+    <input id="{{semester}}7N" class="courseName" type="text" placeholder="Course 7"/>
+  </div>
+  <div class="courseRating">
+    <div id="{{semester}}7S" class="slider"></div>
+  </div>
+  <div id="{{semester}}7R" class="showRating">Neutral</div>
+</div>
+{% endmacro %}

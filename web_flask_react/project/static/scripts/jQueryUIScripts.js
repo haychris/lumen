@@ -33,11 +33,11 @@ $(function() {
 });
 
 // Slider rendering function for courses later added
-function showSlider(id) {
+/*function showSlider(id) {
 console.log("showSlider called on " + id);
 
   $(function() {
-    $( "#"+id ).slider({
+    $( "#"+id+"S" ).slider({
       range: "min",
       value: 3,
       min: 1,
@@ -58,5 +58,17 @@ console.log("showSlider called on " + id);
           $( "#"+id ).parent().next().text("ERROR");
       }
     });
+  });
+}*/
+
+function updateSlider(id, rating) {
+  var sliderID = '#' + id + "S";
+
+  $(function() {
+    ratingSlider = $(sliderID).slider();
+    ratingSlider.slider('option', 'value', rating);
+    ratingSlider.slider('option','slide')
+       .call(ratingSlider,null,{ handle: $('.slider', ratingSlider), value: rating });
+
   });
 }

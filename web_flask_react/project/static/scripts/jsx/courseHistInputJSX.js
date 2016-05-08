@@ -79,7 +79,7 @@ Returns a courseEntry div equivalent to:
     <div id="FF1R" class="showRating">OK</div>
   </div>
  *****************************************************************************/
-function genCourseEntry(semester, count) {
+/*function genCourseEntry(semester, count) {
   var entry = document.createElement("div");
   entry.setAttribute("class", "courseEntry");
   var courseName = entry.appendChild(document.createElement("div"));
@@ -103,12 +103,12 @@ function genCourseEntry(semester, count) {
   showRating.innerHTML = threeRating;
   return entry;
 }
-
+*/
 /***************************************************************************
  * Adds a course entry field with ratings slider to FRESHMAN FALL semester *
  * Button disabled after there are 7 courses                               *
  ***************************************************************************/
-var AddCourseFF = React.createClass({
+/*var AddCourseFF = React.createClass({
   getInitialState: function() {
     return{clickCount: 5};
   },
@@ -119,6 +119,28 @@ var AddCourseFF = React.createClass({
     var entry = genCourseEntry("FF", this.state.clickCount);
     document.getElementById('appendFF').appendChild(entry);
     showSlider("FF"+this.state.clickCount+"S");
+  },
+  render: function () {
+    if (this.state.clickCount > 7) {
+      document.getElementById('FFAddButton').removeAttribute("class");
+      return null;
+    }
+    else return (
+      <div onClick={this.appendCourse}>Add course</div>
+    );
+  }
+});*/
+var AddCourseFF = React.createClass({
+  getInitialState: function() {
+    return{clickCount: 5};
+  },
+  appendCourse: function(event) {
+    this.setState(function(previousState, currentProps) {
+      return {clickCount: previousState.clickCount + 1};
+    });
+
+    var id = "FF" + this.state.clickCount + "N";
+    document.getElementById(id).parentNode.parentNode.style = "";
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -143,9 +165,9 @@ var AddCourseFS = React.createClass({
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry("FS", this.state.clickCount);
-    document.getElementById('appendFS').appendChild(entry);
-    showSlider("FS"+this.state.clickCount+"S");
+
+    var id = "FS" + this.state.clickCount + "N";
+    document.getElementById(id).parentNode.parentNode.style = "";
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -170,9 +192,9 @@ var AddCourseSF = React.createClass({
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry("SF", this.state.clickCount);
-    document.getElementById('appendSF').appendChild(entry);
-    showSlider("SF"+this.state.clickCount+"S");
+
+    var id = "SF" + this.state.clickCount + "N";
+    document.getElementById(id).parentNode.parentNode.style = "";
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -197,9 +219,9 @@ var AddCourseSS = React.createClass({
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry("SS", this.state.clickCount);
-    document.getElementById('appendSS').appendChild(entry);
-    showSlider("SS"+this.state.clickCount+"S");
+
+    var id = "SS" + this.state.clickCount + "N";
+    document.getElementById(id).parentNode.parentNode.style = "";
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -224,9 +246,9 @@ var AddCourseJF = React.createClass({
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry("JF", this.state.clickCount);
-    document.getElementById('appendJF').appendChild(entry);
-    showSlider("JF"+this.state.clickCount+"S");
+
+    var id = "JF" + this.state.clickCount + "N";
+    document.getElementById(id).parentNode.parentNode.style = "";
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -251,9 +273,9 @@ var AddCourseJS = React.createClass({
     this.setState(function(previousState, currentProps) {
       return {clickCount: previousState.clickCount + 1};
     });
-    var entry = genCourseEntry("JS", this.state.clickCount);
-    document.getElementById('appendJS').appendChild(entry);
-    showSlider("JS"+this.state.clickCount+"S");
+
+    var id = "JS" + this.state.clickCount + "N";
+    document.getElementById(id).parentNode.parentNode.style = "";
   },
   render: function () {
     if (this.state.clickCount > 7) {
@@ -286,10 +308,8 @@ var GetRecommendations = React.createClass({
 
 /*******************************************
  * Parses the cookie and loads course info *
-  BUGGY
-  CAN'T LOAD MORE THAN INITAL FOUR COURSES
  *******************************************/
-function getCookie() {
+function getCookie(ff, fs, sf, ss, jf, js) {
   cookie = document.cookie;
 
   if (cookie != "") {
@@ -302,18 +322,36 @@ function getCookie() {
       var courseRating = cookieData[i].split(",")[1].split(":")[1];
 
       document.getElementById(courseNameID).value = courseName;
+      updateSlider(courseNameID.substring(0,3), courseRating);
+
+      var courseNum = courseNameID.charAt(2);
+      if (courseNum > 4) {
+        var semester = courseNameID.substring(0,2);
+
+        for (var j = 5; j <= courseNum; j++)
+          document.getElementById(semester+j+"N").parentNode.parentNode.style = "";
+/*
+        if (semester == "FF") {
+          ff.setState({clickCount: parseInt(courseNum)});
+          console.log(ff.state.clickCount);
+        }
+        else if (semester == "FS");
+        else if (semester == "SF");
+        else if (semester == "SS");
+        else if (semester == "JF");
+        else if (semester == "JS");*/
+      }
     }
   }
 }
-getCookie();
-
 
 ReactDOM.render(<AddSemester />, document.getElementById('addSemester'));
 ReactDOM.render(<DeleteSemester />, document.getElementById('deleteSemester'));
-ReactDOM.render(<AddCourseFF />, document.getElementById('FFAddButton'));
-ReactDOM.render(<AddCourseFS />, document.getElementById('FSAddButton'));
-ReactDOM.render(<AddCourseSF />, document.getElementById('SFAddButton'));
-ReactDOM.render(<AddCourseSS />, document.getElementById('SSAddButton'));
-ReactDOM.render(<AddCourseJF />, document.getElementById('JFAddButton'));
-ReactDOM.render(<AddCourseJS />, document.getElementById('JSAddButton'));
 ReactDOM.render(<GetRecommendations />, document.getElementById('getRecommendationsButton'));
+var ff = ReactDOM.render(<AddCourseFF />, document.getElementById('FFAddButton'));
+var fs = ReactDOM.render(<AddCourseFS />, document.getElementById('FSAddButton'));
+var sf = ReactDOM.render(<AddCourseSF />, document.getElementById('SFAddButton'));
+var ss = ReactDOM.render(<AddCourseSS />, document.getElementById('SSAddButton'));
+var jf = ReactDOM.render(<AddCourseJF />, document.getElementById('JFAddButton'));
+var js = ReactDOM.render(<AddCourseJS />, document.getElementById('JSAddButton'));
+getCookie(ff, fs, sf, ss, jf, js);
