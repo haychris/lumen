@@ -24,9 +24,9 @@ class Course(object):
 
 	def get_title(self, term_id=None):
 		if term_id is None:
-			return self.term_info_dict[self.default_term]['COURSE_TITLE']
+			return self.term_info_dict[self.default_term]['title']
 		else:
-			return self.term_info_dict[term_id]['COURSE_TITLE']
+			return self.term_info_dict[term_id]['title']
 	
 	def get_course_listings(self, term_id=None):
 		if term_id is None:
