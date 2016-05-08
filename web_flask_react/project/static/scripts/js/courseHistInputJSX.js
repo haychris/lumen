@@ -290,7 +290,7 @@ var GetRecommendations = React.createClass({displayName: "GetRecommendations",
   BUGGY
   CAN'T LOAD MORE THAN INITAL FOUR COURSES
  *******************************************/
-/*function getCookie() {
+function getCookie() {
   cookie = document.cookie;
 
   if (cookie != "") {
@@ -307,7 +307,7 @@ var GetRecommendations = React.createClass({displayName: "GetRecommendations",
   }
 }
 getCookie();
-*/
+
 
 ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemester'));
 ReactDOM.render(React.createElement(DeleteSemester, null), document.getElementById('deleteSemester'));

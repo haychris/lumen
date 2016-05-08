@@ -6,41 +6,41 @@ Naming format: Year + Semester + Course + Type
     Type: (N)ame (R)ating
 -->
 
-{% macro courseEntryArea() %}
+{% macro courseEntryArea(semester) %}
 <div class="courseEntry">
 	<div class="courseName">
-		<input id="FF1N" class="courseName" type="text" placeholder="Course 1"/>
+		<input id="{{semester}}1N" class="courseName" type="text" placeholder="Course 1"/>
 	</div>
 	<div class="courseRating">
-		<div id="FF1S" class="slider"></div>
+		<div id="{{semester}}1S" class="slider"></div>
 	</div>
-	<div id="FF1R" class="showRating">Neutral</div>
+	<div id="{{semester}}1R" class="showRating">Neutral</div>
 </div>
 <div class="courseEntry">
 	<div class="courseName">
-		<input id="FF2N" class="courseName" type="text" placeholder="Course 2"/>
+		<input id="{{semester}}2N" class="courseName" type="text" placeholder="Course 2"/>
 	</div>
 	<div class="courseRating">
-		<div id="FF2S" class="slider"></div>
+		<div id="{{semester}}2S" class="slider"></div>
 	</div>
-	<div id="FF2R" class="showRating">Neutral</div>
+	<div id="{{semester}}2R" class="showRating">Neutral</div>
 </div>
 <div class="courseEntry">
 	<div class="courseName">
-		<input id="FF3N" class="courseName" type="text" placeholder="Course 3"/>
+		<input id="{{semester}}3N" class="courseName" type="text" placeholder="Course 3"/>
 	</div>
 	<div class="courseRating">
-		<div id="FF3S" class="slider"></div>
+		<div id="{{semester}}3S" class="slider"></div>
 	</div>
-	<div id="FF3R" class="showRating">Neutral</div>
+	<div id="{{semester}}3R" class="showRating">Neutral</div>
 </div>
 <div class="courseEntry">
 	<div class="courseName">
-		<input id="FF4N" class="courseName" type="text" placeholder="Course 4"/>
+		<input id="{{semester}}4N" class="courseName" type="text" placeholder="Course 4"/>
 	</div>
 	<div class="courseRating">
-		<div id="FF4S" class="slider"></div>
+		<div id="{{semester}}4S" class="slider"></div>
 	</div>
-	<div id="FF4R" class="showRating">Neutral</div>
+	<div id="{{semester}}4R" class="showRating">Neutral</div>
 </div>
 {% endmacro %}
