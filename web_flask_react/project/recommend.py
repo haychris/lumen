@@ -7,7 +7,12 @@ class Recommender(object):
 		self.course_id_lookup_dict, self.class_number_lookup_dict, self.course_cluster_probs_dict, self.K = pickle.load(open(filename, 'rb'))
 
 	def recommend(self, course_nums, ratings):
-		course_ids = [self.course_id_lookup_dict[course_num] for course_num in course_nums]
+		course_ids = []
+		for course_num in course_nums:
+			try:
+				course_ids.append(self.course_id_lookup_dict[course_num])
+			except KeyError:
+				continue
 		cluster_scores = np.zeros(self.K)
 
 		for course_id_list, rating in zip(course_ids, ratings):

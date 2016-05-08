@@ -79,6 +79,7 @@ def add_registrar(file_name, class_dict):
 		cur_course_dict["title"] = line_dict["title"]
 		cur_course_dict["prereqs"] = line_dict["prereqs"]
 		cur_course_dict["descrip"] = line_dict["descrip"]
+		cur_course_dict['prof_string'] = line_dict['prof_string']
 
 
 def create_documents(class_dict):
