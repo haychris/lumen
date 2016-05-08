@@ -6,7 +6,7 @@
       Based on your past courses, we recommend...
     </div>
     <div id="editCourseHistButton" onclick="location.href='userratings'">
-      Need to update your course/major info?<br/><br/>
+      Need to update your course/major info?<br/>
     </div>
 
     {% for result in results %}
@@ -57,7 +57,7 @@
           document.getElementById("starRating_{{loop.index}}").innerHTML = text; 
       </script>
 
-      <div class="result" class="expandedResult" id="result_hidden_{{loop.index}}" style="display:none; margin-top:0; background:slateblue; height:150px">
+      <div class="result" id="result_hidden_{{loop.index}}" style="display:none; margin-top: 0px; height: 150px;">
         <div align="left" style="display:none">
           Lectures: {{result.get_all_ratings()[0]}}
         </div>
@@ -85,8 +85,10 @@
       <script type="text/javascript">
       function showDiv{{loop.index}}() {
           div = document.getElementById('result_hidden_{{loop.index}}');
-          if (div.style.display == "block")
+          if (div.style.display == "block") {
             div.style.display = "none";
+          //  div.style.border = "3px dashed #e6e6e6";
+          }
           else
             div.style.display = "block";
       } 
@@ -98,11 +100,11 @@
     function drawChart() {
       var data = google.visualization.arrayToDataTable([
         ["Element", "Rating", { role: "style" } ],
-        ["Classes", parseFloat({{result.get_all_ratings()[0]}}), "#b87333"],
-        ["Coursework & Exams", parseFloat({{result.get_all_ratings()[1]}}), "#b87333"],
-        ["Readings", parseFloat({{result.get_all_ratings()[2]}}), "silver"],
-        ["Classes", parseFloat({{result.get_all_ratings()[3]}}), "gold"],
-        ["Overall Quality", parseFloat({{result.get_all_ratings()[4]}}), "color: #e5e4e2"]
+        ["Classes", parseFloat({{result.get_all_ratings()[0]}}), "color: #bcdf8a"],
+        ["Coursework & Exams", parseFloat({{result.get_all_ratings()[1]}}), "color: #f5f9ad"],
+        ["Readings", parseFloat({{result.get_all_ratings()[2]}}), "color: #94c0cc"],
+        ["Classes", parseFloat({{result.get_all_ratings()[3]}}), "color: #fad48b"],
+        ["Overall Quality", parseFloat({{result.get_all_ratings()[4]}}), "color: #ed7777"]
       ]);
 
       var view = new google.visualization.DataView(data);
@@ -115,6 +117,7 @@
 
       var options = {
         title: "Most Recent Class Ratings for {{result.get_course_listings()}}",
+        titleTextStyle: { color: "#f3f3f3"},
         width: 800,
         height: 150,
         bar: {groupWidth: "55%"},
@@ -123,9 +126,13 @@
         hAxis: {
           minValue: 0,
           maxValue: 4,
-          gridlines: { count: 6 }
+          gridlines: { count: 6 },
+          textStyle: { color: "#f3f3f3"}
         },
-        backgroundColor: "slateblue"
+        vAxis: {
+          textStyle: { color: "#f3f3f3"}
+        },
+        backgroundColor: "transparent"
       };
       var chart = new google.visualization.BarChart(document.getElementById("chart_{{loop.index}}"));
       chart.draw(view, options);
