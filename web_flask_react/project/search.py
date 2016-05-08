@@ -24,7 +24,7 @@ class Searcher(object):
 			courses = [self.course_id_list[doc_num] for doc_num in sorted_docs[:min(last_index, num_results)]]
 		else:
 			courses = []
-		import pdb; pdb.set_trace()
+		# import pdb; pdb.set_trace()
 		return courses
 		# try:
 		# 	return [self.doc_course_id_list[sorted_docs[0,-(i+1)]] for i in range(min(num_results, sorted_docs.shape[1]))]
