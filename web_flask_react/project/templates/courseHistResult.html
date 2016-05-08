@@ -5,6 +5,9 @@
     <div style="color:white">
       Based on your past courses, we recommend...
     </div>
+    <div id="editCourseHistButton" onclick="location.href='userratings'">
+      Want to edit your course/major info?
+    </div>
 
     {% for result in results %}
       <div class="result" onclick="showDiv{{loop.index}}()" style="cursor: pointer">
@@ -130,7 +133,6 @@
       <p>No results.</p>
     {% endfor %}
 
-    <div id="loadMoreButton" onclick="">Load More</div>
-    <div id="editCourseHistButton" onclick="location.href='userratings'" style="color:white">Want to edit your course/major info?</div>
+    <div class="loadMoreButton" onclick="">Load More</div>
 <div id="barchart_values" style="width: 900px; height: 300px;"></div>
 {% endblock content %}

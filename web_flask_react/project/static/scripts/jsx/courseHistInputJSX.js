@@ -9,10 +9,12 @@ var AddSemester = React.createClass({
     if (semesterCount == 0) {
       document.getElementById('sophomoreYear').setAttribute("style", "");
       document.getElementById('deleteSemester').setAttribute("style", "");
+      document.getElementById('disabledDelete').setAttribute("style", "display: none");
     }
     else if (semesterCount == 1) {
       document.getElementById('juniorYear').setAttribute("style", "");
       document.getElementById('addSemester').setAttribute("style", "display: none");
+      document.getElementById('disabledAdd').setAttribute("style", "");
     }
 
     semesterCount++;
@@ -21,7 +23,7 @@ var AddSemester = React.createClass({
   },
   render: function() {
     return (
-      <div id="addSemesterButton" onClick={this.appendSemester}>ADD SEMESTER</div>
+      <div id="addSemesterButton" onClick={this.appendSemester}>Add</div>
     );
   }
 });
@@ -35,6 +37,7 @@ var DeleteSemester = React.createClass({
     if (semesterCount == 2) {
       document.getElementById('juniorYear').setAttribute("style", "display: none");
       document.getElementById('addSemester').setAttribute("style", "");
+      document.getElementById('disabledAdd').setAttribute("style", "display: none");
 
       var deletedCourses = document.getElementById('juniorYear').getElementsByClassName("courseName");
       for (var i = 0; i < deletedCourses.length; i++)
@@ -43,6 +46,7 @@ var DeleteSemester = React.createClass({
     else if (semesterCount == 1) {
       document.getElementById('sophomoreYear').setAttribute("style", "display: none");
       document.getElementById('deleteSemester').setAttribute("style", "display: none");
+      document.getElementById('disabledDelete').setAttribute("style", "");
 
       var deletedCourses = document.getElementById('sophomoreYear').getElementsByClassName("courseName");
       for (var i = 0; i < deletedCourses.length; i++)
@@ -55,7 +59,7 @@ var DeleteSemester = React.createClass({
   },
   render: function() {
     return (
-      <div id="deleteSemesterButton" onClick={this.removeSemester}>DELETE SEMESTER</div>
+      <div id="deleteSemesterButton" onClick={this.removeSemester}>Remove</div>
     );
   }
 });
@@ -96,7 +100,7 @@ function genCourseEntry(semester, count) {
 
   showRating.id = semester + count + "R";
   showRating.setAttribute("class", "showRating");
-  showRating.innerHTML = "OK";
+  showRating.innerHTML = threeRating;
   return entry;
 }
 
@@ -122,7 +126,7 @@ var AddCourseFF = React.createClass({
       return null;
     }
     else return (
-      <div onClick={this.appendCourse}>ADD BUTTON</div>
+      <div onClick={this.appendCourse}>Add course</div>
     );
   }
 });
@@ -149,7 +153,7 @@ var AddCourseFS = React.createClass({
       return null;
     }
     else return (
-      <div onClick={this.appendCourse}>ADD BUTTON</div>
+      <div onClick={this.appendCourse}>Add course</div>
     );
   }
 });
@@ -176,7 +180,7 @@ var AddCourseSF = React.createClass({
       return null;
     }
     else return (
-      <div onClick={this.appendCourse}>ADD BUTTON</div>
+      <div onClick={this.appendCourse}>Add course</div>
     );
   }
 });
@@ -203,7 +207,7 @@ var AddCourseSS = React.createClass({
       return null;
     }
     else return (
-      <div onClick={this.appendCourse}>ADD BUTTON</div>
+      <div onClick={this.appendCourse}>Add course</div>
     );
   }
 });
@@ -230,7 +234,7 @@ var AddCourseJF = React.createClass({
       return null;
     }
     else return (
-      <div onClick={this.appendCourse}>ADD BUTTON</div>
+      <div onClick={this.appendCourse}>Add course</div>
     );
   }
 });
@@ -257,7 +261,7 @@ var AddCourseJS = React.createClass({
       return null;
     }
     else return (
-      <div onClick={this.appendCourse}>ADD BUTTON</div>
+      <div onClick={this.appendCourse}>Add course</div>
     );
   }
 });
@@ -274,7 +278,7 @@ var GetRecommendations = React.createClass({
   render: function() {
     return (
       <div id="getRecommendationsButtonStyle" onClick={this.processCourseData}>
-        Explore
+        Inspire
       </div>
     );
   }

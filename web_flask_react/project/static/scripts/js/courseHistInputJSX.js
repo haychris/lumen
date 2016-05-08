@@ -10,10 +10,12 @@ var AddSemester = React.createClass({displayName: "AddSemester",
     if (semesterCount == 0) {
       document.getElementById('sophomoreYear').setAttribute("style", "");
       document.getElementById('deleteSemester').setAttribute("style", "");
+      document.getElementById('disabledDelete').setAttribute("style", "display: none");
     }
     else if (semesterCount == 1) {
       document.getElementById('juniorYear').setAttribute("style", "");
       document.getElementById('addSemester').setAttribute("style", "display: none");
+      document.getElementById('disabledAdd').setAttribute("style", "");
     }
 
     semesterCount++;
@@ -22,7 +24,7 @@ var AddSemester = React.createClass({displayName: "AddSemester",
   },
   render: function() {
     return (
-      React.createElement("div", {id: "addSemesterButton", onClick: this.appendSemester}, "ADD SEMESTER")
+      React.createElement("div", {id: "addSemesterButton", onClick: this.appendSemester}, "Add")
     );
   }
 });
@@ -36,6 +38,7 @@ var DeleteSemester = React.createClass({displayName: "DeleteSemester",
     if (semesterCount == 2) {
       document.getElementById('juniorYear').setAttribute("style", "display: none");
       document.getElementById('addSemester').setAttribute("style", "");
+      document.getElementById('disabledAdd').setAttribute("style", "display: none");
 
       var deletedCourses = document.getElementById('juniorYear').getElementsByClassName("courseName");
       for (var i = 0; i < deletedCourses.length; i++)
@@ -44,6 +47,7 @@ var DeleteSemester = React.createClass({displayName: "DeleteSemester",
     else if (semesterCount == 1) {
       document.getElementById('sophomoreYear').setAttribute("style", "display: none");
       document.getElementById('deleteSemester').setAttribute("style", "display: none");
+      document.getElementById('disabledDelete').setAttribute("style", "");
 
       var deletedCourses = document.getElementById('sophomoreYear').getElementsByClassName("courseName");
       for (var i = 0; i < deletedCourses.length; i++)
@@ -56,7 +60,7 @@ var DeleteSemester = React.createClass({displayName: "DeleteSemester",
   },
   render: function() {
     return (
-      React.createElement("div", {id: "deleteSemesterButton", onClick: this.removeSemester}, "DELETE SEMESTER")
+      React.createElement("div", {id: "deleteSemesterButton", onClick: this.removeSemester}, "Remove")
     );
   }
 });
@@ -97,7 +101,7 @@ function genCourseEntry(semester, count) {
 
   showRating.id = semester + count + "R";
   showRating.setAttribute("class", "showRating");
-  showRating.innerHTML = "OK";
+  showRating.innerHTML = threeRating;
   return entry;
 }
 
@@ -123,7 +127,7 @@ var AddCourseFF = React.createClass({displayName: "AddCourseFF",
       return null;
     }
     else return (
-      React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
+      React.createElement("div", {onClick: this.appendCourse}, "Add course")
     );
   }
 });
@@ -150,7 +154,7 @@ var AddCourseFS = React.createClass({displayName: "AddCourseFS",
       return null;
     }
     else return (
-      React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
+      React.createElement("div", {onClick: this.appendCourse}, "Add course")
     );
   }
 });
@@ -177,7 +181,7 @@ var AddCourseSF = React.createClass({displayName: "AddCourseSF",
       return null;
     }
     else return (
-      React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
+      React.createElement("div", {onClick: this.appendCourse}, "Add course")
     );
   }
 });
@@ -204,7 +208,7 @@ var AddCourseSS = React.createClass({displayName: "AddCourseSS",
       return null;
     }
     else return (
-      React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
+      React.createElement("div", {onClick: this.appendCourse}, "Add course")
     );
   }
 });
@@ -231,7 +235,7 @@ var AddCourseJF = React.createClass({displayName: "AddCourseJF",
       return null;
     }
     else return (
-      React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
+      React.createElement("div", {onClick: this.appendCourse}, "Add course")
     );
   }
 });
@@ -258,7 +262,7 @@ var AddCourseJS = React.createClass({displayName: "AddCourseJS",
       return null;
     }
     else return (
-      React.createElement("div", {onClick: this.appendCourse}, "ADD BUTTON")
+      React.createElement("div", {onClick: this.appendCourse}, "Add course")
     );
   }
 });
@@ -275,7 +279,7 @@ var GetRecommendations = React.createClass({displayName: "GetRecommendations",
   render: function() {
     return (
       React.createElement("div", {id: "getRecommendationsButtonStyle", onClick: this.processCourseData}, 
-        "Explore"
+        "Inspire"
       )
     );
   }
