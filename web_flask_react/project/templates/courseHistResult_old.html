@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+{% block content %}
+    <div style="color:white">
+      Based on your past courses, we recommend...
+    </div>
+
+    {% for result in results %}
+      <div class="result" onclick="showDiv{{loop.index}}()" style="cursor: pointer">
+
+        <div style="width: 30%; height:100%;float:left; background:white">
+          <div style="height: 30%; position:relative; padding-top:10px">
+            <font size="4">
+              {{result.get_course_listings()}}
+            </font>
+          </div>
+          <div style="height: 70%; position:relative">
+            <div style="height: 75%; display:block">
+              {{result.get_title()}}
+            </div>
+            <div style="height: 25%; display:block">
+              (Details)
+            </div>
+          </div>
+        </div>
+
+        <div style="width:70%;height:100%;float: left">
+          <div style="height: 30%; display:block">
+           <div id="starRating_{{loop.index}}" style="display:inline"></div>
+           <div style="float:right; margin-right:10px; padding-top:10px">
+              <font size="4">
+              {{result.get_default_term_text()}}: {{result.get_most_recent_overall_rating()}}
+              </font>
+           </div>
+          </div>
+          <div style="height: 70%; display:block; padding-left:10px; padding-right:10px">
+           {{result.get_comments()[0]}}
+          </div>
+        </div>
+      </div>
+      <script> 
+          text = "<font size='6'>";
+          numstars = Math.round(parseFloat({{result.get_most_recent_overall_rating()}}))
+          for (i = 0; i < numstars; i++) { 
+            text += "<span>★</span>"
+          } 
+          for (i = numstars; i < 5; i++) { 
+            text += "<span>☆</span>"
+          } 
+          text += "</font>";
+          document.getElementById("starRating_{{loop.index}}").innerHTML = text; 
+      </script>
+
+      <div class="result" id="result_hidden_{{loop.index}}" style="display:none; margin-top:0; background:white; height:150px">
+        <div align="left" style="display:none">
+          Lectures: {{result.get_all_ratings()[0]}}
+        </div>
+        <div align="left" style="display:none">
+          Papers, Reports, Problem Sets, and Examinations: {{result.get_all_ratings()[1]}}
+        </div>
+        <div align="left" style="display:none">
+          Readings: {{result.get_all_ratings()[2]}}
+        </div>
+        <div align="left" style="display:none">
+          Classes: {{result.get_all_ratings()[3]}}
+        </div>
+        <div align="left" style="display:none">
+          Overall Quality of the Course: {{result.get_all_ratings()[4]}}
+        </div>
+        <div id="chart_{{loop.index}}"></div>
+<!--
+        <div id="term_tags"> 
+          <div style="display:inline">Fall '14</div>
+          <div style="display:inline">Fall '15</div>
+        </div>
+-->
+      </div>
+
+      <script type="text/javascript">
+      function showDiv{{loop.index}}() {
+          div = document.getElementById('result_hidden_{{loop.index}}');
+          if (div.style.display == "block")
+            div.style.display = "none";
+          else
+            div.style.display = "block";
+      } 
+      </script>
+
+      <script type="text/javascript">
+    // google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ["Element", "Rating", { role: "style" } ],
+        ["Classes", parseFloat({{result.get_all_ratings()[0]}}), "#b87333"],
+        ["Coursework & Exams", parseFloat({{result.get_all_ratings()[1]}}), "#b87333"],
+        ["Readings", parseFloat({{result.get_all_ratings()[2]}}), "silver"],
+        ["Classes", parseFloat({{result.get_all_ratings()[3]}}), "gold"],
+        ["Overall Quality", parseFloat({{result.get_all_ratings()[4]}}), "color: #e5e4e2"]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+      var options = {
+        title: "Most Recent Class Ratings for {{result.get_course_listings()}}",
+        width: 600,
+        height: 150,
+        bar: {groupWidth: "95%"},
+        chartArea: {left:120},
+        legend: { position: "none" },
+        hAxis: {
+          minValue: 0,
+          maxValue: 4,
+          gridlines: { count: 6 }
+        },
+      };
+      var chart = new google.visualization.BarChart(document.getElementById("chart_{{loop.index}}"));
+      chart.draw(view, options);
+  }
+  </script>
+      
+    {% else %}
+      <p>No results.</p>
+    {% endfor %}
+
+    <div id="loadMoreButton" onclick="">Load More</div>
+    <div id="editCourseHistButton" onclick="location.href='userratings'" style="color:white">Want to edit your course/major info?</div>
+<div id="barchart_values" style="width: 900px; height: 300px;"></div>
+{% endblock content %}
