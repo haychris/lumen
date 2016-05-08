@@ -4,8 +4,12 @@ import numpy as np
 class Searcher(object):
 	def __init__(self, filename):
 		self.vectorizer, self.tfidf_mat, self.word_dict, self.course_doc_dict, self.course_id_list = pickle.load(open(filename, 'rb'))
+		self.tokenizer = self.vectorizer.get_params()['tokenizer']
 
-	def search(self, term_list, num_results=20):
+	def search(self, term_string, num_results=20):
+		# term_list = self.vectorizer.transform(term_list)
+		term_list = self.tokenizer(term_string)
+		print term_list
 			# results = self.tfidf_mat[:,self.word_dict[term_list[0]]]
 		# import pdb; pdb.set_trace()
 		results = np.zeros((self.tfidf_mat.shape[0],1))

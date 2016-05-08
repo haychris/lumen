@@ -1,5 +1,11 @@
 import cPickle as pickle
 import re
+import itertools
+
+def minimizer(x,y):
+	if (0 < len(x) < len(y)) or len(y) == 0:
+		return x
+	return y
 
 class Course(object):
 	ratings_order = {'Lectures':0, 
@@ -63,15 +69,25 @@ class Course(object):
 			return 0
 
 	def get_highlighted_text(self, terms):
-		pattern = ' .*? '.join(terms)
+		if len(terms) == 0:
+			return ''
 		doc =  self.term_info_dict[self.default_term]['document'].lower()
-		results = re.findall(pattern, doc)
+		results = []
+		for term_list in itertools.permutations(terms):
+			pattern = ' .*? '.join(terms)
+			pattern = '.{0,20}' + pattern + '.{0,20}'
+			results.extend(re.findall(pattern, doc))
 		# import pdb; pdb.set_trace()
 		if len(results) > 0:
-			return reduce(lambda x,y: x if len(x) < len(y) else y, results)
+			return '...' + reduce(minimizer, results) + '...'
 		else:
 			# import pdb; pdb.set_trace()
-			return None
+			new_term_lists = [list(terms) for _ in range(len(terms))]
+			for i,term in enumerate(terms):
+				new_term_lists[i].remove(term)
+			new_results = [self.get_highlighted_text(new_term_lists[i]) for i in range(len(terms))]
+			# import pdb; pdb.set_trace()
+			return reduce(minimizer, new_results)
 
 class CourseRenderer(object):
 	def __init__(self, filename):
