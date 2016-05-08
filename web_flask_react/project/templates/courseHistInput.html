@@ -37,16 +37,45 @@
       <div class="fallSemester">
         <span class="semesterTitle">Freshman Fall</span>
 
-        {{ courseEntryArea() }}
+        {{ courseEntryArea("FF") }}
 
         <div id="appendFF"></div>
+        
+        <div class="courseEntry" style="display: none">
+          <div class="courseName">
+            <input id="FF5N" class="courseName" type="text" placeholder="Course {{number}}"/>
+          </div>
+          <div class="courseRating">
+            <div id="FF5S" class="slider"></div>
+          </div>
+          <div id="FF5R" class="showRating">Neutral</div>
+        </div>
+        <div class="courseEntry" style="display: none">
+          <div class="courseName">
+            <input id="FF6N" class="courseName" type="text" placeholder="Course {{number}}"/>
+          </div>
+          <div class="courseRating">
+            <div id="FF6S" class="slider"></div>
+          </div>
+          <div id="FF6R" class="showRating">Neutral</div>
+        </div>
+        <div class="courseEntry" style="display: none">
+          <div class="courseName">
+            <input id="FF7N" class="courseName" type="text" placeholder="Course {{number}}"/>
+          </div>
+          <div class="courseRating">
+            <div id="FF7S" class="slider"></div>
+          </div>
+          <div id="FF7R" class="showRating">Neutral</div>
+        </div>
+
         <div id="FFAddButton" class="addCourseButtonStyle"></div>
       </div>
 
       <div class="springSemester">
         <span class="semesterTitle">Freshman Spring</span>
 
-        {{ courseEntryArea() }}
+        {{ courseEntryArea("FS") }}
 
         <div id="appendFS"></div>
         <div id="FSAddButton" class="addCourseButtonStyle"></div>
@@ -58,7 +87,7 @@
       <div class="fallSemester">
         <span class="semesterTitle">Sophomore Fall</span>
 
-        {{ courseEntryArea() }}
+        {{ courseEntryArea("SF") }}
 
         <div id="appendSF"></div>
         <div id="SFAddButton" class="addCourseButtonStyle"></div>
@@ -66,7 +95,7 @@
       <div class="springSemester">
         <span class="semesterTitle">Sophomore Spring</span>
 
-        {{ courseEntryArea() }}
+        {{ courseEntryArea("SS") }}
 
         <div id="appendSS"></div>
         <div id="SSAddButton" class="addCourseButtonStyle"></div>
@@ -78,7 +107,7 @@
       <div class="fallSemester">
         <span class="semesterTitle">Junior Fall</span>
 
-        {{ courseEntryArea() }}
+        {{ courseEntryArea("JF") }}
 
         <div id="appendJF"></div>
         <div id="JFAddButton" class="addCourseButtonStyle"></div>
@@ -86,7 +115,7 @@
       <div class="springSemester">
         <span class="semesterTitle">Junior Spring</span>
 
-        {{ courseEntryArea() }}
+        {{ courseEntryArea("JS") }}
 
         <div id="appendJS"></div>
         <div id="JSAddButton" class="addCourseButtonStyle"></div>
@@ -127,6 +156,7 @@
     </div>
   </div>
 
+  <div onclick="saveToCookie()">GEN COOKIE</div>
   <div id="getRecommendationsButton" class="getRecommendationsButtonStyle"></div>
 
   <!-- scripts -->

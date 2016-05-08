@@ -21,7 +21,7 @@ function saveToCookie() {
     var courseRating = ratingTextToNum(allCourseRatings[i].innerHTML);
 
     if (courseName != "")
-      cookieContent = cookieContent + /*allCourseNames[i].id +*/ "n:" + courseName + "," + "r:" + courseRating + "|";
+      cookieContent = cookieContent + allCourseNames[i].id + ":" + courseName + "," + "r:" + courseRating + "|";
 
   }
   cookieContent = cookieContent.substring(0, cookieContent.length-1);
@@ -29,7 +29,7 @@ function saveToCookie() {
   document.cookie = "CourseInfo=" + cookieContent + "; expires=" + d.toUTCString();
   document.cookie = "Major=" + document.getElementById("major").value + "; expires=" + d.toUTCString();
   document.cookie = "Certificate=" + document.getElementById("cert").value + "; expires=" + d.toUTCString();
-  console.log("Cookie set:" + hasCookie());
+  console.log("Cookie set:" + document.cookie);
 }
 
 // Converts between text and numerical ratings
