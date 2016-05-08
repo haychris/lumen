@@ -283,7 +283,7 @@ img {
   width: 200px;
   height: 100%;
   float:left; 
-  background-color: darkolivegreen;
+  background-color: slateblue;
   color: white;
 /*  border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -347,12 +347,6 @@ img {
   display: block;
   padding-left: 10px;
   padding-right: 10px;
-}
-
-.expandedResult {
-  margin-top:0;
-  background:white;
-  height:150px;
 }
 
 /*********************
