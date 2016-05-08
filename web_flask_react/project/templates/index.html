@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
-  <body style="background-image:url({{ url_for('static', filename='images/bkgdlong.jpg') }})">
+  <body style="background-image:url({{ url_for('static', filename='images/bkgdtop.jpg') }})">
   <div class="projectTitleMain">
       <div id="projectNameMain">
           <img id="projectLogo" src="{{ url_for('static', filename='images/white.png') }}">
@@ -23,8 +23,11 @@
       <div id="queryText">Looking for a specific type of class?</div>
       <div id="queryContainer">
         <form action="query">
-          <input id="queryInputMain" type="search" name="query" size="47" placeholder="Easy PDF, interesting class, etc...">
+          <input id="queryInputMain" type="search" name="query" size="47" placeholder="  Easy PDF, interesting class, etc...">
         </form>
+        <!--
+        <div id="searchButton">⚲</div>
+        -->
       </div>
     </div>
 
