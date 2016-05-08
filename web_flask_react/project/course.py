@@ -1,5 +1,6 @@
 import cPickle as pickle
 import re
+import itertools
 
 class Course(object):
 	ratings_order = {'Lectures':0, 
@@ -63,12 +64,15 @@ class Course(object):
 			return 0
 
 	def get_highlighted_text(self, terms):
-		pattern = ' .*? '.join(terms)
+		results = []
 		doc =  self.term_info_dict[self.default_term]['document'].lower()
-		results = re.findall(pattern, doc)
+		for term_list in itertools.permutations(terms):
+			pattern = ' .*? '.join(terms)
+			pattern = '.{0,20}' + pattern + '.{0,20}'
+			results.extend(re.findall(pattern, doc))
 		# import pdb; pdb.set_trace()
 		if len(results) > 0:
-			return reduce(lambda x,y: x if len(x) < len(y) else y, results)
+			return '...' + reduce(lambda x,y: x if len(x) < len(y) else y, results) + '...'
 		else:
 			# import pdb; pdb.set_trace()
 			return None
