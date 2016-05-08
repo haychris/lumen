@@ -100,8 +100,12 @@ def get_class_dict():
 	add_comments('comments_pt_1.csv', class_dict)
 	add_comments('comments_pt_2.csv', class_dict)
 	add_registrar('spring_16_features.csv', class_dict)
-	add_registrar('spring_15_features.csv', class_dict)
 	add_registrar('fall_15_features.csv', class_dict)
+	add_registrar('spring_15_features.csv', class_dict)
+	add_registrar('fall_14_features.csv', class_dict)
+	add_registrar('spring_14_features.csv', class_dict)
+	add_registrar('fall_13_features.csv', class_dict)
+
 	create_documents(class_dict)
 
 	return class_dict
@@ -134,8 +138,9 @@ def get_doc_list(class_dict):
 		for course_id, course_dict in term_dict.items():
 			doc_dict[course_id].append(course_dict['document'])
 	course_doc_dict = {course_id:' '.join(docs) for course_id, docs in doc_dict.items()}
+	course_id_list = course_doc_dict.keys()
 	doc_list = course_doc_dict.values()
-	return course_doc_dict, doc_list
+	return course_doc_dict, course_id_list, doc_list
 
 from nltk import word_tokenize          
 from nltk.stem import WordNetLemmatizer 
@@ -160,7 +165,7 @@ def get_all(filename, generate=False):
 		from cloud.serialization.cloudpickle import dump
 		class_dict = get_class_dict()
 		course_id_lookup_dict, class_number_lookup_dict = get_course_id_lookup_dict(class_dict)
-		course_doc_dict, doc_list = get_doc_list(class_dict)
+		course_doc_dict, course_id_list, doc_list = get_doc_list(class_dict)
 		vectorizer, tfidf_mat = get_tfidf_matrix(doc_list)
 		dump((class_dict, course_id_lookup_dict, class_number_lookup_dict, course_doc_dict, doc_list, vectorizer, tfidf_mat), open(filename, 'wb'))
 	else:
@@ -174,7 +179,7 @@ search_necessities_filename = 'search_necessities.pickle'
 course_info_necessities_filename = 'course_info_necessities.pickle'
 def process_website_necessities():
 	class_dict = get_class_dict()
-	course_doc_dict, doc_list = get_doc_list(class_dict)
+	course_doc_dict, course_id_list, doc_list = get_doc_list(class_dict)
 	vectorizer, tfidf_mat = get_tfidf_matrix(doc_list)
 
 	k = 50
@@ -200,7 +205,7 @@ def process_website_necessities():
 	for i, name in enumerate(feat_names):
 		word_dict[name] = i
 
-	dump((tfidf_mat, word_dict, course_doc_dict), open(search_necessities_filename, 'wb'))
+	dump((vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list), open(search_necessities_filename, 'wb'))
 
 	course_info_dict = {}
 	for course_id in class_number_lookup_dict.keys():

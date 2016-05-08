@@ -1,4 +1,11 @@
 import cPickle as pickle
+import re
+import itertools
+
+def minimizer(x,y):
+	if (0 < len(x) < len(y)) or len(y) == 0:
+		return x
+	return y
 
 class Course(object):
 	ratings_order = {'Lectures':0, 
@@ -24,9 +31,9 @@ class Course(object):
 
 	def get_title(self, term_id=None):
 		if term_id is None:
-			return self.term_info_dict[self.default_term]['COURSE_TITLE']
+			return self.term_info_dict[self.default_term]['title']
 		else:
-			return self.term_info_dict[term_id]['COURSE_TITLE']
+			return self.term_info_dict[term_id]['title']
 	
 	def get_course_listings(self, term_id=None):
 		if term_id is None:
@@ -53,9 +60,34 @@ class Course(object):
 	def get_most_recent_overall_rating(self):
 		ratings_list = self.term_info_dict[self.default_term]['EVAL']
 		if len(ratings_list) > 0:
-			return ratings_list[self.ratings_order['Overall Quality of the Course']][1]
+			try:
+				return ratings_list[self.ratings_order['Overall Quality of the Course']][1]
+			except IndexError:
+				# import pdb; pdb.set_trace()
+				return 0
 		else:
 			return 0
+
+	def get_highlighted_text(self, terms):
+		if len(terms) == 0:
+			return ''
+		doc =  self.term_info_dict[self.default_term]['document'].lower()
+		results = []
+		for term_list in itertools.permutations(terms):
+			pattern = ' .*? '.join(terms)
+			pattern = '.{0,20}' + pattern + '.{0,20}'
+			results.extend(re.findall(pattern, doc))
+		# import pdb; pdb.set_trace()
+		if len(results) > 0:
+			return '...' + reduce(minimizer, results) + '...'
+		else:
+			# import pdb; pdb.set_trace()
+			new_term_lists = [list(terms) for _ in range(len(terms))]
+			for i,term in enumerate(terms):
+				new_term_lists[i].remove(term)
+			new_results = [self.get_highlighted_text(new_term_lists[i]) for i in range(len(terms))]
+			# import pdb; pdb.set_trace()
+			return reduce(minimizer, new_results)
 
 class CourseRenderer(object):
 	def __init__(self, filename):

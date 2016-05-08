@@ -1,115 +1,171 @@
-{% extends "base.html" %}
 {% from "macros.html" import courseEntryArea %}
 
-{% block content %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Lumen</title>
+  <link rel='shortcut icon' href='{{ url_for('static', filename='images/icon.ico') }}' type='image/x-icon'/ >
 
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- styles -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body style="background-image:url({{ url_for('static', filename='images/bkgdtop.jpg') }})">
+  <div id="projectTitleSmall"  onclick="location.href='/'">
+    <img id="projectLogoSmall" src="{{ url_for('static', filename='images/white.png') }}">
+    <span id="projectNameSmall">Lumen</span>
+  </div>
 
-<div id="courseHistExplain">
-  To help us give you personalized recommendations, we need to know which courses you've liked so far!<br><br>
-  <span style="color:white;">What classes have you taken, and how would you rate them?</span>
-</div>
+  <script src="{{ url_for('static', filename='bower_components/jquery/dist/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/react-15.0.2.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/react-dom-15.0.2.js') }}"></script>
 
-<div id="courseHistInput">
-<!-- Freshman Year **************************************************************************-->
-  <div id="freshmanYear" class="yearStyle">
-    <div class="fallSemester">
-      <span class="semesterTitle">Freshman Fall</span>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
 
-      {{ courseEntryArea() }}
-      
-      <div id="appendFF"></div>
-      <div id="FFAddButton" class="addCourseButtonStyle"></div>
+  <div id="courseHistExplain">
+    To help us give you discover new courses, we need to know which ones you've liked so far!
+  </div>
+  <div id="courseHistPrompt">
+    Which courses have you taken, and how did you like them?
+  </div>
+
+  <div id="courseHistInput">
+    <!-- Freshman Year **************************************************************************-->
+    <div id="freshmanYear" class="yearStyle">
+      <div class="fallSemester">
+        <span class="semesterTitle">Freshman Fall</span>
+
+        {{ courseEntryArea("FF") }}
+
+        <div id="appendFF"></div>
+        
+        <div class="courseEntry" style="display: none">
+          <div class="courseName">
+            <input id="FF5N" class="courseName" type="text" placeholder="Course {{number}}"/>
+          </div>
+          <div class="courseRating">
+            <div id="FF5S" class="slider"></div>
+          </div>
+          <div id="FF5R" class="showRating">Neutral</div>
+        </div>
+        <div class="courseEntry" style="display: none">
+          <div class="courseName">
+            <input id="FF6N" class="courseName" type="text" placeholder="Course {{number}}"/>
+          </div>
+          <div class="courseRating">
+            <div id="FF6S" class="slider"></div>
+          </div>
+          <div id="FF6R" class="showRating">Neutral</div>
+        </div>
+        <div class="courseEntry" style="display: none">
+          <div class="courseName">
+            <input id="FF7N" class="courseName" type="text" placeholder="Course {{number}}"/>
+          </div>
+          <div class="courseRating">
+            <div id="FF7S" class="slider"></div>
+          </div>
+          <div id="FF7R" class="showRating">Neutral</div>
+        </div>
+
+        <div id="FFAddButton" class="addCourseButtonStyle"></div>
+      </div>
+
+      <div class="springSemester">
+        <span class="semesterTitle">Freshman Spring</span>
+
+        {{ courseEntryArea("FS") }}
+
+        <div id="appendFS"></div>
+        <div id="FSAddButton" class="addCourseButtonStyle"></div>
+      </div>
     </div>
 
-    <div class="springSemester">
-      <span class="semesterTitle">Freshman Spring</span>
+    <!-- Sophomore Year **************************************************************************-->
+    <div id="sophomoreYear" class="yearStyle" style="display: none;">
+      <div class="fallSemester">
+        <span class="semesterTitle">Sophomore Fall</span>
 
-      {{ courseEntryArea() }}
+        {{ courseEntryArea("SF") }}
 
-      <div id="appendFS"></div>
-      <div id="FSAddButton" class="addCourseButtonStyle"></div>
+        <div id="appendSF"></div>
+        <div id="SFAddButton" class="addCourseButtonStyle"></div>
+      </div>
+      <div class="springSemester">
+        <span class="semesterTitle">Sophomore Spring</span>
+
+        {{ courseEntryArea("SS") }}
+
+        <div id="appendSS"></div>
+        <div id="SSAddButton" class="addCourseButtonStyle"></div>
+      </div>
+    </div>
+
+    <!-- Junior Year **************************************************************************-->
+    <div id="juniorYear" class="yearStyle" style="display: none;">
+      <div class="fallSemester">
+        <span class="semesterTitle">Junior Fall</span>
+
+        {{ courseEntryArea("JF") }}
+
+        <div id="appendJF"></div>
+        <div id="JFAddButton" class="addCourseButtonStyle"></div>
+      </div>
+      <div class="springSemester">
+        <span class="semesterTitle">Junior Spring</span>
+
+        {{ courseEntryArea("JS") }}
+
+        <div id="appendJS"></div>
+        <div id="JSAddButton" class="addCourseButtonStyle"></div>
+      </div>
+    </div>
+
+    <!-- Other Buttons ************************************************************************-->
+
+    <div id="editYearButton">
+      <div id="addSemester"></div>
+      <div id="disabledAdd" class="addDelete" style="display:none">Add</div>
+      <div id="disabledDelete" class="addDelete">Remove</div>
+      <div id="deleteSemester" style="display:none"></div>
+    </div>
+
+    <div style="clear:both">
+      <br/>
+      <span id="majorPrompt">What is your major?</span>
+      <form>
+        <select id="major">
+          <option value="" selected>--Major--</option>
+          <option value="ECO">Economics</option>
+          <option value="COS">Computer Science</option>
+        </select>
+      </form>
+    </div>
+
+    <div>
+      <br/>
+      <span id="certificatePrompt">Are you getting a certificate?</span>
+      <form>
+        <select id="cert">
+          <option value="" selected>--Certificate--</option>
+          <option value="appComp">Applications of Computing</option>
+          <option value="fin">Finance</option>
+        </select>
+      </form>
     </div>
   </div>
 
-<!-- Sophomore Year **************************************************************************-->
-  <div id="sophomoreYear" class="yearStyle" style="display: none;">
-    <div class="fallSemester">
-      <span class="semesterTitle">Sophomore Fall</span>
+  <div onclick="saveToCookie()">GEN COOKIE</div>
+  <div id="getRecommendationsButton" class="getRecommendationsButtonStyle"></div>
 
-      {{ courseEntryArea() }}
+  <!-- scripts -->
+  <script src="{{ url_for('static', filename='scripts/jquery-ui.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/jQueryUIScripts.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/js/courseHistInputJSX.js') }}"></script>
+  <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/cookies.js') }}"></script>
 
-      <div id="appendSF"></div>
-      <div id="SFAddButton" class="addCourseButtonStyle"></div>
-    </div>
-    <div class="springSemester">
-      <span class="semesterTitle">Sophomore Spring</span>
-
-      {{ courseEntryArea() }}
-
-      <div id="appendSS"></div>
-      <div id="SSAddButton" class="addCourseButtonStyle"></div>
-    </div>
-  </div>
-
-<!-- Junior Year **************************************************************************-->
-  <div id="juniorYear" class="yearStyle" style="display: none;">
-    <div class="fallSemester">
-      <span class="semesterTitle">Junior Fall</span>
-
-      {{ courseEntryArea() }}
-
-      <div id="appendJF"></div>
-      <div id="JFAddButton" class="addCourseButtonStyle"></div>
-    </div>
-    <div class="springSemester">
-      <span class="semesterTitle">Junior Spring</span>
-
-      {{ courseEntryArea() }}
-
-      <div id="appendJS"></div>
-      <div id="JSAddButton" class="addCourseButtonStyle"></div>
-    </div>
-  </div>
-
-<!-- Other Buttons ************************************************************************-->
-
-  <div id="editYearButton">
-    <div id="addSemester"></div>
-    <div id="disabledAdd" class="addDelete" style="display:none">Add</div>
-    <div id="disabledDelete" class="addDelete">Remove</div>
-    <div id="deleteSemester" style="display:none"></div>
-  </div>
-
-  <div style="clear:both">
-    <br/>
-    <span id="majorPrompt">What is your major?</span>
-    <form>
-      <select id="major">
-        <option value="" selected>--Major--</option>
-        <option value="ECO">Economics</option>
-        <option value="COS">Computer Science</option>
-      </select>
-    </form>
-  </div>
-
-  <div>
-    <br/>
-    <span id="certificatePrompt">Are you getting a certificate?</span>
-    <form>
-      <select id="cert">
-        <option value="" selected>--Certificate--</option>
-        <option value="appComp">Applications of Computing</option>
-        <option value="fin">Finance</option>
-      </select>
-    </form>
-  </div>
-</div>
-
-<div id="getRecommendationsButton" class="getRecommendationsButtonStyle"></div>
-
-<script src="{{ url_for('static', filename='scripts/jquery-ui.min.js') }}"></script>
-<script src="{{ url_for('static', filename='scripts/jQueryUIScripts.js') }}"></script>
-<script src="{{ url_for('static', filename='scripts/js/courseHistInputJSX.js') }}"></script>
-
-{% endblock content %}
+</body>
+</html>

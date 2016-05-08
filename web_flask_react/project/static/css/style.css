@@ -1,7 +1,7 @@
 body {
   font-family: Tahoma, Geneva, sans-serif;
   background-size: cover;
-  margin: 0 0 50px 0;
+  margin: 0 0 30px 0;
   padding: 0;
   text-align: center;
 }
@@ -78,8 +78,14 @@ img {
 }
 
 #queryText {
+  color: white;
   font-size: 1.5em;
   margin-bottom: 5px;
+/*  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;*/
 }
 
 #queryContainer {
@@ -91,9 +97,18 @@ img {
   width: 100%;
 }
 
+#searchButton {
+  background-color: blue;
+}
+
 .courseHistOption {
   margin-top: 7%;
   color:white;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
 #courseHistText {
@@ -121,9 +136,22 @@ img {
  * Course history input page *
  *****************************/
 #courseHistExplain {
-  font-size: 21px;
-  width: 700px;
+  font-size: 16px;
+  width: 450px;
   margin: 50px auto 0 auto;
+  color: white;
+}
+
+#courseHistPrompt {
+  font-size: 30px;
+  color: white;
+  margin: 25px auto 50px auto;
+  width: 1000px;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
 #courseHistInput {
@@ -269,25 +297,33 @@ img {
  ******************************/
 #resultPrompt {
   width: 700px;
-  margin: 10px auto 0 auto;
+  margin: 20px auto 0 auto;
   color: white;
-  font-size: 21px;
+  font-size: 28px;
 }
 
 #editCourseHistButton {
-  margin-top: 5px;
+  margin: 5px auto 0 auto;
   font-size: 14px;
+  cursor: pointer;
+  width: 350px;
 }
 
 .resultName {
   width: 200px;
   height: 100%;
   float:left; 
-  background-color: blue;
-  color: black;
-//  border-top-left-radius: 5px;
-//  border-bottom-left-radius: 5px;
+  color: white;
+//  background-color: #3B653D;
+  background-color: #335C35;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+/*  border-left: 3px solid white;
+  border-top: 3px solid white;
+  border-bottom: 3px solid white;*/
   border-radius: 5px;
+  border: 3px solid #e6e6e6;
+  cursor: pointer;
 }
 
 .resultCourseNumber {
@@ -310,7 +346,6 @@ img {
 .resultExpand {
   height: 25%;
   display: block;
-  cursor: pointer;
 }
 
 .resultData {
@@ -318,16 +353,23 @@ img {
   height: 100%;
   float: left;
   color: white;
+/*  border-right: 3px dashed #e6e6e6;
+  border-top: 3px dashed #e6e6e6;
+  border-bottom: 3px dashed #e6e6e6;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;*/
 }
 
 .resultScoreData {
   height: 30%;
   display: block;
+  text-align: left;
+  margin-left: 150px;
 }
 
 .resultScore {
   float: right;
-  margin-right: 10px;
+  margin-right: 50px;
   padding-top: 10px;
   font-size: 17px;
 }
@@ -354,11 +396,11 @@ img {
 }
 
 .result {
-  margin: 10px auto 0 auto;
+  margin: 20px auto 0 auto;
   width: 800px;
   height: 150px;
 //  background-color: tomato;
-//  border-radius: 5px;
+  border-radius: 5px;
 }
 
 .loadMoreButton {
