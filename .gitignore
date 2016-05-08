@@ -4,7 +4,5 @@
 
 env
 
-node_modules/
 npm-debug.log
-bower_components/
 .module-cache
