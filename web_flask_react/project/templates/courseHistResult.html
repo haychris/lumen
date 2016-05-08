@@ -40,9 +40,9 @@
       </div>
       <script> 
           text = "<font size='6px'>";
-          rawScore = parseFloat({{result.get_most_recent_overall_rating()}});
-          numstars = parseInt({{result.get_most_recent_overall_rating()}});
-          halfStars = Math.round(rawScore - numstars);
+          score = Math.round(2*parseFloat({{result.get_most_recent_overall_rating()}}))/2.0;
+          numstars = Math.floor(score);
+          halfStars = Math.round(score - numstars);
 
           for (i = 0; i < numstars; i++) { 
             text += "<font color='gold'>★</font>"
