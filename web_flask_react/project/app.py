@@ -7,6 +7,10 @@ from course import Course, CourseRenderer
 from recommend import Recommender
 from search import Searcher
 
+import nltk
+
+nltk.data.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'nltk_data/'))
+
 app = Flask(__name__)
 
 recommender = Recommender(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/recommender_necessities.pickle'))
