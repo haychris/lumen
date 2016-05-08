@@ -1,7 +1,7 @@
 //Constants
 var oneRating = "Hate";
 var twoRating = "Dislike";
-var threeRating = "Meh";
+var threeRating = "Neutral";
 var fourRating = "Like";
 var fiveRating = "Amazing";
 

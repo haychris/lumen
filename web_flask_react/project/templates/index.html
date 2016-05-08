@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
-  <body style="background-image:url({{ url_for('static', filename='images/chalkboard.jpg') }})">
+  <body style="background-image:url({{ url_for('static', filename='images/bkgdlong.jpg') }})">
   <div class="projectTitleMain">
       <div id="projectNameMain">
           <img id="projectLogo" src="{{ url_for('static', filename='images/white.png') }}">
@@ -19,11 +19,13 @@
     </div>
     <p id="projectDescription">Cast light on the incredible courses you never considered.</p>
 
-    <div class="queryEntry">
+    <div id="queryEntry">
       <div id="queryText">Looking for a specific type of class?</div>
-      <form  action="query">
-        <input id="queryInputMain" type="search" name="query" size="47" placeholder="Easy PDF, interesting class, etc...">
-      </form>
+      <div id="queryContainer">
+        <form action="query">
+          <input id="queryInputMain" type="search" name="query" size="47" placeholder="Easy PDF, interesting class, etc...">
+        </form>
+      </div>
     </div>
 
     <div class="courseHistOption">

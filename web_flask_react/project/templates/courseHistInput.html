@@ -7,7 +7,7 @@
 
 <div id="courseHistExplain">
   To help us give you personalized recommendations, we need to know which courses you've liked so far!<br><br>
-  What classes have you taken, and how would you rate them?
+  <span style="color:white;">What classes have you taken, and how would you rate them?</span>
 </div>
 
 <div id="courseHistInput">
@@ -74,11 +74,16 @@
 
 <!-- Other Buttons ************************************************************************-->
 
-  <div id="addSemester"></div>
-  <div id="deleteSemester" style="display:none"></div>
+  <div id="editYearButton">
+    <div id="addSemester"></div>
+    <div id="disabledAdd" style="display:none">Add</div>
+    <div id="disabledDelete">Remove</div>
+    <div id="deleteSemester" style="display:none"></div>
+  </div>
 
-  <div>
-    What is your major?
+  <div style="clear:both">
+    <br/>
+    <span id="majorPrompt">What is your major?</span>
     <form>
       <select id="major">
         <option value="" selected>--Major--</option>
@@ -89,7 +94,8 @@
   </div>
 
   <div>
-    Are you getting a certificate?
+    <br/>
+    <span id="certificatePrompt">Are you getting a certificate?</span>
     <form>
       <select id="cert">
         <option value="" selected>--Certificate--</option>

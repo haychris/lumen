@@ -1,7 +1,7 @@
 body {
   font-family: Tahoma, Geneva, sans-serif;
   background-size: cover;
-  margin: 0;
+  margin: 0 0 50px 0;
   padding: 0;
   text-align: center;
 }
@@ -15,18 +15,10 @@ img {
   margin-top: 100px;
   margin-left: 40%;
   margin-right: 40%;
-}
-
-.projectTitleSmall {
-  overflow:hidden;
-  margin-top: 1%;
-  margin-left: 42%;
-  margin-right: 42%;
-  cursor: pointer;
+  color:white;
 }
 
 #projectNameMain {
-  color: white;
   font-size: 65px;
   height: 100px;
   position: relative;
@@ -38,32 +30,61 @@ img {
   left: 90px;
 }
 
-#projectNameSmall {
-  font-size: 52px;
-}
-
 #projectLogo {
   width: 90px;
   height: 90px;
   float: left;
 }
 
-#projectDescription {
-  color: white;
-  font-size: 17px;
+#projectTitleSmall {
+  margin-top: 10px;
+  margin-left: 42%;
+  margin-right: 42%;
+  cursor: pointer;
+  position: relative;
+  height: 75px;
+  color:white;
 }
 
-.queryEntry {
-  margin: 150px 35% 0 35%;
+#projectLogoSmall {
+  width: 75px;
+  height: 75px;
+  float: left;
+}
+
+#projectNameSmall {
+  font-size: 52px;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 75px;
+}
+
+
+#projectDescription {
+  font-size: 17px;
+  color:white;
+}
+
+#queryEntry {
+  margin: 150px auto 0 auto;
+  width: 600px;
+}
+
+#queryEntrySmall {
+  margin-top: 10px;
 }
 
 /**************
  * Index page *
  **************/
 #queryText {
-  color: white;
   font-size: 1.5em;
   margin-bottom: 5px;
+}
+
+#queryContainer {
+  margin: 0 50px 0 50px;
 }
 
 #queryInputMain {
@@ -73,29 +94,37 @@ img {
 
 .courseHistOption {
   margin-top: 7%;
+  color:white;
 }
 
 #courseHistText {
-  color: white;
   font-size: 21px;
 }
 
 #courseHistButtonStyle {
   font-size: 21px;
-  margin: 0 45% 0 45%;
+  margin: 10px 45% 0 45%;
   padding: 10px 0 10px 0;
   background-color: black;
-  color: Gold;
   cursor: pointer;
   border-radius: 10px;
+  color: white;
+}
+
+#courseHistButtonStyle:hover {
+  color: Gold;
+  border-color: gold;
+  outline: none;
+  box-shadow: 0 0 10px gold;
 }
 
 /*****************************
  * Course history input page *
  *****************************/
 #courseHistExplain {
-  margin-top: 10px;
   font-size: 21px;
+  width: 700px;
+  margin: 50px auto 0 auto;
 }
 
 #courseHistInput {
@@ -105,14 +134,12 @@ img {
 }
 
 .fallSemester {
-//  background-color: blue;
   float: left;
   width: 50%;
   margin-top: 10px;
 }
 
 .springSemester {
- // background-color: red;
   float: right;
   width: 50%;
   margin-top: 10px;
@@ -120,11 +147,13 @@ img {
 
 .semesterTitle {
   font-size: 21px;
+  color:white;
 }
 
 .yearStyle {
   min-height: 100px;
   overflow:hidden;
+  margin-top: 30px;
 }
 
 .courseEntry {
@@ -135,6 +164,13 @@ img {
   min-width: 1px;
   float: left;
   margin-left: 20%;
+  border: none;
+}
+
+.courseName:focus {
+  border-color: yellow;
+  outline: none;
+  box-shadow: 0 0 15px yellow;
 }
 
 .courseRating {
@@ -150,45 +186,94 @@ img {
 .showRating {
   float: left;
   margin: 5px 30px;
+  color:white;
+}
+
+#editYearButton {
+  width: 300px;
+  margin: 50px auto 0 auto;
 }
 
 .addCourseButtonStyle {
-  background-color: green;
-  width: 100px;
+  background-color: slateblue;
+  width: 125px;
   height: 25px;
-  margin: 0 auto 0 auto;
+  border-radius: 10px;
+  margin: 10px auto 0 auto;
   clear: both;
   cursor: pointer;
+  font-size: 16px;
 }
 
 #addSemesterButton {
+  background-color: forestgreen;
+  font-size: 21px;
+  height: 50px;
+  width: 45%;
+  float: left;
+  padding: 10px 0 10px 0;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+#disabledAdd {
   background-color: gray;
   font-size: 21px;
   height: 50px;
-  width: 200px;
-  margin: 0 auto 0 auto;
+  width: 45%;
+  float: left;
   padding: 10px 0 10px 0;
-  cursor: pointer;
+  border-radius: 10px;
+  cursor: default;
 }
 
 #deleteSemesterButton {
-  background-color: LimeGreen;
+  background-color: orangered;
   font-size: 21px;
   height: 50px;
-  width: 200px;
-  margin: 0 auto 0 auto;
+  width: 45%;
+  float: right;
   padding: 10px 0 10px 0;
   cursor: pointer;
+  border-radius: 10px;
+}
+
+#disabledDelete {
+  background-color: gray;
+  font-size: 21px;
+  height: 50px;
+  width: 45%;
+  float: right;
+  padding: 10px 0 10px 0;
+  border-radius: 10px;
+  cursor: default;
+}
+
+#majorPrompt {
+  color: white;
+}
+
+#certificatePrompt {
+  color: white;
 }
 
 .getRecommendationsButtonStyle {
-  background-color: tomato;
+  background-color: black;
   font-size: 21px;
   height: 50px;
   width: 200px;
-  margin: 0 auto 0 auto;
+  margin: 50px auto 0 auto;
   padding: 10px 0 10px 0;
   cursor: pointer;
+  border-radius: 10px;
+  color: white;
+}
+
+.getRecommendationsButtonStyle:hover {
+  color: gold;
+  border-color: gold;
+  outline: none;
+  box-shadow: 0 0 10px gold;
 }
 
 
@@ -204,9 +289,14 @@ img {
 /*********************
  * Query result page *
 **********************/
+#queryContainerSmall {
+  margin: 0 auto 0 auto;
+  width: 500px;
+}
 
-#queryForm {
-  margin: 0 40% 0 40%;
+#requery {
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .result {
@@ -216,9 +306,10 @@ img {
   background-color: tomato;
 }
 
-#loadMoreButton {
+.loadMoreButton {
   font-size: 14px;
   margin: 10px 45% 0 45%;
   padding: 10px 0 10px 0;
   background-color: blue;
+  display: none;
 }
