@@ -23,7 +23,7 @@ var AddSemester = React.createClass({
   },
   render: function() {
     return (
-      <div id="addSemesterButton" onClick={this.appendSemester}>Add</div>
+      <div id="addSemesterButton" className="addDelete" onClick={this.appendSemester}>Add</div>
     );
   }
 });
@@ -59,7 +59,7 @@ var DeleteSemester = React.createClass({
   },
   render: function() {
     return (
-      <div id="deleteSemesterButton" onClick={this.removeSemester}>Remove</div>
+      <div id="deleteSemesterButton" className="addDelete" onClick={this.removeSemester}>Remove</div>
     );
   }
 });

@@ -11,19 +11,6 @@ img {
   max-height: 100%;
 }
 
-.projectTitleMain {
-  margin-top: 100px;
-  margin-left: 40%;
-  margin-right: 40%;
-  color:white;
-}
-
-#projectNameMain {
-  font-size: 65px;
-  height: 100px;
-  position: relative;
-}
-
 .projectTitle {
   position: absolute;
   bottom: 0;
@@ -60,6 +47,21 @@ img {
   left: 75px;
 }
 
+/**************
+ * Index page *
+ **************/
+.projectTitleMain {
+  margin-top: 100px;
+  margin-left: 40%;
+  margin-right: 40%;
+  color:white;
+}
+
+#projectNameMain {
+  font-size: 65px;
+  height: 100px;
+  position: relative;
+}
 
 #projectDescription {
   font-size: 17px;
@@ -75,9 +77,6 @@ img {
   margin-top: 10px;
 }
 
-/**************
- * Index page *
- **************/
 #queryText {
   font-size: 1.5em;
   margin-bottom: 5px;
@@ -205,47 +204,35 @@ img {
   font-size: 16px;
 }
 
-#addSemesterButton {
-  background-color: forestgreen;
+.addDelete {
   font-size: 21px;
   height: 50px;
   width: 45%;
-  float: left;
   padding: 10px 0 10px 0;
-  cursor: pointer;
   border-radius: 10px;
+}
+
+#addSemesterButton {
+  background-color: forestgreen;
+  float: left;
+  cursor: pointer;
 }
 
 #disabledAdd {
   background-color: gray;
-  font-size: 21px;
-  height: 50px;
-  width: 45%;
   float: left;
-  padding: 10px 0 10px 0;
-  border-radius: 10px;
   cursor: default;
 }
 
 #deleteSemesterButton {
   background-color: orangered;
-  font-size: 21px;
-  height: 50px;
-  width: 45%;
   float: right;
-  padding: 10px 0 10px 0;
-  cursor: pointer;
-  border-radius: 10px;
+  cursor: pointer
 }
 
 #disabledDelete {
   background-color: gray;
-  font-size: 21px;
-  height: 50px;
-  width: 45%;
   float: right;
-  padding: 10px 0 10px 0;
-  border-radius: 10px;
   cursor: default;
 }
 
@@ -280,10 +267,77 @@ img {
 /******************************
  * Course history result page *
  ******************************/
+#resultPrompt {
+  width: 700px;
+  margin: 10px auto 0 auto;
+  color: white;
+  font-size: 21px;
+}
 
 #editCourseHistButton {
   margin-top: 5px;
-  font-size: 11px;
+  font-size: 14px;
+}
+
+.resultName {
+  width: 200px;
+  height: 100%;
+  float:left; 
+  background-color: blue;
+  color: black;
+//  border-top-left-radius: 5px;
+//  border-bottom-left-radius: 5px;
+  border-radius: 5px;
+}
+
+.resultCourseNumber {
+  height: 30%;
+  position: relative;
+  padding-top:10px;
+  font-size: 21px;
+}
+
+.resultCourseNameContainer {
+  height: 70%;
+  position: relative;
+}
+
+.resultCourseName {
+  height: 75%;
+  display: block;
+}
+
+.resultExpand {
+  height: 25%;
+  display: block;
+  cursor: pointer;
+}
+
+.resultData {
+  width: 600px;
+  height: 100%;
+  float: left;
+  color: white;
+}
+
+.resultScoreData {
+  height: 30%;
+  display: block;
+}
+
+.resultScore {
+  float: right;
+  margin-right: 10px;
+  padding-top: 10px;
+  font-size: 17px;
+}
+
+.resultComments {
+  text-align: left;
+  height: 70%;
+  display: block;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /*********************
@@ -300,10 +354,11 @@ img {
 }
 
 .result {
-  margin: 5px auto 0 auto;
-  width: 600px;
+  margin: 10px auto 0 auto;
+  width: 800px;
   height: 150px;
-  background-color: tomato;
+//  background-color: tomato;
+//  border-radius: 5px;
 }
 
 .loadMoreButton {

@@ -2,54 +2,56 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 {% block content %}
-    <div style="color:white">
+    <div id="resultPrompt">
       Based on your past courses, we recommend...
     </div>
     <div id="editCourseHistButton" onclick="location.href='userratings'">
-      Want to edit your course/major info?
+      Need to update your course/major info?<br/><br/>
     </div>
 
     {% for result in results %}
-      <div class="result" onclick="showDiv{{loop.index}}()" style="cursor: pointer">
+      <div class="result">
 
-        <div style="width: 30%; height:100%;float:left; background:white">
-          <div style="height: 30%; position:relative; padding-top:10px">
-            <font size="4">
+        <div class="resultName">
+          <div class="resultCourseNumber">
               {{result.get_course_listings()}}
-            </font>
           </div>
-          <div style="height: 70%; position:relative">
-            <div style="height: 75%; display:block">
+          <div class="resultCourseNameContainer">
+            <div class="resultCourseName">
               {{result.get_title()}}
             </div>
-            <div style="height: 25%; display:block">
+            <div class="resultExpand" onclick="showDiv{{loop.index}}()">
               (Details)
             </div>
           </div>
         </div>
 
-        <div style="width:70%;height:100%;float: left">
-          <div style="height: 30%; display:block">
+        <div class="resultData">
+          <div class="resultScoreData">
            <div id="starRating_{{loop.index}}" style="display:inline"></div>
-           <div style="float:right; margin-right:10px; padding-top:10px">
-              <font size="4">
+           <div class="resultScore">
               {{result.get_default_term_text()}}: {{result.get_most_recent_overall_rating()}}
-              </font>
            </div>
           </div>
-          <div style="height: 70%; display:block; padding-left:10px; padding-right:10px">
+          <div class="resultComments">
            {{result.get_comments()[0]}}
           </div>
         </div>
       </div>
       <script> 
-          text = "<font size='6'>";
-          numstars = Math.round(parseFloat({{result.get_most_recent_overall_rating()}}))
+          text = "<font size='6px'>";
+          rawScore = parseFloat({{result.get_most_recent_overall_rating()}});
+          numstars = parseInt({{result.get_most_recent_overall_rating()}});
+          halfStars = Math.round(rawScore - numstars);
+
           for (i = 0; i < numstars; i++) { 
-            text += "<span>★</span>"
-          } 
+            text += "<font color='gold'>★</font>"
+          }
+          for (i = 0; i < halfStars; i++) {
+            text += "<font color='gold'>⋆</font>"
+          }
           for (i = numstars; i < 5; i++) { 
-            text += "<span>☆</span>"
+            text += "<font color='black'>☆</font>"
           } 
           text += "</font>";
           document.getElementById("starRating_{{loop.index}}").innerHTML = text; 
@@ -134,5 +136,6 @@
     {% endfor %}
 
     <div class="loadMoreButton" onclick="">Load More</div>
-<div id="barchart_values" style="width: 900px; height: 300px;"></div>
+<!--    <div id="barchart_values" style="width: 900px; height: 300px;"></div>
+-->
 {% endblock content %}
