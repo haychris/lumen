@@ -12,7 +12,7 @@
     {% for result in results %}
       <div class="result">
 
-        <div class="resultName">
+        <div class="resultName" onclick="showDiv{{loop.index}}()">
           <div class="resultCourseNumber">
               {{result.get_course_listings()}}
           </div>
@@ -20,7 +20,7 @@
             <div class="resultCourseName">
               {{result.get_title()}}
             </div>
-            <div class="resultExpand" onclick="showDiv{{loop.index}}()">
+            <div class="resultExpand">
               (Details)
             </div>
           </div>
@@ -50,14 +50,14 @@
           for (i = 0; i < halfStars; i++) {
             text += "<font color='gold'>⋆</font>"
           }
-          for (i = numstars; i < 5; i++) { 
+          for (i = numstars+halfStars; i < 5; i++) { 
             text += "<font color='black'>☆</font>"
           } 
           text += "</font>";
           document.getElementById("starRating_{{loop.index}}").innerHTML = text; 
       </script>
 
-      <div class="result" id="result_hidden_{{loop.index}}" style="display:none; margin-top:0; background:white; height:150px">
+      <div class="result" class="expandedResult" id="result_hidden_{{loop.index}}" style="display:none; margin-top:0; background:white; height:150px">
         <div align="left" style="display:none">
           Lectures: {{result.get_all_ratings()[0]}}
         </div>

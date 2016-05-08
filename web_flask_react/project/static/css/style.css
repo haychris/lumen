@@ -283,11 +283,16 @@ img {
   width: 200px;
   height: 100%;
   float:left; 
-  background-color: blue;
-  color: black;
-//  border-top-left-radius: 5px;
-//  border-bottom-left-radius: 5px;
-  border-radius: 5px;
+  background-color: darkolivegreen;
+  color: white;
+/*  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-left: 3px dashed white;
+  border-top: 3px dashed white;
+  border-bottom: 3px dashed white;*/
+//  border-radius: 5px;
+//  border: 3px dashed white;
+  cursor: pointer;
 }
 
 .resultCourseNumber {
@@ -310,7 +315,6 @@ img {
 .resultExpand {
   height: 25%;
   display: block;
-  cursor: pointer;
 }
 
 .resultData {
@@ -318,6 +322,11 @@ img {
   height: 100%;
   float: left;
   color: white;
+  border-right: 3px dashed white;
+  border-top: 3px dashed white;
+  border-bottom: 3px dashed white;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .resultScoreData {
@@ -340,6 +349,12 @@ img {
   padding-right: 10px;
 }
 
+.expandedResult {
+  margin-top:0;
+  background:white;
+  height:150px;
+}
+
 /*********************
  * Query result page *
 **********************/
@@ -354,11 +369,11 @@ img {
 }
 
 .result {
-  margin: 10px auto 0 auto;
+  margin: 20px auto 0 auto;
   width: 800px;
   height: 150px;
 //  background-color: tomato;
-//  border-radius: 5px;
+  border-radius: 5px;
 }
 
 .loadMoreButton {
