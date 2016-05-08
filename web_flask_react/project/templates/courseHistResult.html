@@ -115,7 +115,7 @@
 
       var options = {
         title: "Most Recent Class Ratings for {{result.get_course_listings()}}",
-        width: 600,
+        width: 800,
         height: 150,
         bar: {groupWidth: "95%"},
         chartArea: {left:120},
@@ -125,6 +125,7 @@
           maxValue: 4,
           gridlines: { count: 6 }
         },
+        backgroundColor: 'grey'
       };
       var chart = new google.visualization.BarChart(document.getElementById("chart_{{loop.index}}"));
       chart.draw(view, options);

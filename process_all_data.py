@@ -100,8 +100,12 @@ def get_class_dict():
 	add_comments('comments_pt_1.csv', class_dict)
 	add_comments('comments_pt_2.csv', class_dict)
 	add_registrar('spring_16_features.csv', class_dict)
-	add_registrar('spring_15_features.csv', class_dict)
 	add_registrar('fall_15_features.csv', class_dict)
+	add_registrar('spring_15_features.csv', class_dict)
+	add_registrar('fall_14_features.csv', class_dict)
+	add_registrar('spring_14_features.csv', class_dict)
+	add_registrar('fall_13_features.csv', class_dict)
+
 	create_documents(class_dict)
 
 	return class_dict

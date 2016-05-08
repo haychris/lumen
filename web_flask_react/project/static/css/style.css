@@ -283,7 +283,7 @@ img {
   width: 200px;
   height: 100%;
   float:left; 
-  background-color: blue;
+  background-color: white;
   color: black;
 //  border-top-left-radius: 5px;
 //  border-bottom-left-radius: 5px;
@@ -318,6 +318,7 @@ img {
   height: 100%;
   float: left;
   color: white;
+  background-color: #DA621E;
 }
 
 .resultScoreData {
