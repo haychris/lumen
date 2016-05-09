@@ -9,10 +9,10 @@ class Recommender(object):
 	def recommend(self, course_nums, ratings):
 		course_ids = []
 		for course_num in course_nums:
-			try:
-				course_ids.append(self.course_id_lookup_dict[course_num])
-			except KeyError:
-				continue
+			course_id_list = self.course_id_lookup_dict[course_num]
+			if course_id_list:
+				course_ids.append(course_id_list)
+			
 		cluster_scores = np.zeros(self.K)
 
 		for course_id_list, rating in zip(course_ids, ratings):
