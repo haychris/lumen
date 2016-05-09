@@ -322,7 +322,7 @@ img {
 }
 
 .resultName {
-  width: 200px;
+  width: 250px;
   height: 100%;
   float:left; 
   color: white;
@@ -354,10 +354,11 @@ img {
 .resultExpand {
   height: 25%;
   display: block;
+  color:#94c0cc;
 }
 
 .resultData {
-  width: 600px;
+  width: 650px;
   height: 100%;
   float: left;
   color: white;
@@ -407,7 +408,7 @@ img {
 
 .result {
   margin: 20px auto 0 auto;
-  width: 800px;
+  width: 900px;
   height: 145px;
   border-radius: 5px;
 }

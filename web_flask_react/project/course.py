@@ -38,14 +38,6 @@ class Course(object):
 			title = self.term_info_dict[term_id]['COURSE_TITLE']
 		return title
 
-	def processed_title(self, term_id=None):
-		title = self.get_title(term_id)
-		split_title = title.split()
-		new_title = ' '.join(split_title[:3])
-		if len(split_title) > 3:
-			new_title += '...'
-		return new_title
-	
 	def get_course_listings(self, term_id=None):
 		if term_id is None:
 			term_id = self.default_term
@@ -53,6 +45,14 @@ class Course(object):
 		if not listings:
 			listings = self.term_info_dict[term_id]['SUBJECT'] + ' ' + self.term_info_dict[term_id]['CATALOG_NBR']
 		return listings
+
+	def processed_course_listings(self, term_id=None):
+		course_listings = self.get_course_listings(term_id)
+		split_course_listings = course_listings.split()
+		new_course_listings = ' '.join(split_course_listings[:4])
+		if len(split_course_listings) > 4:
+			new_course_listings += '...'
+		return new_course_listings
 
 	def get_list_of_course_nums(self, term_id=None):
 		listings = self.get_course_listings(term_id).split()
@@ -71,7 +71,7 @@ class Course(object):
 
 	# !!!!!!!!!!! 
 	def get_first_professor(self, profs):
-		return profs.split('|')
+		return profs.split('|')[0]
 
 	def get_comments(self, term_id=None):
 		if term_id is None:
