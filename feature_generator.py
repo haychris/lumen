@@ -10,12 +10,12 @@ json_data = json.load(input_file)
 # separated by whatever separator is defined as
 seperator = ' '
 for class_data in json_data:
-	class_data['prof_string'] = seperator.join([prof['name'] for prof in class_data['profs']])
+	class_data['prof_string'] = '|'.join([prof['name'] for prof in class_data['profs']])
 	class_data['all_listings_string'] = seperator.join([listing['dept'] + ' ' + listing['number'] for listing in class_data['listings']])
 
 
 # features = ['termid', 'courseid', 'title', 'prof_string', 'all_listings_string', 'area', 'prereqs', 'descrip']
-features = ['termid', 'courseid', 'title', 'all_listings_string', 'area', 'prereqs', 'descrip']
+features = ['termid', 'courseid', 'title', 'prof_string', 'all_listings_string', 'area', 'prereqs', 'descrip']
 
 
 ##### CONSTRUCT FEATURES CSV ####

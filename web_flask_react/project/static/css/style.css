@@ -97,6 +97,12 @@ img {
   width: 100%;
 }
 
+#queryInputMain:focus {
+  border-color: yellow;
+  outline: none;
+  box-shadow: 0 0 15px yellow;
+}
+
 #searchButton {
   background-color: blue;
 }
@@ -303,24 +309,26 @@ img {
 }
 
 #editCourseHistButton {
+  color: gold;
   margin: 5px auto 0 auto;
   font-size: 14px;
   cursor: pointer;
   width: 350px;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
 .resultName {
-  width: 200px;
+  width: 250px;
   height: 100%;
   float:left; 
   color: white;
-//  background-color: #3B653D;
   background-color: #335C35;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-/*  border-left: 3px solid white;
-  border-top: 3px solid white;
-  border-bottom: 3px solid white;*/
   border-radius: 5px;
   border: 3px solid #e6e6e6;
   cursor: pointer;
@@ -346,18 +354,14 @@ img {
 .resultExpand {
   height: 25%;
   display: block;
+  color:#94c0cc;
 }
 
 .resultData {
-  width: 600px;
+  width: 650px;
   height: 100%;
   float: left;
   color: white;
-/*  border-right: 3px dashed #e6e6e6;
-  border-top: 3px dashed #e6e6e6;
-  border-bottom: 3px dashed #e6e6e6;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;*/
 }
 
 .resultScoreData {
@@ -380,6 +384,7 @@ img {
   display: block;
   padding-left: 10px;
   padding-right: 10px;
+  overflow: hidden;
 }
 
 /*********************
@@ -395,11 +400,16 @@ img {
   width: 100%;
 }
 
+#requery:focus {
+  border-color: yellow;
+  outline: none;
+  box-shadow: 0 0 15px yellow;
+}
+
 .result {
   margin: 20px auto 0 auto;
-  width: 800px;
-  height: 150px;
-//  background-color: tomato;
+  width: 1000px;
+  height: 145px;
   border-radius: 5px;
 }
 
@@ -409,4 +419,34 @@ img {
   padding: 10px 0 10px 0;
   background-color: blue;
   display: none;
+}
+
+.fulfillmentNotification {
+  width: 100px;
+  height: 100px;
+  text-align: left;
+  float: left;
+}
+
+.major {
+  color: #fad48b;
+}
+
+.cert {
+  color: #f5f9ad;
+}
+
+.noResults {
+  font-size: 28px;
+  color: white;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
+}
+
+.requeryPrompt {
+  font-size: 21px;
+  color: white;
 }

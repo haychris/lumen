@@ -54,3 +54,9 @@ function hasCookie() {
   else
     return true;
 }
+
+function showCookie() {
+  var cookie = document.cookie.split(";")[0];
+  console.log("Loading: " + cookie);
+  return;
+}

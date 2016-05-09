@@ -6,6 +6,7 @@ from flask import url_for
 from course import Course, CourseRenderer
 from recommend import Recommender
 from search import Searcher
+from planner import Planner
 
 import nltk
 
@@ -13,9 +14,21 @@ nltk.data.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '
 
 app = Flask(__name__)
 
-recommender = Recommender(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/recommender_necessities.pickle'))
-searcher = Searcher(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/search_necessities.pickle'))
-course_renderer = CourseRenderer(os.path.join(os.path.dirname(os.path.abspath(__file__)),'static/course_info_necessities.pickle'))
+import cPickle as pickle
+
+filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/website_necessities.pickle')
+course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k, vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list, course_info_dict = pickle.load(open(filename, 'rb'))
+
+planner = Planner(os.path.join(os.path.dirname(os.path.abspath(__file__)),'project/static/majors.csv'), os.path.join(os.path.dirname(os.path.abspath(__file__)),'project/static/certificates.csv'), course_id_list, class_number_lookup_dict)
+recommender = Recommender(course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k, course_id_list, planner)
+searcher = Searcher(vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list, course_id_lookup_dict, planner)
+course_renderer = CourseRenderer(course_info_dict, planner)
+# recommender = Recommender(os.path.join(os.getcwd(), 'project/static/recommender_necessities.pickle'))
+# searcher = Searcher(os.path.join(os.getcwd(), 'project/static/search_necessities.pickle'), recommender.course_id_lookup_dict)
+# planner = Planner(os.path.join(os.getcwd(),'project/static/majors.csv'), os.path.join(os.getcwd(),'project/static/certificates.csv'), searcher.course_id_list, recommender.class_number_lookup_dict)
+# searcher.add_planner(planner)
+
+# course_renderer = CourseRenderer(os.path.join(os.getcwd(),'project/static/course_info_necessities.pickle'), planner)
 
 max_results = 20
 
@@ -25,12 +38,16 @@ def index():
 
 @app.route('/query')
 def process_query():
+	major = request.cookies['Major']
+	certificate = request.cookies['Certificate']
 	query = request.args.get('query')
+	major = request.cookies['Major']
+	certificate = request.cookies['Certificate']
 	print 'Query: ', query
 	terms = query.lower().split()
-	results = searcher.search(query.lower())
+	results = searcher.search(query.lower(), major, certificate)
 	courses = [course_renderer.get_course(course_id) for course_id in results[:max_results]]
-	return render_template('queryResult.html', results=courses, terms=terms)
+	return render_template('queryResult.html', results=courses, terms=terms, major=major, certificate=certificate)
 
 @app.route('/userratings')
 def get_user_ratings():
@@ -38,6 +55,9 @@ def get_user_ratings():
 
 @app.route('/recommend')
 def process_recommendations():
+	print request.cookies
+	major = request.cookies['Major']
+	certificate = request.cookies['Certificate']
 	courses = []
 	ratings = []
 	for entry in request.cookies['CourseInfo'].split('|'):
@@ -47,9 +67,9 @@ def process_recommendations():
 	# import pdb; pdb.set_trace()	
 	print courses
 	print ratings
-	recommendations = recommender.recommend(courses, ratings)
-	courses = [course_renderer.get_course(course_id) for course_id, rating in recommendations[:max_results]]
-	return render_template('courseHistResult.html', results=courses)
+	recommendations = recommender.recommend(courses, ratings, major, certificate)
+	courses = [course_renderer.get_course(course_id) for course_id in recommendations[:max_results]]
+	return render_template('courseHistResult.html', results=courses, major=major, certificate=certificate)
 
 if __name__ == '__main__':
     # app.run(debug=True)

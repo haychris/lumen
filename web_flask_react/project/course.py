@@ -17,8 +17,9 @@ class Course(object):
 	            '1152': "Fall '14", '1154': "Spring '15", 
 	            '1162': "Fall '15", '1164': "Spring '16", 
 	            '1172': "Fall '16"}
-	def __init__(self, term_info_dict):
+	def __init__(self, term_info_dict, planner):
 		self.term_info_dict = term_info_dict
+		self.planner = planner
 		for term_id in sorted(term_info_dict.keys(), reverse=True):
 			if len(self.term_info_dict[term_id]['EVAL']) > 0:
 				self.default_term = term_id
@@ -31,32 +32,62 @@ class Course(object):
 
 	def get_title(self, term_id=None):
 		if term_id is None:
-			return self.term_info_dict[self.default_term]['title']
-		else:
-			return self.term_info_dict[term_id]['title']
-	
+			term_id = self.default_term
+		title = self.term_info_dict[term_id]['title']
+		if not title:
+			title = self.term_info_dict[term_id]['COURSE_TITLE']
+		return title
+
 	def get_course_listings(self, term_id=None):
 		if term_id is None:
-			return self.term_info_dict[self.default_term]['all_listings_string']
-		else:
-			return self.term_info_dict[term_id]['all_listings_string']
+			term_id = self.default_term
+		listings = self.term_info_dict[term_id]['all_listings_string']
+		if not listings:
+			listings = self.term_info_dict[term_id]['SUBJECT'] + ' ' + self.term_info_dict[term_id]['CATALOG_NBR']
+		return listings
 
-	
+	def processed_course_listings(self, term_id=None):
+		course_listings = self.get_course_listings(term_id)
+		split_course_listings = course_listings.split()
+		new_course_listings = ' '.join(split_course_listings[:4])
+		if len(split_course_listings) > 4:
+			new_course_listings += '...'
+		return new_course_listings
+
+	def get_list_of_course_nums(self, term_id=None):
+		listings = self.get_course_listings(term_id).split()
+		course_num_list = []
+		for i in range(0, len(listings), 2):
+			course_num_list.append(listings[i]+listings[i+1])
+		return course_num_list
+
+	def get_professors(self, term_id=None):
+		if term_id is None:
+			term_id = self.default_term
+		profs = self.term_info_dict[term_id]['prof_string']
+		if not profs:
+			profs = ''
+		return unicode(profs, 'utf-8')
+
+	# !!!!!!!!!!! 
+	def get_first_professor(self, profs):
+		return profs.split('|')[0]
+
 	def get_comments(self, term_id=None):
 		if term_id is None:
-			return self.term_info_dict[self.default_term]['COMMENTS']
-		else:
-			return self.term_info_dict[term_id]['COMMENTS']
+			term_id = self.default_term
+		return self.term_info_dict[term_id]['COMMENTS']
 	
 	def get_all_ratings(self, term_id=None):
 		if term_id is None:
-			ratings = [rating for name, rating in self.term_info_dict[self.default_term]['EVAL']]
-		else:
-			ratings = [rating for name, rating in self.term_info_dict[self.default_term]['EVAL']]
+			term_id = self.default_term
+		ratings = [rating for name, rating in self.term_info_dict[term_id]['EVAL']]
+
 		if len(ratings) > 0:
 			return ratings
 		else:
 			return [0]*len(self.ratings_order.keys())
+
 	def get_most_recent_overall_rating(self):
 		ratings_list = self.term_info_dict[self.default_term]['EVAL']
 		if len(ratings_list) > 0:
@@ -90,8 +121,10 @@ class Course(object):
 			return reduce(minimizer, new_results)
 
 class CourseRenderer(object):
-	def __init__(self, filename):
-		self.course_info_dict = pickle.load(open(filename, 'rb'))
-
+	def __init__(self, course_info_dict, planner):
+		# self.course_info_dict = pickle.load(open(filename, 'rb'))
+		self.course_info_dict = course_info_dict
+		self.planner = planner
+		
 	def get_course(self, course_id):
-		return Course(self.course_info_dict[course_id])
+		return Course(self.course_info_dict[course_id], self.planner)
