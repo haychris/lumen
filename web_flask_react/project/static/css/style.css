@@ -315,10 +315,10 @@ img {
   cursor: pointer;
   width: 350px;
   text-shadow:
-    1px 1px 3px black,
-    -1px 1px 3px black,
-    1px -1px 3px black,
-    -1px -1px 3px black;
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
 .resultName {
@@ -439,6 +439,11 @@ img {
 .noResults {
   font-size: 28px;
   color: white;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
 .requeryPrompt {
