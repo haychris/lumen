@@ -121,8 +121,9 @@ class Course(object):
 			return reduce(minimizer, new_results)
 
 class CourseRenderer(object):
-	def __init__(self, filename, planner):
-		self.course_info_dict = pickle.load(open(filename, 'rb'))
+	def __init__(self, course_info_dict, planner):
+		# self.course_info_dict = pickle.load(open(filename, 'rb'))
+		self.course_info_dict = course_info_dict
 		self.planner = planner
 		
 	def get_course(self, course_id):
