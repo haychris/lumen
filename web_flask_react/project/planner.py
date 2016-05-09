@@ -1,7 +1,7 @@
 
 class Planner(object):
-	major_type_col = 1
-	major_col = 2
+	major_type_col = 0
+	major_col = 1
 	def __init__(self, majors_filename, certificates_filename):
 		##### HANDLE MAJORS #####
 		self.major_requirements = {}
@@ -41,14 +41,19 @@ class Planner(object):
 				requirement_list.extend(courses)
 			cur_certificate_info_dict['requirement_set'] = set(requirement_list)
 
-			certificate_name = split[1]
+			certificate_name = split[0]
 			self.certificate_requirements[certificate_name] = cur_certificate_info_dict
 
 	def is_in_major_requirements(self, course_num, major):
+		if not major:
+			return False
 		return course_num in self.major_requirements[major]['requirement_set']
 
 	def is_in_certificate_requirements(self, course_num, certificate):
-		return course_num in self.certificate_requirements[major]['requirement_set']
+		#import pdb; pdb.set_trace()
+		if not certificate:
+			return False
+		return course_num in self.certificate_requirements[certificate]['requirement_set']
 
 
 
