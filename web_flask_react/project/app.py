@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 recommender = Recommender(os.path.join(os.getcwd(), 'project/static/recommender_necessities.pickle'))
 searcher = Searcher(os.path.join(os.getcwd(), 'project/static/search_necessities.pickle'))
-planner = Planner(os.path.join(os.getcwd(),'project/static/majors.csv'), os.path.join(os.getcwd(),'project/static/certificates.csv'), searcher.course_id_list)
+planner = Planner(os.path.join(os.getcwd(),'project/static/majors.csv'), os.path.join(os.getcwd(),'project/static/certificates.csv'), searcher.course_id_list, recommender.class_number_lookup_dict)
 searcher.add_planner(planner)
 
 course_renderer = CourseRenderer(os.path.join(os.getcwd(),'project/static/course_info_necessities.pickle'), planner)

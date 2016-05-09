@@ -3,12 +3,13 @@ import numpy as np
 class Planner(object):
 	major_type_col = 0
 	major_col = 1
-	def __init__(self, majors_filename, certificates_filename, course_id_list):
+	def __init__(self, majors_filename, certificates_filename, course_id_list, course_id_to_num_dict):
 		self.major_requirements = {}
 		self.certificate_requirements = {}
 		self.major_membership_matrix = None
 		self.certificate_membership_matrix = None
 		self.course_id_list = course_id_list
+		self.course_id_to_num_dict = course_id_to_num_dict
 
 		self._process_major_requirements(majors_filename)
 		self._process_certificate_requirements(certificates_filename)
@@ -102,13 +103,13 @@ class Planner(object):
 		self.major_membership_matrix = np.zeros((len(self.major_requirements), len(self.course_id_list)))
 		for i, major in enumerate(self.major_requirements.keys()):
 			for j, course_id in enumerate(self.course_id_list):
-				self.major_membership_matrix[i,j] = self.is_in_major_requirements(course_id, major)
+				self.major_membership_matrix[i,j] = self.is_in_major_requirements(self.course_id_to_num(course_id), major)
 
 	def _build_certificate_membership_matrix(self):
 		self.certificate_membership_matrix = np.zeros((len(self.certificate_requirements), len(self.course_id_list)))
 		for i, certificate in enumerate(self.certificate_requirements.keys()):
 			for j, course_id in enumerate(self.course_id_list):
-				self.major_membership_matrix[i,j] = self.is_in_certificate_requirements(course_id, certificate)
+				self.major_membership_matrix[i,j] = self.is_in_certificate_requirements(self.course_id_to_num(course_id), certificate)
 
 	def get_major_boost_vector(self, major, boost):
 		if not major:
@@ -119,3 +120,6 @@ class Planner(object):
 		if not certificate:
 			return self.certificate_membership_matrix[0,:]*0+1
 		return self.certificate_membership_matrix[self.certificate_row_dict[certificate], :]*(boost-1) + 1
+
+	def course_id_to_num(self, course_id):
+		return self.course_id_to_num_dict[course_id][0]
