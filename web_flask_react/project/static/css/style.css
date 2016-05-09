@@ -435,3 +435,13 @@ img {
 .cert {
   color: #f5f9ad;
 }
+
+.noResults {
+  font-size: 28px;
+  color: white;
+}
+
+.requeryPrompt {
+  font-size: 21px;
+  color: white;
+}
