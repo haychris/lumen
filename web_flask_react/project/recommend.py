@@ -16,10 +16,12 @@ class Recommender(object):
 	def recommend(self, course_nums, ratings, major, certificate, num_results=20):
 		##### STILL NEED TO BOOST BY CERTIFICATE/MAJOR #####
 		course_ids = []
+		course_id_taken = []
 		for course_num in course_nums:
 			course_id_list = self.course_id_lookup_dict[course_num]
 			if course_id_list:
 				course_ids.append(course_id_list)
+				course_id_taken.extend(course_id_list)
 			
 		cluster_scores = np.zeros(self.K)
 
@@ -40,7 +42,15 @@ class Recommender(object):
 		base_exp = 15
 		class_ratings = (np.array(class_ratings)**base_exp) * major_boost_vector * certificate_boost_vector
 		sorted_docs = np.argsort(class_ratings)[::-1]
-		recommendations = [self.course_id_list[doc_num] for doc_num in sorted_docs[:num_results]]
+		recommendations = []
+		for doc_num in sorted_docs:
+			if len(recommendations) >= num_results:
+				break
+			cur_id = self.course_id_list[doc_num]
+			if cur_id not in course_id_taken:
+				recommendations.append(cur_id)
+		# recommendations = [self.course_id_list[doc_num] for doc_num in sorted_docs[:num_results]]
+		# import pdb; pdb.set_trace()
 		# class_rankings = sorted(list(zip(class_ratings, self.course_id_list)), reverse=True)
 		# recommendations = []
 		# for rating, course_id in class_rankings:
