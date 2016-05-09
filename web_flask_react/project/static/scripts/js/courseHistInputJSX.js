@@ -310,8 +310,8 @@ var GetRecommendations = React.createClass({displayName: "GetRecommendations",
 /*******************************************
  * Parses the cookie and loads course info *
  *******************************************/
-function getCookie(ff, fs, sf, ss, jf, js) {
-  cookie = document.cookie;
+function getCookie(ff, fs, sf, ss, jf, js, add) {
+  var cookie = document.cookie.split(";")[0];
 
   if (cookie != "") {
     var cookieData = cookie.split("=")[1].split("|");
@@ -325,28 +325,33 @@ function getCookie(ff, fs, sf, ss, jf, js) {
       document.getElementById(courseNameID).value = courseName;
       updateSlider(courseNameID.substring(0,3), courseRating);
 
-      var courseNum = courseNameID.charAt(2);
+      var courseNum = parseInt(courseNameID.charAt(2));
       if (courseNum > 4) {
         var semester = courseNameID.substring(0,2);
 
         for (var j = 5; j <= courseNum; j++)
           document.getElementById(semester+j+"N").parentNode.parentNode.style = "";
-/*
-        if (semester == "FF") {
-          ff.setState({clickCount: parseInt(courseNum)});
-          console.log(ff.state.clickCount);
-        }
-        else if (semester == "FS");
-        else if (semester == "SF");
-        else if (semester == "SS");
-        else if (semester == "JF");
-        else if (semester == "JS");*/
+
+        if (semester == "FF")
+          ff.setState({clickCount: courseNum+1});
+        else if (semester == "FS")
+          fs.setState({clickCount: courseNum+1});
+        else if (semester == "SF")
+          sf.setState({clickCount: courseNum+1});
+        else if (semester == "SS")
+          ss.setState({clickCount: courseNum+1});
+        else if (semester == "JF")
+          jf.setState({clickCount: courseNum+1});
+        else if (semester == "JS")
+          js.setState({clickCount: courseNum+1});
+        else
+          console.log("ERROR SETTING STATE");
       }
     }
   }
 }
 
-ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemester'));
+var add = ReactDOM.render(React.createElement(AddSemester, null), document.getElementById('addSemester'));
 ReactDOM.render(React.createElement(DeleteSemester, null), document.getElementById('deleteSemester'));
 ReactDOM.render(React.createElement(GetRecommendations, null), document.getElementById('getRecommendationsButton'));
 var ff = ReactDOM.render(React.createElement(AddCourseFF, null), document.getElementById('FFAddButton'));
@@ -355,6 +360,6 @@ var sf = ReactDOM.render(React.createElement(AddCourseSF, null), document.getEle
 var ss = ReactDOM.render(React.createElement(AddCourseSS, null), document.getElementById('SSAddButton'));
 var jf = ReactDOM.render(React.createElement(AddCourseJF, null), document.getElementById('JFAddButton'));
 var js = ReactDOM.render(React.createElement(AddCourseJS, null), document.getElementById('JSAddButton'));
-getCookie(ff, fs, sf, ss, jf, js);
+getCookie(ff, fs, sf, ss, jf, js, add);
 
 },{}]},{},[1])
