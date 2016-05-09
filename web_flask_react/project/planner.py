@@ -1,8 +1,8 @@
 import numpy as np
 
 class Planner(object):
-	major_type_col = 1
-	major_col = 2
+	major_type_col = 0
+	major_col = 1
 	def __init__(self, majors_filename, certificates_filename, course_id_to_num):
 		self.major_requirements = {}
 		self.certificate_requirements = {}
@@ -64,10 +64,12 @@ class Planner(object):
 				requirement_list.extend(courses)
 			cur_certificate_info_dict['requirement_set'] = set(requirement_list)
 
-			certificate_name = split[1]
+			certificate_name = split[0]
 			self.certificate_requirements[certificate_name] = cur_certificate_info_dict
 
 	def is_in_major_requirements(self, course_num, major):
+		if not major:
+			return False
 		try:
 			if course_num in self.major_requirements[major]['requirement_set']:
 				return True
@@ -78,6 +80,8 @@ class Planner(object):
 
 
 	def is_in_certificate_requirements(self, course_num, certificate):
+		if not certificate:
+			return False
 		if course_num in self.certificate_requirements[major]['requirement_set']:
 			return True
 		wild_course = course_num[:4]+'*'
@@ -103,7 +107,3 @@ class Planner(object):
 
 	def get_course_num(self, course_id):
 		return self.id_to_num[course_id]
-
-
-
-

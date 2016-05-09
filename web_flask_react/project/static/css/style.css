@@ -408,7 +408,7 @@ img {
 
 .result {
   margin: 20px auto 0 auto;
-  width: 900px;
+  width: 1000px;
   height: 145px;
   border-radius: 5px;
 }
@@ -419,4 +419,19 @@ img {
   padding: 10px 0 10px 0;
   background-color: blue;
   display: none;
+}
+
+.fulfillmentNotification {
+  width: 100px;
+  height: 100px;
+  text-align: left;
+  float: left;
+}
+
+.major {
+  color: #fad48b;
+}
+
+.cert {
+  color: #f5f9ad;
 }

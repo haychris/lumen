@@ -39,6 +39,9 @@ def get_user_ratings():
 
 @app.route('/recommend')
 def process_recommendations():
+	print request.cookies
+	major = request.cookies['Major']
+	certificate = request.cookies['Certificate']
 	courses = []
 	ratings = []
 	for entry in request.cookies['CourseInfo'].split('|'):
@@ -50,7 +53,7 @@ def process_recommendations():
 	print ratings
 	recommendations = recommender.recommend(courses, ratings)
 	courses = [course_renderer.get_course(course_id) for course_id, rating in recommendations[:max_results]]
-	return render_template('courseHistResult.html', results=courses)
+	return render_template('courseHistResult.html', results=courses, major=major, certificate=certificate)
 
 if __name__ == '__main__':
     app.run(debug=True)
