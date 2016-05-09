@@ -24,12 +24,14 @@ def index():
 
 @app.route('/query')
 def process_query():
+	major = request.cookies['Major']
+	certificate = request.cookies['Certificate']
 	query = request.args.get('query')
 	print 'Query: ', query
 	terms = query.lower().split()
 	results = searcher.search(query.lower())
 	courses = [course_renderer.get_course(course_id) for course_id in results[:max_results]]
-	return render_template('queryResult.html', results=courses, terms=terms)
+	return render_template('queryResult.html', results=courses, terms=terms, major=major, certificate=certificate)
 
 @app.route('/userratings')
 def get_user_ratings():

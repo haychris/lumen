@@ -12,6 +12,16 @@
 
 {% for result in results %}
 <div class="result">
+  <div class="fulfillmentNotification">
+    <br/><br/>
+    {% if result.planner.check_all_major_requirements(result.get_list_of_course_nums(), major) %}
+    <span class="major"> ✓ Major</span>
+    {% endif %}
+    <br/>
+    {% if result.planner.check_all_certificate_requirements(result.get_list_of_course_nums(), certificate) %}
+    <span class="cert"> ✓ Certificate</span>
+    {% endif %}
+  </div>
 
   <div class="resultName" onclick="showDiv{{loop.index}}()">
     <div class="resultCourseNumber">
@@ -126,7 +136,7 @@
         width: 800,
         height: 150,
         bar: {groupWidth: "55%"},
-        chartArea: {left:150},
+        chartArea: {left:250},
         legend: { position: "none" },
         hAxis: {
           minValue: 0,
