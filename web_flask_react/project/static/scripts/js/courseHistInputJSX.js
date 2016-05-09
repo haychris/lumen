@@ -315,6 +315,8 @@ function getCookie(ff, fs, sf, ss, jf, js, add) {
 
   if (cookie != "") {
     var cookieData = cookie.split("=")[1].split("|");
+    var sophomore = false;
+    var junior = false;
 
     for (var i = 0; i < cookieData.length; i++) {
       var courseNameID = cookieData[i].split(",")[0].split(":")[0];
@@ -336,17 +338,38 @@ function getCookie(ff, fs, sf, ss, jf, js, add) {
           ff.setState({clickCount: courseNum+1});
         else if (semester == "FS")
           fs.setState({clickCount: courseNum+1});
-        else if (semester == "SF")
+        else if (semester == "SF") {
+          sophomore = true;
           sf.setState({clickCount: courseNum+1});
-        else if (semester == "SS")
+        }
+        else if (semester == "SS") {
+          sophomore = true;
           ss.setState({clickCount: courseNum+1});
-        else if (semester == "JF")
+        }
+        else if (semester == "JF") {
+          junior = true;
           jf.setState({clickCount: courseNum+1});
-        else if (semester == "JS")
+        }
+        else if (semester == "JS") {
+          junior = true;
           js.setState({clickCount: courseNum+1});
+        }
         else
           console.log("ERROR SETTING STATE");
       }
+    }
+
+    if (sophomore || junior) {
+      document.getElementById('juniorYear').setAttribute("style", "");
+      document.getElementById('addSemester').setAttribute("style", "display: none");
+      document.getElementById('disabledAdd').setAttribute("style", "");
+      semesterCount++;
+    }
+    if (sophomore) {
+      document.getElementById('sophomoreYear').setAttribute("style", "");
+      document.getElementById('deleteSemester').setAttribute("style", "");
+      document.getElementById('disabledDelete').setAttribute("style", "display: none");
+      semesterCount++;
     }
   }
 }
