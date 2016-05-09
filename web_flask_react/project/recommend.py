@@ -7,6 +7,7 @@ class Recommender(object):
 		self.course_id_lookup_dict, self.class_number_lookup_dict, self.course_cluster_probs_dict, self.K = pickle.load(open(filename, 'rb'))
 
 	def recommend(self, course_nums, ratings):
+		##### STILL NEED TO BOOST BY CERTIFICATE/MAJOR #####
 		course_ids = []
 		for course_num in course_nums:
 			course_id_list = self.course_id_lookup_dict[course_num]
