@@ -34,11 +34,13 @@ def index():
 
 @app.route('/query')
 def process_query():
-	major = request.cookies['Major']
-	certificate = request.cookies['Certificate']
+	try:
+		major = request.cookies['Major']
+		certificate = request.cookies['Certificate']
+	except KeyError:
+		major = ''
+		certificate = ''
 	query = request.args.get('query')
-	major = request.cookies['Major']
-	certificate = request.cookies['Certificate']
 	print 'Query: ', query
 	terms = query.lower().split()
 	results = searcher.search(query.lower(), major, certificate)
