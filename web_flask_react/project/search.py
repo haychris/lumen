@@ -2,13 +2,16 @@ import cPickle as pickle
 import numpy as np
 
 class Searcher(object):
-	def __init__(self, filename):
+	def __init__(self, filename, planner):
 		self.vectorizer, self.tfidf_mat, self.word_dict, self.course_doc_dict, self.course_id_list = pickle.load(open(filename, 'rb'))
 		self.tokenizer = self.vectorizer.get_params()['tokenizer']
+		self.planner = planner
 
-	def search(self, term_string, num_results=20):
+	def search(self, term_string, major, certificate, num_results=20):
 		# term_list = self.vectorizer.transform(term_list)
 		term_list = self.tokenizer(term_string)
+		major_boost_vector = self.planner.get_major_boost_vector(major)
+		certificate_boost_vector = self.planner.get_certificate_boost_vector(certificate)
 		print term_list
 			# results = self.tfidf_mat[:,self.word_dict[term_list[0]]]
 		# import pdb; pdb.set_trace()
@@ -34,3 +37,4 @@ class Searcher(object):
 		# 	return [self.doc_course_id_list[sorted_docs[0,-(i+1)]] for i in range(min(num_results, sorted_docs.shape[1]))]
 		# except IndexError:
 		# 	return []
+	
