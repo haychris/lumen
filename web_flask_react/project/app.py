@@ -11,7 +11,7 @@ from planner import Planner
 app = Flask(__name__)
 
 recommender = Recommender(os.path.join(os.getcwd(), 'project/static/recommender_necessities.pickle'))
-searcher = Searcher(os.path.join(os.getcwd(), 'project/static/search_necessities.pickle'))
+searcher = Searcher(os.path.join(os.getcwd(), 'project/static/search_necessities.pickle'), recommender.course_id_lookup_dict)
 planner = Planner(os.path.join(os.getcwd(),'project/static/majors.csv'), os.path.join(os.getcwd(),'project/static/certificates.csv'), searcher.course_id_list, recommender.class_number_lookup_dict)
 searcher.add_planner(planner)
 

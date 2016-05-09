@@ -146,12 +146,21 @@ def get_doc_list(class_dict):
 from nltk import word_tokenize          
 from nltk.stem import WordNetLemmatizer 
 
+
 class LemmaTokenizer(object):
 	def __init__(self):
 		self.wnl = WordNetLemmatizer()
 	def __call__(self, doc):
-		tokens =  [self.wnl.lemmatize(t) for t in word_tokenize(doc)]
-		return [w.lower() for w in tokens if w.isalpha()]
+		tokens =  [self.filtered_lemmatization(t) for t in word_tokenize(doc)]
+		return [w.lower() for w in tokens]
+
+	def filtered_lemmatization(self, x):
+		if len(x) == 3:
+			if x.isdigit():
+				return str(int(x)/100*100) # floor by hundred, i.e., '323' -> '300'
+			else:
+				return x
+		return self.wnl.lemmatize(x)
 
 def get_tfidf_matrix(doc_list):
 	from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
