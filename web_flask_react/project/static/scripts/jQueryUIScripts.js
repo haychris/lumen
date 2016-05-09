@@ -63,7 +63,7 @@ console.log("showSlider called on " + id);
 
 function updateSlider(id, rating) {
   var sliderID = '#' + id + "S";
-
+  
   $(function() {
     ratingSlider = $(sliderID).slider();
     ratingSlider.slider('option', 'value', rating);
