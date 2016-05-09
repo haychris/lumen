@@ -146,12 +146,21 @@ def get_doc_list(class_dict):
 from nltk import word_tokenize          
 from nltk.stem import WordNetLemmatizer 
 
+
 class LemmaTokenizer(object):
 	def __init__(self):
 		self.wnl = WordNetLemmatizer()
 	def __call__(self, doc):
-		tokens =  [self.wnl.lemmatize(t) for t in word_tokenize(doc)]
-		return [w.lower() for w in tokens if w.isalpha()]
+		tokens =  [self.filtered_lemmatization(t) for t in word_tokenize(doc)]
+		return [w.lower() for w in tokens]
+
+	def filtered_lemmatization(self, x):
+		if len(x) == 3:
+			if x.isdigit():
+				return str(int(x)/100*100) # floor by hundred, i.e., '323' -> '300'
+			else:
+				return x
+		return self.wnl.lemmatize(x)
 
 def get_tfidf_matrix(doc_list):
 	from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
@@ -178,6 +187,7 @@ def get_all(filename, generate=False):
 recommender_necessities_filename = 'recommender_necessities.pickle'
 search_necessities_filename = 'search_necessities.pickle'
 course_info_necessities_filename = 'course_info_necessities.pickle'
+website_necessities_filename = 'website_necessities.pickle'
 def process_website_necessities():
 	class_dict = get_class_dict()
 	course_doc_dict, course_id_list, doc_list = get_doc_list(class_dict)
@@ -216,6 +226,8 @@ def process_website_necessities():
 				term_info_dict[term_id] = class_dict[term_id][course_id]
 		course_info_dict[course_id] = term_info_dict
 	dump(course_info_dict, open(course_info_necessities_filename, 'wb'))
+
+	dump((course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k, vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list, course_info_dict), open(website_necessities_filename, 'wb'))
 
 
 
