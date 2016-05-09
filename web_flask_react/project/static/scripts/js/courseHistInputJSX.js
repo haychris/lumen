@@ -311,7 +311,11 @@ var GetRecommendations = React.createClass({displayName: "GetRecommendations",
  * Parses the cookie and loads course info *
  *******************************************/
 function getCookie(ff, fs, sf, ss, jf, js, add) {
+  var wholeCookie = document.cookie.split(";");
   var cookie = document.cookie.split(";")[0];
+
+  document.getElementById("major").value = wholeCookie[1].split("=")[1];
+  document.getElementById("cert").value = wholeCookie[2].split("=")[1];
 
   if (cookie != "") {
     var cookieData = cookie.split("=")[1].split("|");
