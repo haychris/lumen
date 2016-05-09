@@ -37,6 +37,14 @@ class Course(object):
 		if not title:
 			title = self.term_info_dict[term_id]['COURSE_TITLE']
 		return title
+
+	def processed_title(self, term_id=None):
+		title = self.get_title(term_id)
+		split_title = title.split()
+		new_title = ' '.join(split_title[:3])
+		if len(split_title) > 3:
+			new_title += '...'
+		return new_title
 	
 	def get_course_listings(self, term_id=None):
 		if term_id is None:
@@ -60,6 +68,10 @@ class Course(object):
 		if not profs:
 			profs = ''
 		return unicode(profs, 'utf-8')
+
+	# !!!!!!!!!!! 
+	def get_first_professor(self, profs):
+		return profs.split('|')
 
 	def get_comments(self, term_id=None):
 		if term_id is None:
