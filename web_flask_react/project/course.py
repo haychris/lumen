@@ -4,8 +4,14 @@ import itertools
 
 def minimizer(x,y):
 	if (0 < len(x) < len(y)) or len(y) == 0:
-		return x
-	return y
+		try:
+			return unicode(x, 'utf-8', errors='ignore')
+		except (TypeError, UnicodeDecodeError) as e:
+			return x
+	try:
+		return unicode(y, 'utf-8', errors='ignore')
+	except (TypeError, UnicodeDecodeError) as e:
+		return y
 
 class Course(object):
 	ratings_order = {'Lectures':0, 
