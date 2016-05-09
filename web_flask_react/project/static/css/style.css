@@ -228,10 +228,11 @@ img {
 }
 
 .addCourseButtonStyle {
-  background-color: slateblue;
+  background: slateblue;
+  color: black;
   width: 125px;
   height: 25px;
-  border-radius: 10px;
+  border-radius: 7px;
   margin: 10px auto 0 auto;
   clear: both;
   cursor: pointer;
@@ -240,32 +241,40 @@ img {
 
 .addDelete {
   font-size: 21px;
-  height: 50px;
+  height: 40px;
   width: 45%;
-  padding: 10px 0 10px 0;
+  padding: 3px 0 5px 0;
   border-radius: 10px;
 }
 
 #addSemesterButton {
-  background-color: forestgreen;
+  color: #bcdf8a;
   float: left;
   cursor: pointer;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
 #disabledAdd {
-  background-color: gray;
   float: left;
   cursor: default;
 }
 
 #deleteSemesterButton {
-  background-color: orangered;
+  color: #ed7777;
   float: right;
-  cursor: pointer
+  cursor: pointer;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
 #disabledDelete {
-  background-color: gray;
   float: right;
   cursor: default;
 }
