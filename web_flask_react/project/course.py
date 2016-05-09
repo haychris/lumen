@@ -123,6 +123,7 @@ class Course(object):
 class CourseRenderer(object):
 	def __init__(self, filename, planner):
 		self.course_info_dict = pickle.load(open(filename, 'rb'))
-
+		self.planner = planner
+		
 	def get_course(self, course_id):
 		return Course(self.course_info_dict[course_id], self.planner)
