@@ -88,13 +88,13 @@ class Planner(object):
 
 	def check_all_major_requirements(self, courses, major):
 		for course in courses:
-			if course in self.major_requirements[major]['requirement_set']:
+			if self.is_in_major_requirements(course, major):
 				return True
 		return False
 
 	def check_all_certificate_requirements(self, courses, certificate):
 		for course in courses:
-			if course in self.certificate_requirements[certificate]['requirement_set']:
+			if self.is_in_certificate_requirements(course, certificate):
 				return True
 		return False
 
