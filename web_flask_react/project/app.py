@@ -6,12 +6,14 @@ from flask import url_for
 from course import Course, CourseRenderer
 from recommend import Recommender
 from search import Searcher
+from planner import Planner
 
 app = Flask(__name__)
 
 recommender = Recommender(os.path.join(os.getcwd(), 'project/static/recommender_necessities.pickle'))
 searcher = Searcher(os.path.join(os.getcwd(), 'project/static/search_necessities.pickle'))
 course_renderer = CourseRenderer(os.path.join(os.getcwd(),'project/static/course_info_necessities.pickle'))
+planner = Planner(os.path.join(os.getcwd(),'project/static/majors.csv'), os.path.join(os.getcwd(),'project/static/certificates.csv'))
 
 max_results = 20
 
