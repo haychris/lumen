@@ -52,7 +52,14 @@ class Course(object):
 		if not listings:
 			listings = self.term_info_dict[term_id]['SUBJECT'] + ' ' + self.term_info_dict[term_id]['CATALOG_NBR']
 		return listings
-	
+
+	def get_list_of_course_nums(self, term_id=None):
+		listings = self.get_course_listings(term_id).split()
+		course_num_list = []
+		for i in range(0, len(listings), 2):
+			course_num_list.append(listings[i]+listings[i+1])
+		return course_num_list
+
 	def get_professors(self, term_id=None):
 		if term_id is None:
 			term_id = self.default_term
