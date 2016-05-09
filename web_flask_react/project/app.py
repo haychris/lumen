@@ -12,8 +12,9 @@ app = Flask(__name__)
 
 recommender = Recommender(os.path.join(os.getcwd(), 'project/static/recommender_necessities.pickle'))
 searcher = Searcher(os.path.join(os.getcwd(), 'project/static/search_necessities.pickle'))
-course_renderer = CourseRenderer(os.path.join(os.getcwd(),'project/static/course_info_necessities.pickle'))
 planner = Planner(os.path.join(os.getcwd(),'project/static/majors.csv'), os.path.join(os.getcwd(),'project/static/certificates.csv'))
+
+course_renderer = CourseRenderer(os.path.join(os.getcwd(),'project/static/course_info_necessities.pickle'), planner)
 
 max_results = 20
 

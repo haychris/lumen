@@ -17,8 +17,9 @@ class Course(object):
 	            '1152': "Fall '14", '1154': "Spring '15", 
 	            '1162': "Fall '15", '1164': "Spring '16", 
 	            '1172': "Fall '16"}
-	def __init__(self, term_info_dict):
+	def __init__(self, term_info_dict, planner):
 		self.term_info_dict = term_info_dict
+		self.planner = planner
 		for term_id in sorted(term_info_dict.keys(), reverse=True):
 			if len(self.term_info_dict[term_id]['EVAL']) > 0:
 				self.default_term = term_id
@@ -108,8 +109,8 @@ class Course(object):
 			return reduce(minimizer, new_results)
 
 class CourseRenderer(object):
-	def __init__(self, filename):
+	def __init__(self, filename, planner):
 		self.course_info_dict = pickle.load(open(filename, 'rb'))
 
 	def get_course(self, course_id):
-		return Course(self.course_info_dict[course_id])
+		return Course(self.course_info_dict[course_id], self.planner)
