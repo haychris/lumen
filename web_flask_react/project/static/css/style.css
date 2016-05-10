@@ -380,6 +380,14 @@ img {
   margin-left: 150px;
 }
 
+.registrarLink {
+  width: 50px;
+  height: 40px;
+  background-color: blue;
+  float: left;
+  cursor: pointer;
+}
+
 .resultScore {
   float: right;
   margin-right: 50px;
