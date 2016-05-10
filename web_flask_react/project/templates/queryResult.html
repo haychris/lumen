@@ -2,6 +2,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 {% block content %}
+<script src="{{ url_for('static', filename='scripts/registrar.js') }}"></script>
 <div id="queryEntrySmall">
   <div id="queryContainerSmall">
     <form action="query">
@@ -41,6 +42,7 @@
   </div>
 
   <div class="resultData">
+    <div class="registrarLink" onclick="registrarRedirect( '{{result.get_url_courseid()}}' , '{{result.default_term}}' )"><u>Registrar's page</u></div>
     <div class="resultScoreData">
      <div id="starRating_{{loop.index}}" style="display:inline"></div>
      <div class="resultScore">
@@ -49,7 +51,7 @@
   </div>
   <div class="resultComments">
    {% for comment in result.get_highlighted_text(terms) %}
-    {{comment | safe}}
+    "{{comment | safe}}"<br/>
    {% endfor %}
  </div>
 </div>

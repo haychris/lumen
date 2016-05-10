@@ -380,6 +380,16 @@ img {
   margin-left: 150px;
 }
 
+.registrarLink {
+  width: 140px;
+  height: 40px;
+  color: #94c0cc;
+  padding: 12px 0 0 7px;
+  text-align: left;
+  float: left;
+  cursor: pointer;
+}
+
 .resultScore {
   float: right;
   margin-right: 50px;

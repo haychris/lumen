@@ -13,9 +13,9 @@ app = Flask(__name__)
 import cPickle as pickle
 
 filename = os.path.join(os.getcwd(), 'project/static/website_necessities.pickle')
-course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k, vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list, course_info_dict, course_association_dictionary = pickle.load(open(filename, 'rb'))
+course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k, vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list, course_info_dict, course_association_dictionary, pagerank_dict = pickle.load(open(filename, 'rb'))
 
-planner = Planner(os.path.join(os.getcwd(),'project/static/majors.csv'), os.path.join(os.getcwd(),'project/static/certificates.csv'), course_id_list, class_number_lookup_dict)
+planner = Planner(os.path.join(os.getcwd(),'project/static/majors.csv'), os.path.join(os.getcwd(),'project/static/certificates.csv'), course_id_list, class_number_lookup_dict, pagerank_dict)
 recommender = Recommender(course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k, course_id_list, planner)
 searcher = Searcher(vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list, course_id_lookup_dict, planner)
 course_renderer = CourseRenderer(course_info_dict, planner)
