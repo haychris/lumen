@@ -24,6 +24,7 @@ class Planner(object):
 		for i, certificate in enumerate(self.certificate_requirements.keys()):
 			self.certificate_row_dict[certificate] = i
 
+		print 'Finished contsructing planner'
 		# self.course_num_col_dict = {}
 		# for i, course_id in enumerate(self.course_id_list):
 		# 	self.course_num_col_dict[course_num] = i
@@ -103,13 +104,15 @@ class Planner(object):
 		self.major_membership_matrix = np.zeros((len(self.major_requirements), len(self.course_id_list)))
 		for i, major in enumerate(self.major_requirements.keys()):
 			for j, course_id in enumerate(self.course_id_list):
-				self.major_membership_matrix[i,j] = self.is_in_major_requirements(self.course_id_to_num(course_id), major)
+				# if major == 'COS' and course_id == '1784':
+				# 	import pdb; pdb.set_trace()
+				self.major_membership_matrix[i,j] = self.check_all_major_requirements(self.course_id_to_num_list(course_id), major)
 
 	def _build_certificate_membership_matrix(self):
 		self.certificate_membership_matrix = np.zeros((len(self.certificate_requirements), len(self.course_id_list)))
 		for i, certificate in enumerate(self.certificate_requirements.keys()):
 			for j, course_id in enumerate(self.course_id_list):
-				self.major_membership_matrix[i,j] = self.is_in_certificate_requirements(self.course_id_to_num(course_id), certificate)
+				self.certificate_membership_matrix[i,j] = self.check_all_certificate_requirements(self.course_id_to_num_list(course_id), certificate)
 
 	def get_major_boost_vector(self, major, boost):
 		if not major:
@@ -121,5 +124,5 @@ class Planner(object):
 			return self.certificate_membership_matrix[0,:]*0+1
 		return self.certificate_membership_matrix[self.certificate_row_dict[certificate], :]*(boost-1) + 1
 
-	def course_id_to_num(self, course_id):
-		return self.course_id_to_num_dict[course_id][0]
+	def course_id_to_num_list(self, course_id):
+		return self.course_id_to_num_dict[course_id]
