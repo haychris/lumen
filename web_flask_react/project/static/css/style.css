@@ -381,9 +381,11 @@ img {
 }
 
 .registrarLink {
-  width: 50px;
+  width: 140px;
   height: 40px;
-  background-color: blue;
+  color: #94c0cc;
+  padding: 12px 0 0 7px;
+  text-align: left;
   float: left;
   cursor: pointer;
 }
