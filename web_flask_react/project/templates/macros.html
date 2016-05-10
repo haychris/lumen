@@ -1,0 +1,76 @@
+<!--
+Naming format: Year + Semester + Course + Type
+    Year: (F)reshman (S)ophomore (J)unior
+    Semester: (F)all (Spring)
+    Course: 1-7
+    Type: (N)ame (R)ating
+-->
+
+{% macro courseEntryArea(semester) %}
+<div class="courseEntry">
+	<div class="courseName">
+		<input id="{{semester}}1N" class="courseName" type="text" placeholder="Course 1"/>
+	</div>
+	<div class="courseRating">
+		<div id="{{semester}}1S" class="slider"></div>
+	</div>
+	<div id="{{semester}}1R" class="showRating">Neutral</div>
+</div>
+<div class="courseEntry">
+	<div class="courseName">
+		<input id="{{semester}}2N" class="courseName" type="text" placeholder="Course 2"/>
+	</div>
+	<div class="courseRating">
+		<div id="{{semester}}2S" class="slider"></div>
+	</div>
+	<div id="{{semester}}2R" class="showRating">Neutral</div>
+</div>
+<div class="courseEntry">
+	<div class="courseName">
+		<input id="{{semester}}3N" class="courseName" type="text" placeholder="Course 3"/>
+	</div>
+	<div class="courseRating">
+		<div id="{{semester}}3S" class="slider"></div>
+	</div>
+	<div id="{{semester}}3R" class="showRating">Neutral</div>
+</div>
+<div class="courseEntry">
+	<div class="courseName">
+		<input id="{{semester}}4N" class="courseName" type="text" placeholder="Course 4"/>
+	</div>
+	<div class="courseRating">
+		<div id="{{semester}}4S" class="slider"></div>
+	</div>
+	<div id="{{semester}}4R" class="showRating">Neutral</div>
+</div>
+{% endmacro %}
+
+{% macro hiddenCourseEntry(semester) %}
+<div class="courseEntry" style="display: none">
+  <div class="courseName">
+    <input id="{{semester}}5N" class="courseName" type="text" placeholder="Course 5"/>
+  </div>
+  <div class="courseRating">
+    <div id="{{semester}}5S" class="slider"></div>
+  </div>
+  <div id="{{semester}}5R" class="showRating">Neutral</div>
+</div>
+<div class="courseEntry" style="display: none">
+  <div class="courseName">
+    <input id="{{semester}}6N" class="courseName" type="text" placeholder="Course 6"/>
+  </div>
+  <div class="courseRating">
+    <div id="{{semester}}6S" class="slider"></div>
+  </div>
+  <div id="{{semester}}6R" class="showRating">Neutral</div>
+</div>
+<div class="courseEntry" style="display: none">
+  <div class="courseName">
+    <input id="{{semester}}7N" class="courseName" type="text" placeholder="Course 7"/>
+  </div>
+  <div class="courseRating">
+    <div id="{{semester}}7S" class="slider"></div>
+  </div>
+  <div id="{{semester}}7R" class="showRating">Neutral</div>
+</div>
+{% endmacro %}

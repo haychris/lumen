@@ -8,6 +8,7 @@ from process_all_data import get_all
 
 
 CLASS_DICT, COURSE_ID_LOOKUP_DICT, CLASS_NUMBER_LOOKUP_DICT, COURSE_DOC_DICT, DOC_LIST, VECTORIZER, X = get_all('recommender_data.pickle', False)
+print 'Finished retrieving data'
 
 ##### K-MEANS #####
 K = 50

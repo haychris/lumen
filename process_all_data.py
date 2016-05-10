@@ -79,6 +79,7 @@ def add_registrar(file_name, class_dict):
 		cur_course_dict["title"] = line_dict["title"]
 		cur_course_dict["prereqs"] = line_dict["prereqs"]
 		cur_course_dict["descrip"] = line_dict["descrip"]
+		cur_course_dict['prof_string'] = line_dict['prof_string']
 
 
 def create_documents(class_dict):
@@ -100,8 +101,12 @@ def get_class_dict():
 	add_comments('comments_pt_1.csv', class_dict)
 	add_comments('comments_pt_2.csv', class_dict)
 	add_registrar('spring_16_features.csv', class_dict)
-	add_registrar('spring_15_features.csv', class_dict)
 	add_registrar('fall_15_features.csv', class_dict)
+	add_registrar('spring_15_features.csv', class_dict)
+	add_registrar('fall_14_features.csv', class_dict)
+	add_registrar('spring_14_features.csv', class_dict)
+	add_registrar('fall_13_features.csv', class_dict)
+
 	create_documents(class_dict)
 
 	return class_dict
@@ -134,18 +139,28 @@ def get_doc_list(class_dict):
 		for course_id, course_dict in term_dict.items():
 			doc_dict[course_id].append(course_dict['document'])
 	course_doc_dict = {course_id:' '.join(docs) for course_id, docs in doc_dict.items()}
+	course_id_list = course_doc_dict.keys()
 	doc_list = course_doc_dict.values()
-	return course_doc_dict, doc_list
+	return course_doc_dict, course_id_list, doc_list
 
 from nltk import word_tokenize          
 from nltk.stem import WordNetLemmatizer 
+
 
 class LemmaTokenizer(object):
 	def __init__(self):
 		self.wnl = WordNetLemmatizer()
 	def __call__(self, doc):
-		tokens =  [self.wnl.lemmatize(t) for t in word_tokenize(doc)]
-		return [w.lower() for w in tokens if w.isalpha()]
+		tokens =  [self.filtered_lemmatization(t) for t in word_tokenize(doc)]
+		return [w.lower() for w in tokens]
+
+	def filtered_lemmatization(self, x):
+		if len(x) == 3:
+			if x.isdigit():
+				return str(int(x)/100*100) # floor by hundred, i.e., '323' -> '300'
+			else:
+				return x
+		return self.wnl.lemmatize(x)
 
 def get_tfidf_matrix(doc_list):
 	from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
@@ -160,7 +175,7 @@ def get_all(filename, generate=False):
 		from cloud.serialization.cloudpickle import dump
 		class_dict = get_class_dict()
 		course_id_lookup_dict, class_number_lookup_dict = get_course_id_lookup_dict(class_dict)
-		course_doc_dict, doc_list = get_doc_list(class_dict)
+		course_doc_dict, course_id_list, doc_list = get_doc_list(class_dict)
 		vectorizer, tfidf_mat = get_tfidf_matrix(doc_list)
 		dump((class_dict, course_id_lookup_dict, class_number_lookup_dict, course_doc_dict, doc_list, vectorizer, tfidf_mat), open(filename, 'wb'))
 	else:
@@ -172,17 +187,23 @@ def get_all(filename, generate=False):
 recommender_necessities_filename = 'recommender_necessities.pickle'
 search_necessities_filename = 'search_necessities.pickle'
 course_info_necessities_filename = 'course_info_necessities.pickle'
+website_necessities_filename = 'website_necessities.pickle'
 def process_website_necessities():
+	print 'Assembling class_dict'
 	class_dict = get_class_dict()
-	course_doc_dict, doc_list = get_doc_list(class_dict)
+	print 'Assembling course_doc_dict, course_id_list, doc_list'
+	course_doc_dict, course_id_list, doc_list = get_doc_list(class_dict)
+	print 'Assembling vectorizer, tfidf_mat'
 	vectorizer, tfidf_mat = get_tfidf_matrix(doc_list)
 
+	print 'Fitting KMeans'
 	k = 50
 	km = KMeans(n_clusters=k, init='k-means++', max_iter=300, n_init=20)
 	km.fit(tfidf_mat)
 
 	similarity_func = lambda x: 1./(km.transform(x)**3+0.05)
 
+	print 'Computing cluster probabilities'
 	similarities_all_classes = similarity_func(vectorizer.transform(course_doc_dict.values()))
 	course_cluster_probs_dict = {}
 	for course_id, cur_class_similarities in zip(course_doc_dict.keys(), similarities_all_classes):
@@ -190,6 +211,7 @@ def process_website_necessities():
 		course_cluster_probs_dict[course_id] = probs
 
 
+	print 'Assembling course_id_lookup_dict, class_number_lookup_dict'
 	course_id_lookup_dict, class_number_lookup_dict = get_course_id_lookup_dict(class_dict)
 
 	from cloud.serialization.cloudpickle import dump
@@ -200,8 +222,9 @@ def process_website_necessities():
 	for i, name in enumerate(feat_names):
 		word_dict[name] = i
 
-	dump((tfidf_mat, word_dict, course_doc_dict), open(search_necessities_filename, 'wb'))
+	dump((vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list), open(search_necessities_filename, 'wb'))
 
+	print 'Assembling course_info_dict'
 	course_info_dict = {}
 	for course_id in class_number_lookup_dict.keys():
 		term_info_dict = {}
@@ -210,6 +233,22 @@ def process_website_necessities():
 				term_info_dict[term_id] = class_dict[term_id][course_id]
 		course_info_dict[course_id] = term_info_dict
 	dump(course_info_dict, open(course_info_necessities_filename, 'wb'))
+
+	print 'Assembling course_association_dictionary'
+	import re
+	course_association_dictionary = defaultdict(list)
+	for course_id, doc in course_doc_dict.items():
+		for other_course_num in course_id_lookup_dict.keys():
+			pattern = other_course_num[:3] + ' ' + other_course_num[3:]
+			if re.search(pattern, doc):
+				course_association_dictionary[course_id].extend(course_id_lookup_dict[other_course_num])
+
+	dump((course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k,
+	      vectorizer, tfidf_mat, 
+	      word_dict, course_doc_dict, course_id_list, 
+	      course_info_dict, course_association_dictionary), open(website_necessities_filename, 'wb'))
+
+
 
 
 

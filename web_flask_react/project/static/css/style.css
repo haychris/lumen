@@ -1,7 +1,7 @@
 body {
   font-family: Tahoma, Geneva, sans-serif;
   background-size: cover;
-  margin: 0;
+  margin: 0 0 30px 0;
   padding: 0;
   text-align: center;
 }
@@ -11,196 +11,451 @@ img {
   max-height: 100%;
 }
 
-.projectTitleMain {
-//  background-color: DodgerBlue;
-  overflow: hidden;
-  margin-top: 10%;
-  margin-left: 35%;
-  margin-right: 35%;
-}
-
-.projectTitleSmall {
-//  background-color: DodgerBlue;
-  overflow:hidden;
-  margin-top: 1%;
-  margin-left: 42%;
-  margin-right: 42%;
-}
-
-#projectNameMain {
-  font-size: 4em;
-  border: none;
-}
-
-#projectNameSmall {
-  font-size: 3em;
-  border: none;
+.projectTitle {
+  position: absolute;
+  bottom: 0;
+  left: 90px;
 }
 
 #projectLogo {
+  width: 90px;
+  height: 90px;
   float: left;
+}
+
+#projectTitleSmall {
+  margin-top: 10px;
+  margin-left: 42%;
+  margin-right: 42%;
+  cursor: pointer;
+  position: relative;
+  height: 75px;
+  color:white;
+}
+
+#projectLogoSmall {
   width: 75px;
   height: 75px;
+  float: left;
 }
 
-#projectDescription {
-  font-size: 1em;
-}
-
-.queryEntry {
-//  background-color: LimeGreen;
-  margin-top: 5%;
+#projectNameSmall {
+  font-size: 52px;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 75px;
 }
 
 /**************
  * Index page *
  **************/
-#queryText {
-  font-size: 1.5em;
+.projectTitleMain {
+  margin-top: 100px;
+  margin-left: 40%;
+  margin-right: 40%;
+  color:white;
 }
 
-#queryFormMain {
-  margin: 0 40% 0 40%;
+#projectNameMain {
+  font-size: 65px;
+  height: 100px;
+  position: relative;
+}
+
+#projectDescription {
+  font-size: 17px;
+  color:white;
+}
+
+#queryEntry {
+  margin: 150px auto 0 auto;
+  width: 600px;
+}
+
+#queryEntrySmall {
+  margin-top: 10px;
+}
+
+#queryText {
+  color: white;
+  font-size: 1.5em;
+  margin-bottom: 5px;
+/*  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;*/
+}
+
+#queryContainer {
+  margin: 0 50px 0 50px;
+}
+
+#queryInputMain {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#queryInputMain:focus {
+  border-color: yellow;
+  outline: none;
+  box-shadow: 0 0 15px yellow;
+}
+
+#searchButton {
+  background-color: blue;
 }
 
 .courseHistOption {
-//  background-color: tomato;
   margin-top: 7%;
+  color:white;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
 #courseHistText {
-  font-size: 1.5em;
+  font-size: 21px;
 }
 
-#courseHistButton {
-  font-size: 1em;
-  margin: 0 42% 0 42%;
+#courseHistButtonStyle {
+  font-size: 21px;
+  margin: 10px 45% 0 45%;
   padding: 10px 0 10px 0;
-  background-color: red;
+  background-color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  color: white;
+}
+
+#courseHistButtonStyle:hover {
+  color: Gold;
+  border-color: gold;
+  outline: none;
+  box-shadow: 0 0 10px gold;
 }
 
 /*****************************
  * Course history input page *
  *****************************/
-#yearInput {
-  margin-top: 10px;
-  background-color: LimeGreen;
-  font-size: 1.5em;
-  line-height: 50px;
-  vertical-align: middle;
-}
-
-#freshman {
-  background-color: DarkOrchid;
-  width: 200px;
-  height: 50px;
-  display: inline-block;
-}
-
-#sophomore {
-  background-color: Gold;
-  width: 200px;
-  height: 50px;
-  display: inline-block;
-}
-
-#junior {
-  background-color: Tan;
-  width: 200px;
-  height: 50px;
-  display: inline-block;
-}
-
 #courseHistExplain {
-  margin-top: 10px;
+  font-size: 16px;
+  width: 450px;
+  margin: 50px auto 0 auto;
+  color: white;
+}
+
+#courseHistPrompt {
+  font-size: 30px;
+  color: white;
+  margin: 25px auto 50px auto;
+  width: 1000px;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
 #courseHistInput {
   margin-top: 10px;
+  min-height: 100%;
+  position: relative;
 }
 
-#yr1L {
-  background-color: blue;
+.fallSemester {
   float: left;
-  height: 100px;
   width: 50%;
+  margin-top: 10px;
 }
 
-#yr1R {
-  background-color: red;
+.springSemester {
   float: right;
-  height: 100px;
   width: 50%;
+  margin-top: 10px;
 }
 
-#yr2L {
-  background-color: green;
+.semesterTitle {
+  font-size: 21px;
+  color:white;
+}
+
+.yearStyle {
+  min-height: 100px;
+  overflow:hidden;
+  margin-top: 30px;
+}
+
+.courseEntry {
+  min-height: 30px;
+}
+
+.courseName {
+  min-width: 1px;
   float: left;
-  height: 100px;
-  width: 50%;
+  margin-left: 20%;
+  border: none;
 }
 
-#yr2R {
-  background-color: purple;
-  float: right;
-  height: 100px;
-  width: 50%;
+.courseName:focus {
+  border-color: yellow;
+  outline: none;
+  box-shadow: 0 0 15px yellow;
 }
 
-#yr3L {
-  background-color: white;
+.courseRating {
+  width: 20%;
   float: left;
-  height: 100px;
-  width: 50%;
+  margin-left: 5%;
 }
 
-#yr3R {
-  background-color: gray;
+.slider {
+  margin-top: 10px;
+}
+
+.showRating {
+  float: left;
+  margin: 5px 30px;
+  color:white;
+}
+
+#editYearButton {
+  width: 300px;
+  margin: 50px auto 0 auto;
+}
+
+.addCourseButtonStyle {
+  background: slateblue;
+  color: black;
+  width: 125px;
+  height: 25px;
+  border-radius: 7px;
+  margin: 10px auto 0 auto;
+  clear: both;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.addDelete {
+  font-size: 21px;
+  height: 40px;
+  width: 45%;
+  padding: 3px 0 5px 0;
+  border-radius: 10px;
+}
+
+#addSemesterButton {
+  color: #bcdf8a;
+  float: left;
+  cursor: pointer;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
+}
+
+#disabledAdd {
+  float: left;
+  cursor: default;
+}
+
+#deleteSemesterButton {
+  color: #ed7777;
   float: right;
-  height: 100px;
-  width: 50%;
+  cursor: pointer;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
 }
 
-#getRecommendationsButton {
-  background-color: tomato;
-  font-size: 1.5em;
-  margin: 0 42% 0 42%;
+#disabledDelete {
+  float: right;
+  cursor: default;
+}
+
+#majorPrompt {
+  color: white;
+}
+
+#certificatePrompt {
+  color: white;
+}
+
+.getRecommendationsButtonStyle {
+  background-color: black;
+  font-size: 21px;
+  height: 50px;
+  width: 200px;
+  margin: 50px auto 0 auto;
   padding: 10px 0 10px 0;
+  cursor: pointer;
+  border-radius: 10px;
+  color: white;
+}
+
+.getRecommendationsButtonStyle:hover {
+  color: gold;
+  border-color: gold;
+  outline: none;
+  box-shadow: 0 0 10px gold;
 }
 
 
 /******************************
  * Course history result page *
  ******************************/
+#resultPrompt {
+  width: 700px;
+  margin: 20px auto 0 auto;
+  color: white;
+  font-size: 28px;
+}
 
 #editCourseHistButton {
-  margin-top: 5px;
-  font-size: 0.75em;
+  color: gold;
+  margin: 5px auto 0 auto;
+  font-size: 14px;
+  cursor: pointer;
+  width: 350px;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
+}
+
+.resultName {
+  width: 250px;
+  height: 100%;
+  float:left; 
+  color: white;
+  background-color: #335C35;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-radius: 5px;
+  border: 3px solid #e6e6e6;
+  cursor: pointer;
+}
+
+.resultCourseNumber {
+  height: 30%;
+  position: relative;
+  padding-top:10px;
+  font-size: 21px;
+}
+
+.resultCourseNameContainer {
+  height: 70%;
+  position: relative;
+}
+
+.resultCourseName {
+  height: 75%;
+  display: block;
+}
+
+.resultExpand {
+  height: 25%;
+  display: block;
+  color:#94c0cc;
+}
+
+.resultData {
+  width: 650px;
+  height: 100%;
+  float: left;
+  color: white;
+}
+
+.resultScoreData {
+  height: 30%;
+  display: block;
+  text-align: left;
+  margin-left: 150px;
+}
+
+.resultScore {
+  float: right;
+  margin-right: 50px;
+  padding-top: 10px;
+  font-size: 17px;
+}
+
+.resultComments {
+  text-align: left;
+  height: 70%;
+  display: block;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: hidden;
 }
 
 /*********************
  * Query result page *
 **********************/
-.queryEntry {
-//  background-color: LimeGreen;
-  margin-top: 1%;
-  margin-bottom: 1%;
+#queryContainerSmall {
+  margin: 0 auto 0 auto;
+  width: 500px;
 }
 
-#queryForm {
-  margin: 0 40% 0 40%;
+#requery {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#requery:focus {
+  border-color: yellow;
+  outline: none;
+  box-shadow: 0 0 15px yellow;
 }
 
 .result {
-  margin: 5px auto 0 auto;
-  width: 600px;
-  height: 150px;
-  background-color: tomato;
+  margin: 20px auto 0 auto;
+  width: 1000px;
+  height: 145px;
+  border-radius: 5px;
 }
 
-#loadMoreButton {
-  font-size: 1em;
+.loadMoreButton {
+  font-size: 14px;
   margin: 10px 45% 0 45%;
   padding: 10px 0 10px 0;
   background-color: blue;
+  display: none;
+}
+
+.fulfillmentNotification {
+  width: 100px;
+  height: 100px;
+  text-align: left;
+  float: left;
+}
+
+.major {
+  color: #fad48b;
+}
+
+.cert {
+  color: #f5f9ad;
+}
+
+.noResults {
+  font-size: 28px;
+  color: white;
+  text-shadow:
+    1px 1px 7px black,
+    -1px 1px 7px black,
+    1px -1px 7px black,
+    -1px -1px 7px black;
+}
+
+.requeryPrompt {
+  font-size: 21px;
+  color: white;
 }
