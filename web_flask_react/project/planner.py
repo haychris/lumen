@@ -3,13 +3,15 @@ import numpy as np
 class Planner(object):
 	major_type_col = 0
 	major_col = 1
-	def __init__(self, majors_filename, certificates_filename, course_id_list, course_id_to_num_dict):
+	def __init__(self, majors_filename, certificates_filename, course_id_list, course_id_to_num_dict, pagerank_dict):
 		self.major_requirements = {}
 		self.certificate_requirements = {}
 		self.major_membership_matrix = None
 		self.certificate_membership_matrix = None
 		self.course_id_list = course_id_list
 		self.course_id_to_num_dict = course_id_to_num_dict
+
+		self.pagerank_vector = np.array([pagerank_dict[course_id] for course_id in course_id_list])
 
 		self._process_major_requirements(majors_filename)
 		self._process_certificate_requirements(certificates_filename)
@@ -123,6 +125,10 @@ class Planner(object):
 		if not certificate:
 			return self.certificate_membership_matrix[0,:]*0+1
 		return self.certificate_membership_matrix[self.certificate_row_dict[certificate], :]*(boost-1) + 1
+
+
+	def get_pagerank_boost_vector(self, boost):
+		return self.pagerank_vector*(boost-1) + 1
 
 	def course_id_to_num_list(self, course_id):
 		return self.course_id_to_num_dict[course_id]

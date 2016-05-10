@@ -35,8 +35,9 @@ class Recommender(object):
 
 		major_boost_vector = self.planner.get_major_boost_vector(major, 1.007)
 		certificate_boost_vector = self.planner.get_certificate_boost_vector(certificate, 1.005)
+		pagerank_boost_vector = self.planner.get_pagerank_boost_vector(1.1)
 
-		overall_boost = major_boost_vector * certificate_boost_vector
+		overall_boost = major_boost_vector * certificate_boost_vector * pagerank_boost_vector
 		### DEBUG
 		for i, boost in enumerate(overall_boost):
 			if boost > 1:

@@ -4,6 +4,9 @@ import pandas as pd
 import numpy as np
 
 from sklearn.cluster import KMeans
+import networkx as nx
+import matplotlib.pyplot as plt
+from networkx.drawing.nx_pydot import write_dot
 
 def add_ratings(file_name, class_dict):
 	f = open(file_name)
@@ -244,10 +247,31 @@ def process_website_necessities():
 				for other_course_id in course_id_lookup_dict[other_course_num]:
 					course_association_dictionary[course_id][other_course_id] += 1
 
+
+	print 'Constructing graph'
+	G = nx.Graph()
+	G.add_nodes_from(course_id_list)
+	for course_id, mentions_dict in course_association_dictionary.items():
+		for mention, num in mentions_dict.items():
+			if not course_id == mention:
+				G.add_edge(course_id, mention, weight=num)	
+
+	# for node in G.nodes():
+	# 	if G.degree(node) == 0:
+	# 		G.remove_node(node)
+
+	# labels_dict = defaultdict(str)
+	# for key, val in class_number_lookup_dict.items():
+	# 	if key in G.node:
+	# 		labels_dict[key] = ' '.join(val)
+
+	print 'Calculating pagerank'
+	pagerank_dict = nx.pagerank(G)
+
 	dump((course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k,
 	      vectorizer, tfidf_mat, 
 	      word_dict, course_doc_dict, course_id_list, 
-	      course_info_dict, course_association_dictionary), open(website_necessities_filename, 'wb'))
+	      course_info_dict, course_association_dictionary, pagerank_dict), open(website_necessities_filename, 'wb'))
 
 
 

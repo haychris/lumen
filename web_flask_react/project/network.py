@@ -27,7 +27,7 @@ for key, val in class_number_lookup_dict.items():
 # nx.draw_networkx(G, node_size=50, font_size=10, labels=labels_dict)
 # plt.show()
 
-pagerank = nx.pagerank(G)
+pagerank_dict = nx.pagerank(G)
 print 'PAGERANK'
 for val, key in sorted([(val, key) for key, val in pagerank.items()], reverse=True)[:10]:
 	print labels_dict[key], ':', val
