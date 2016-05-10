@@ -1,6 +1,7 @@
 import cPickle as pickle
 import re
 import itertools
+from collections import defaultdict
 
 distributions = ['LA', 'HA', 'SA', 'EM', 'STN', 'STL', 'QR', 'EC']
 
@@ -25,8 +26,8 @@ def reconfigure_highlighting(term):
 class Course(object):
 	ratings_order = {'Lectures':0, 
 	'Papers; Reports; Problem Sets; Examinations':1, 
-	'Readings':2, 'Classes':3, 'Overall Quality of the Course':4, 
-	'Feedback for other students:':5}
+	'Readings':2, 'Classes':3, 'Overall Quality of the Course':5, 
+	'Feedback for other students:':4}
 
 	term_ids = {'1142': "Fall '13", '1144': "Spring '14",
 	            '1152': "Fall '14", '1154': "Spring '15", 
@@ -102,23 +103,43 @@ class Course(object):
 		if term_id is None:
 			term_id = self.default_term
 		return self.term_info_dict[term_id]['COMMENTS']
+
+	def get_ratings_names(self):
+		sorted_keys = sorted([(spot, key) for key, spot in self.ratings_order.items()])
+		return [key for spot, key in sorted_keys]
 	
 	def get_all_ratings(self, term_id=None):
 		if term_id is None:
 			term_id = self.default_term
-		ratings = [rating for name, rating in self.term_info_dict[term_id]['EVAL']]
-
-		if len(ratings) > 0:
-			return ratings
-		else:
+		# ratings = [rating for name, rating in self.term_info_dict[term_id]['EVAL']]
+		# import pdb; pdb.set_trace()
+		ratings_dict = self.term_info_dict[term_id]['EVAL']
+		if len(ratings_dict) == 0:
 			return [0]*len(self.ratings_order.keys())
+		import pdb; pdb.set_trace()
+		ratings_list = []
+		for key, spot in self.ratings_order.items():
+			try:
+				ratings_list.append((spot,ratings_dict[key]))
+			except KeyError:
+				pass
+		sorted_ratings = sorted(ratings_list)
+		ratings = [rating for spot, rating in sorted_ratings]
+		return ratings
+
+	def get_ratings_dict(self, term_id=None):
+		if term_id is None:
+			term_id = self.default_term
+		return defaultdict(str, self.term_info_dict[term_id]['EVAL'])
+
 
 	def get_most_recent_overall_rating(self):
-		ratings_list = self.term_info_dict[self.default_term]['EVAL']
-		if len(ratings_list) > 0:
+		ratings_dict = self.term_info_dict[self.default_term]['EVAL']
+		if len(ratings_dict) > 0:
 			try:
-				return ratings_list[self.ratings_order['Overall Quality of the Course']][1]
-			except IndexError:
+				# return ratings_list[self.ratings_order['Overall Quality of the Course']][1]
+				return ratings_dict['Overall Quality of the Course']
+			except (KeyError, IndexError) as e:
 				# import pdb; pdb.set_trace()
 				return 0
 		else:
@@ -148,6 +169,16 @@ class Course(object):
 					second_comment = comment
 		if top_comment == second_comment:
 			second_comment = ''
+
+		if top_comment == '' or second_comment == '':
+			for term_id, info_dict in self.term_info_dict.items():
+				for comment in info_dict["COMMENTS"]:
+					if top_comment == '':
+						top_comment = comment
+					elif second_comment == '':
+						second_comment = comment
+					else:
+						break
 
 		for term in terms:
 			top_comment = safe_convert(top_comment).replace(term, '<u><b>' + term + '</b></u>')

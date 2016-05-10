@@ -84,21 +84,7 @@
 </script>
 
 <div class="result" class="expandedResult" id="result_hidden_{{loop.index}}" style="display:none; margin-top:0; height:150px">
-  <div align="left" style="display:none">
-    Lectures: {{result.get_all_ratings()[0]}}
-  </div>
-  <div align="left" style="display:none">
-    Papers, Reports, Problem Sets, and Examinations: {{result.get_all_ratings()[1]}}
-  </div>
-  <div align="left" style="display:none">
-    Readings: {{result.get_all_ratings()[2]}}
-  </div>
-  <div align="left" style="display:none">
-    Classes: {{result.get_all_ratings()[3]}}
-  </div>
-  <div align="left" style="display:none">
-    Overall Quality of the Course: {{result.get_all_ratings()[4]}}
-  </div>
+
   <div id="chart_{{loop.index}}"></div>
 <!--
         <div id="term_tags"> 
@@ -124,11 +110,11 @@
     function drawChart() {
       var data = google.visualization.arrayToDataTable([
         ["Element", "Rating", { role: "style" } ],
-        ["Classes", parseFloat({{result.get_all_ratings()[0]}}), "color: #bcdf8a"],
-        ["Coursework & Exams", parseFloat({{result.get_all_ratings()[1]}}), "color: #f5f9ad"],
-        ["Readings", parseFloat({{result.get_all_ratings()[2]}}), "color: #94c0cc"],
-        ["Classes", parseFloat({{result.get_all_ratings()[3]}}), "color: #fad48b"],
-        ["Overall Quality", parseFloat({{result.get_all_ratings()[4]}}), "color: #ed7777"]
+        ["Lectures", parseFloat({{result.get_ratings_dict()['Lectures']}}), "color: #bcdf8a"],
+        ["Coursework & Exams", parseFloat({{result.get_ratings_dict()['Papers; Reports; Problem Sets; Examinations']}}), "color: #f5f9ad"],
+        ["Readings", parseFloat({{result.get_ratings_dict()['Readings']}}), "color: #94c0cc"],
+        ["Feedback", parseFloat({{result.get_ratings_dict()['Feedback for other students:']}}), "color: #fad48b"],
+        ["Overall Quality", parseFloat({{result.get_ratings_dict()['Overall Quality of the Course']}}), "color: #ed7777"]
         ]);
 
       var view = new google.visualization.DataView(data);

@@ -119,16 +119,18 @@ class Planner(object):
 	def get_major_boost_vector(self, major, boost):
 		if not major:
 			return self.major_membership_matrix[0,:]*0+1
-		return self.major_membership_matrix[self.major_row_dict[major], :]*(boost-1) + 1
+		column = self.major_membership_matrix[self.major_row_dict[major], :]
+		return column*(boost-1) + 1
 
 	def get_certificate_boost_vector(self, certificate, boost):
 		if not certificate:
 			return self.certificate_membership_matrix[0,:]*0+1
-		return self.certificate_membership_matrix[self.certificate_row_dict[certificate], :]*(boost-1) + 1
+		column = self.certificate_membership_matrix[self.certificate_row_dict[certificate], :]
+		return column*(boost-1) + 1
 
 
 	def get_pagerank_boost_vector(self, boost):
-		return self.pagerank_vector*(boost-1) + 1
+		return (self.pagerank_vector / np.max(self.pagerank_vector))*(boost-1) + 1
 
 	def course_id_to_num_list(self, course_id):
 		return self.course_id_to_num_dict[course_id]
