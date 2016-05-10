@@ -17,9 +17,6 @@ class Searcher(object):
 	# 	self.planner = planner
 
 	def search(self, term_string, major, certificate, num_results=20):
-		split_terms = term_string.split()
-		if len(split_terms) == 2 and split_terms[0].isalpha() and len(split_terms[0]) == 3 and split_terms[1].isdigit() and len(split_terms[1]) == 3:
-			return [self.course_id_lookup_dict[term_string.upper().replace(' ', '')][0]]
 		major_boost_vector = self.planner.get_major_boost_vector(major, 1.3)
 		certificate_boost_vector = self.planner.get_certificate_boost_vector(certificate, 1.2)
 
@@ -47,7 +44,18 @@ class Searcher(object):
 		else:
 			courses = []
 		# import pdb; pdb.set_trace()
-		return courses
+		split_terms = term_string.split()
+		if len(split_terms) == 1 and len(term_string) == 6:
+			split_terms = [term_string[:3], term_string[3:]]
+		if len(split_terms) == 2 and split_terms[0].isalpha() and len(split_terms[0]) == 3 and split_terms[1].isdigit() and len(split_terms[1]) == 3:
+			specific_courses = self.course_id_lookup_dict[term_string.upper().replace(' ', '')]
+			for spe_course in reversed(specific_courses):
+				try:
+					courses.remove(spe_course)
+				except ValueError:
+					pass
+				courses.insert(0, spe_course)	
+		return courses[:num_results]
 		# try:
 		# 	return [self.doc_course_id_list[sorted_docs[0,-(i+1)]] for i in range(min(num_results, sorted_docs.shape[1]))]
 		# except IndexError:

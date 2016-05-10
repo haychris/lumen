@@ -1,5 +1,6 @@
 import cPickle as pickle
 import numpy as np
+import math
 
 class Recommender(object):
 	def __init__(self, course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, K, course_id_list, planner, mean_rating=3):
@@ -32,15 +33,15 @@ class Recommender(object):
 			probs /= len(course_id_list)
 			cluster_scores[:] += (rating-self.mean_rating)*probs
 
-		major_boost_vector = self.planner.get_major_boost_vector(major, 1.3)
-		certificate_boost_vector = self.planner.get_certificate_boost_vector(certificate, 1.2)
+		major_boost_vector = self.planner.get_major_boost_vector(major, 1.02)
+		certificate_boost_vector = self.planner.get_certificate_boost_vector(certificate, 1.01)
 
 		class_ratings = []
 		for probs in self.cluster_probs:
 			class_ratings.append(np.dot(probs, cluster_scores))
 
 		base_exp = 15
-		class_ratings = (np.array(class_ratings)**base_exp) * major_boost_vector * certificate_boost_vector
+		class_ratings = np.log(np.array(class_ratings)) * major_boost_vector * certificate_boost_vector
 		sorted_docs = np.argsort(class_ratings)[::-1]
 		recommendations = []
 		for doc_num in sorted_docs:
