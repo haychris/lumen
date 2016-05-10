@@ -35,7 +35,7 @@ class Recommender(object):
 
 		major_boost_vector = self.planner.get_major_boost_vector(major, 1.007)
 		certificate_boost_vector = self.planner.get_certificate_boost_vector(certificate, 1.005)
-		pagerank_boost_vector = self.planner.get_pagerank_boost_vector(1.1)
+		pagerank_boost_vector = self.planner.get_pagerank_boost_vector(1.05)
 
 		overall_boost = major_boost_vector * certificate_boost_vector * pagerank_boost_vector
 		### DEBUG
@@ -51,7 +51,9 @@ class Recommender(object):
 		base_exp = 15
 		# import pdb; pdb.set_trace()
 
-		class_ratings = np.log((np.array(class_ratings)+1)**base_exp) * overall_boost
+		class_ratings = np.log((np.array(class_ratings)+1)**base_exp) 
+		class_ratings /= np.max(class_ratings)
+		class_ratings *= overall_boost
 		sorted_docs = np.argsort(class_ratings)[::-1]
 		sorted_ratings = np.sort(class_ratings)[::-1]  ###### FOR DEBUGGING
 		print sorted_ratings[:20]

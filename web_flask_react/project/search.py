@@ -35,6 +35,7 @@ class Searcher(object):
 			except KeyError:
 				continue
 		results = np.array(results).ravel()
+		results /= np.max(results)
 		results *= overall_boost
 		# import pdb; pdb.set_trace()
 		sorted_docs = np.argsort(results)[::-1]

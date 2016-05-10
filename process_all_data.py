@@ -8,6 +8,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from networkx.drawing.nx_pydot import write_dot
 
+NUM_ERRORS = 0
+
 def add_ratings(file_name, class_dict):
 	f = open(file_name)
 	header = f.readline().replace("\n", "")
@@ -16,10 +18,14 @@ def add_ratings(file_name, class_dict):
 	for line in f:
 		line_dict = {column_keys[i]:val for i, val in enumerate(line.split(','))}
 		cur_term_dict = class_dict[line_dict["STRM"]]
-		cur_course_dict = cur_term_dict[line_dict["CRSE_ID"]]
+		crse_id = line_dict["CRSE_ID"]
+		crse_id = '0'*(6-len(crse_id)) + crse_id
+		cur_course_dict = cur_term_dict[crse_id]
 		cur_course_dict["SUBJECT"] = line_dict["SUBJECT"]
 		cur_course_dict["CATALOG_NBR"] = line_dict["CATALOG_NBR"]
-		cur_course_dict["EVAL"].append((line_dict["PU_EVAL_CATEGORY"], float(line_dict["PU_EVAL_MEAN"])))
+		if "EVAL" not in cur_course_dict:
+			cur_course_dict["EVAL"] = {}
+		cur_course_dict["EVAL"][line_dict["PU_EVAL_CATEGORY"]] = float(line_dict["PU_EVAL_MEAN"])
 
 
 # for file_name in sys.argv[2:]:
@@ -29,6 +35,7 @@ def add_comments(file_name, class_dict):
 	cur_column_keys = filter(None, cur_header.split(','))
 	# cur_column_keys = ["STRM", "SUBJECT", "CATALOG_NBR", "CRSE_ID", "COURSE_TITLE", "PU_EVAL_COMMENTS"]
 	split = None
+	global NUM_ERRORS
 	for line in f:
 		split = filter(None, line.replace('\n', '').split(','))
 		if len(split) == 0:
@@ -38,14 +45,55 @@ def add_comments(file_name, class_dict):
 			test_strm = int(strm)
 			subject = split[1]
 			catalog_nbr = split[2]
-			test_catalog_nbr = int(catalog_nbr)
+			test_catalog_nbr = int(catalog_nbr[:3])
 			crse_id = split[3]
+			test_crse_id = int(crse_id)
 			course_title = split[4]
 			comments = ' '.join(split[5:])
 			prev_split = split
 		except (IndexError, ValueError) as e:
-			print 'IndexError. SKIPPING'
-			continue
+			try:
+				strm = split[0]
+				test_strm = int(strm)
+				subject = split[1]
+				subject2 = split[2]
+				catalog_nbr = split[3]
+				test_catalog_nbr = int(catalog_nbr[:3])
+				precept = split[4]
+				randonum = split[5]
+				randonum2 = split[6]
+				randonum3 = split[7]
+				crse_id = split[8]
+				test_crse_id = int(crse_id)
+				randonum4 = split[9]
+				course_title = split[10]
+				comments = ' '.join(split[11:])
+				prev_split = split
+			except (IndexError, ValueError) as e:
+				try:
+					strm = split[0]
+					test_strm = int(strm)
+					# IF VALID, ABOVE THROWS ERROR
+
+					print 'IndexError. SKIPPING:', line
+					NUM_ERRORS += 1
+					continue
+				except (IndexError, ValueError) as e:
+					try:
+						strm = prev_split[0]
+						test_strm = int(strm)
+						subject = prev_split[1]
+						catalog_nbr = prev_split[2]
+						test_catalog_nbr = int(catalog_nbr[:3])
+						crse_id = prev_split[3]
+						test_crse_id = int(crse_id)
+						course_title = prev_split[4]
+						comments = ' '.join(split)
+					except (IndexError, ValueError) as e:
+						print 'IndexError. SKIPPING:', line
+						NUM_ERRORS += 1
+						continue
+				
 			# strm = prev_split[0]
 			# subject = prev_split[1]
 			# catalog_nbr = prev_split[2]
@@ -53,6 +101,7 @@ def add_comments(file_name, class_dict):
 			# course_title = prev_split[4]
 			# comments = ' '.join(split)
 			
+		crse_id = '0'*(6-len(crse_id)) + crse_id
 		# line_dict = {cur_column_keys[i]:val for i, val in enumerate(filter(None, ))}
 		cur_term_dict = class_dict[strm]
 		cur_course_dict = cur_term_dict[crse_id]
@@ -76,7 +125,7 @@ def add_registrar(file_name, class_dict):
 		line = line.replace('\n', '').replace('"', '')
 		line_dict = {column_keys[i]:val for i, val in enumerate(line.split(','))}
 		cur_term_dict = class_dict[line_dict["termid"]]
-		cur_course_dict = cur_term_dict[str(int(line_dict["courseid"]))]
+		cur_course_dict = cur_term_dict[line_dict["courseid"]]
 		cur_course_dict["all_listings_string"] = line_dict["all_listings_string"]
 		cur_course_dict["area"] = line_dict["area"]
 		cur_course_dict["title"] = line_dict["title"]
@@ -94,7 +143,7 @@ def create_documents(class_dict):
 					for item in value:
 						if isinstance(item, str):
 							doc_list.append(item)
-				else:
+				elif not isinstance(value, dict):   # Exception for EVAL
 					doc_list.append(value)
 			course_dict['document'] = ' '.join(doc_list)
 
@@ -258,7 +307,12 @@ def process_website_necessities():
 	for course_id, mentions_dict in course_association_dictionary.items():
 		for mention, num in mentions_dict.items():
 			if not course_id == mention:
-				G.add_edge(course_id, mention, weight=num)	
+				if (course_id, mention) in G.edges():
+					G.add_edge(course_id, mention, weight=num+G.edge[course_id][mention]['weight'])
+				elif (mention, course_id) in G.edges():
+					G.add_edge(mention, course_id, weight=num+G.edge[mention][course_id]['weight'])
+				else:
+					G.add_edge(course_id, mention, weight=num)	
 
 	# for node in G.nodes():
 	# 	if G.degree(node) == 0:
