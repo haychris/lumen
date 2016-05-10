@@ -145,7 +145,11 @@ class Course(object):
 
 		for term in terms:
 			top_comment = safe_convert(top_comment).replace(term, '<u><b>' + term + '</b></u>')
+			top_comment = safe_convert(top_comment).replace(term.upper(), '<u><b>' + term.upper() + '</b></u>')
+			top_comment = safe_convert(top_comment).replace(term.lower(), '<u><b>' + term.lower() + '</b></u>')
 			second_comment = safe_convert(second_comment).replace(term, '<u><b>' + term + '</b></u>')
+			second_comment = safe_convert(second_comment).replace(term.upper(), '<u><b>' + term.upper() + '</b></u>')
+			second_comment = safe_convert(second_comment).replace(term.lower(), '<u><b>' + term.lower() + '</b></u>')
 		return safe_convert(top_comment), safe_convert(second_comment)
 		# doc =  self.term_info_dict[self.default_term]['document'].lower()
 		# results = []
