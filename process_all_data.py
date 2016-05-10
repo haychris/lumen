@@ -151,6 +151,8 @@ from nltk.stem import WordNetLemmatizer
 
 
 class LemmaTokenizer(object):
+	distributions = ['LA', 'HA', 'SA', 'EM', 'STN', 'STL', 'QR', 'EC']
+
 	def __init__(self):
 		self.wnl = WordNetLemmatizer()
 	def __call__(self, doc):
@@ -163,6 +165,8 @@ class LemmaTokenizer(object):
 				return str(int(x)/100*100) # floor by hundred, i.e., '323' -> '300'
 			else:
 				return x
+		if len(x) == 2 and x.upper() in self.distributions:
+			return x
 		return self.wnl.lemmatize(x)
 
 def get_tfidf_matrix(doc_list):
