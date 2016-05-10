@@ -2,6 +2,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 {% block content %}
+<script src="{{ url_for('static', filename='scripts/registrar.js') }}"></script>
 <div id="queryEntrySmall">
   <div id="queryContainerSmall">
     <form action="query">
@@ -13,7 +14,7 @@
 {% for result in results %}
 <div class="result">
   <div class="fulfillmentNotification">
-    <br/><br/>
+    <br/><br/><br/>
     {% if result.planner.check_all_major_requirements(result.get_list_of_course_nums(), major) %}
     <span class="major"> ✓ Major</span>
     {% endif %}
@@ -35,12 +36,16 @@
         </div>
       </div>
       <div class="resultExpand">
-        (Details)
+        {% if result.get_area() %}
+          <font color="#ed7777">{{result.get_area()}}</font>
+        {% endif %}
+        <br/>(Details)
       </div>
     </div>
   </div>
 
   <div class="resultData">
+    <div class="registrarLink" onclick="registrarRedirect( '{{result.get_url_courseid()}}' , '{{result.default_term}}' )"><u>Registrar's page</u></div>
     <div class="resultScoreData">
      <div id="starRating_{{loop.index}}" style="display:inline"></div>
      <div class="resultScore">
@@ -48,7 +53,11 @@
     </div>
   </div>
   <div class="resultComments">
-   {{result.get_highlighted_text(terms)}}
+   {% for comment in result.get_highlighted_text(terms) %}
+    {% if comment %}
+    "{{comment | safe}}"<br/>
+    {% endif %}
+   {% endfor %}
  </div>
 </div>
 </div>
@@ -133,10 +142,10 @@
       var options = {
         title: "Most Recent Class Ratings for {{result.get_course_listings()}}",
         titleTextStyle: { color: "#f3f3f3"},
-        width: 800,
+        width: 900,
         height: 150,
         bar: {groupWidth: "55%"},
-        chartArea: {left:250},
+        chartArea: {left:235, right:10},
         legend: { position: "none" },
         hAxis: {
           minValue: 0,

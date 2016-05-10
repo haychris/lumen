@@ -2,6 +2,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 {% block content %}
+<script src="{{ url_for('static', filename='scripts/registrar.js') }}"></script>
 <div id="resultPrompt">
   Based on your past courses, we recommend...
 </div>
@@ -12,7 +13,7 @@
 {% for result in results %}
 <div class="result">
   <div class="fulfillmentNotification">
-    <br/><br/>
+    <br/><br/><br/>
     {% if result.planner.check_all_major_requirements(result.get_list_of_course_nums(), major) %}
     <span class="major"> ✓ Major</span>
     {% endif %}
@@ -35,24 +36,33 @@
         </div>
       </div>
       <div class="resultExpand">
-        (Details)
+        {% if result.get_area() %}
+          <font color="#ed7777">{{result.get_area()}}</font>
+        {% endif %}
+        <br/>(Details)
       </div>
     </div>
   </div>
 
   <div class="resultData">
+    <div class="registrarLink" onclick="registrarRedirect( '{{result.get_url_courseid()}}' , '{{result.default_term}}' )"><u>Registrar's page</u></div>
     <div class="resultScoreData">
-     <div id="starRating_{{loop.index}}" style="display:inline"></div>
-     <div class="resultScore">
-      {{result.get_default_term_text()}}: {{result.get_most_recent_overall_rating()}}
+      <div id="starRating_{{loop.index}}" style="display:inline"></div>
+      <div class="resultScore">
+        {{result.get_default_term_text()}}: {{result.get_most_recent_overall_rating()}}
+      </div>
+    </div>
+    <div class="resultComments">
+      {% if result.get_comments()[2] %}
+      "{{result.get_comments()[2]}}""
+      {% endif %}
+
+      {% if result.get_comments()[3] %}
+      <br/>
+      "{{result.get_comments()[3]}}"
+      {% endif %}
     </div>
   </div>
-  <div class="resultComments">
-   {{result.get_comments()[0]}}
-   <br/>
-   {{result.get_comments()[1]}}
- </div>
-</div>
 </div>
 <script> 
   text = "<font size='6px'>";
@@ -137,10 +147,10 @@
       var options = {
         title: "Most Recent Class Ratings for {{result.get_course_listings()}}",
         titleTextStyle: { color: "#f3f3f3"},
-        width: 800,
+        width: 900,
         height: 150,
         bar: {groupWidth: "55%"},
-        chartArea: {left:250},
+        chartArea: {left:235, right:10},
         legend: { position: "none" },
         hAxis: {
           minValue: 0,

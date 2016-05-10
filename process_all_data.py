@@ -4,6 +4,9 @@ import pandas as pd
 import numpy as np
 
 from sklearn.cluster import KMeans
+import networkx as nx
+import matplotlib.pyplot as plt
+from networkx.drawing.nx_pydot import write_dot
 
 def add_ratings(file_name, class_dict):
 	f = open(file_name)
@@ -148,6 +151,8 @@ from nltk.stem import WordNetLemmatizer
 
 
 class LemmaTokenizer(object):
+	distributions = ['LA', 'HA', 'SA', 'EM', 'STN', 'STL', 'QR', 'EC']
+
 	def __init__(self):
 		self.wnl = WordNetLemmatizer()
 	def __call__(self, doc):
@@ -160,6 +165,8 @@ class LemmaTokenizer(object):
 				return str(int(x)/100*100) # floor by hundred, i.e., '323' -> '300'
 			else:
 				return x
+		if len(x) == 2 and x.upper() in self.distributions:
+			return x
 		return self.wnl.lemmatize(x)
 
 def get_tfidf_matrix(doc_list):
@@ -189,16 +196,21 @@ search_necessities_filename = 'search_necessities.pickle'
 course_info_necessities_filename = 'course_info_necessities.pickle'
 website_necessities_filename = 'website_necessities.pickle'
 def process_website_necessities():
+	print 'Assembling class_dict'
 	class_dict = get_class_dict()
+	print 'Assembling course_doc_dict, course_id_list, doc_list'
 	course_doc_dict, course_id_list, doc_list = get_doc_list(class_dict)
+	print 'Assembling vectorizer, tfidf_mat'
 	vectorizer, tfidf_mat = get_tfidf_matrix(doc_list)
 
+	print 'Fitting KMeans'
 	k = 50
 	km = KMeans(n_clusters=k, init='k-means++', max_iter=300, n_init=20)
 	km.fit(tfidf_mat)
 
 	similarity_func = lambda x: 1./(km.transform(x)**3+0.05)
 
+	print 'Computing cluster probabilities'
 	similarities_all_classes = similarity_func(vectorizer.transform(course_doc_dict.values()))
 	course_cluster_probs_dict = {}
 	for course_id, cur_class_similarities in zip(course_doc_dict.keys(), similarities_all_classes):
@@ -206,6 +218,7 @@ def process_website_necessities():
 		course_cluster_probs_dict[course_id] = probs
 
 
+	print 'Assembling course_id_lookup_dict, class_number_lookup_dict'
 	course_id_lookup_dict, class_number_lookup_dict = get_course_id_lookup_dict(class_dict)
 
 	from cloud.serialization.cloudpickle import dump
@@ -218,6 +231,7 @@ def process_website_necessities():
 
 	dump((vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list), open(search_necessities_filename, 'wb'))
 
+	print 'Assembling course_info_dict'
 	course_info_dict = {}
 	for course_id in class_number_lookup_dict.keys():
 		term_info_dict = {}
@@ -227,7 +241,43 @@ def process_website_necessities():
 		course_info_dict[course_id] = term_info_dict
 	dump(course_info_dict, open(course_info_necessities_filename, 'wb'))
 
-	dump((course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k, vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list, course_info_dict), open(website_necessities_filename, 'wb'))
+	print 'Assembling course_association_dictionary'
+	import re
+	course_association_dictionary = defaultdict(lambda : defaultdict(int))
+	for course_id, doc in course_doc_dict.items():
+		for other_course_num in course_id_lookup_dict.keys():
+			pattern = other_course_num[:3] + ' ' + other_course_num[3:]
+			if re.search(pattern, doc):
+				for other_course_id in course_id_lookup_dict[other_course_num]:
+					course_association_dictionary[course_id][other_course_id] += 1
+
+
+	print 'Constructing graph'
+	G = nx.Graph()
+	G.add_nodes_from(course_id_list)
+	for course_id, mentions_dict in course_association_dictionary.items():
+		for mention, num in mentions_dict.items():
+			if not course_id == mention:
+				G.add_edge(course_id, mention, weight=num)	
+
+	# for node in G.nodes():
+	# 	if G.degree(node) == 0:
+	# 		G.remove_node(node)
+
+	# labels_dict = defaultdict(str)
+	# for key, val in class_number_lookup_dict.items():
+	# 	if key in G.node:
+	# 		labels_dict[key] = ' '.join(val)
+
+	print 'Calculating pagerank'
+	pagerank_dict = nx.pagerank(G)
+
+	dump((course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k,
+	      vectorizer, tfidf_mat, 
+	      word_dict, course_doc_dict, course_id_list, 
+	      course_info_dict, course_association_dictionary, pagerank_dict), open(website_necessities_filename, 'wb'))
+
+
 
 
 

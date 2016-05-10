@@ -2,10 +2,25 @@ import cPickle as pickle
 import re
 import itertools
 
+distributions = ['LA', 'HA', 'SA', 'EM', 'STN', 'STL', 'QR', 'EC']
+
+
+def safe_convert(x):
+	try:
+		return unicode(x, 'utf-8', errors='ignore')
+	except (TypeError, UnicodeDecodeError) as e:
+		return x
+
+
 def minimizer(x,y):
 	if (0 < len(x) < len(y)) or len(y) == 0:
-		return x
-	return y
+		return safe_convert(x)
+	return safe_convert(y)
+
+def reconfigure_highlighting(term):
+	if term.upper() in distributions:
+		return ' %s ' % term
+	return term
 
 class Course(object):
 	ratings_order = {'Lectures':0, 
@@ -17,7 +32,8 @@ class Course(object):
 	            '1152': "Fall '14", '1154': "Spring '15", 
 	            '1162': "Fall '15", '1164': "Spring '16", 
 	            '1172': "Fall '16"}
-	def __init__(self, term_info_dict, planner):
+	def __init__(self, term_info_dict, planner, course_id):
+		self.course_id = course_id
 		self.term_info_dict = term_info_dict
 		self.planner = planner
 		for term_id in sorted(term_info_dict.keys(), reverse=True):
@@ -26,6 +42,9 @@ class Course(object):
 				break
 		else:
 			self.default_term = sorted(term_info_dict.keys())[-1]
+
+	def get_url_courseid(self):
+		return '0'*(6-len(self.course_id)) + self.course_id
 
 	def get_default_term_text(self):
 		return self.term_ids[self.default_term]
@@ -36,7 +55,13 @@ class Course(object):
 		title = self.term_info_dict[term_id]['title']
 		if not title:
 			title = self.term_info_dict[term_id]['COURSE_TITLE']
-		return title
+		return safe_convert(title)
+
+	def get_area(self, term_id=None):
+		if term_id is None:
+			term_id = self.default_term
+		area = self.term_info_dict[term_id]['area']
+		return area
 
 	def get_course_listings(self, term_id=None):
 		if term_id is None:
@@ -71,7 +96,7 @@ class Course(object):
 
 	# !!!!!!!!!!! 
 	def get_first_professor(self, profs):
-		return profs.split('|')[0]
+		return safe_convert(profs.split('|')[0])
 
 	def get_comments(self, term_id=None):
 		if term_id is None:
@@ -102,23 +127,53 @@ class Course(object):
 	def get_highlighted_text(self, terms):
 		if len(terms) == 0:
 			return ''
-		doc =  self.term_info_dict[self.default_term]['document'].lower()
-		results = []
-		for term_list in itertools.permutations(terms):
-			pattern = ' .*? '.join(terms)
-			pattern = '.{0,20}' + pattern + '.{0,20}'
-			results.extend(re.findall(pattern, doc))
-		# import pdb; pdb.set_trace()
-		if len(results) > 0:
-			return '...' + reduce(minimizer, results) + '...'
-		else:
-			# import pdb; pdb.set_trace()
-			new_term_lists = [list(terms) for _ in range(len(terms))]
-			for i,term in enumerate(terms):
-				new_term_lists[i].remove(term)
-			new_results = [self.get_highlighted_text(new_term_lists[i]) for i in range(len(terms))]
-			# import pdb; pdb.set_trace()
-			return reduce(minimizer, new_results)
+		terms = [reconfigure_highlighting(term) for term in terms]
+		top_num = -1
+		top_comment = ''
+		second_num = -1
+		second_comment = ''
+		for term_id, info_dict in self.term_info_dict.items():
+			for comment in info_dict["COMMENTS"]:
+				num_terms = 0
+				for term in terms:
+					if term.lower() in safe_convert(comment.lower()):
+						num_terms += 1
+				if num_terms > top_num:
+					second_num = top_num
+					second_comment = top_comment
+					top_num = num_terms
+					top_comment = comment
+				elif num_terms > second_num:
+					second_num = num_terms	
+					second_comment = comment
+		if top_comment == second_comment:
+			second_comment = ''
+
+		for term in terms:
+			top_comment = safe_convert(top_comment).replace(term, '<u><b>' + term + '</b></u>')
+			top_comment = safe_convert(top_comment).replace(term.upper(), '<u><b>' + term.upper() + '</b></u>')
+			top_comment = safe_convert(top_comment).replace(term.lower(), '<u><b>' + term.lower() + '</b></u>')
+			second_comment = safe_convert(second_comment).replace(term, '<u><b>' + term + '</b></u>')
+			second_comment = safe_convert(second_comment).replace(term.upper(), '<u><b>' + term.upper() + '</b></u>')
+			second_comment = safe_convert(second_comment).replace(term.lower(), '<u><b>' + term.lower() + '</b></u>')
+		return safe_convert(top_comment), safe_convert(second_comment)
+		# doc =  self.term_info_dict[self.default_term]['document'].lower()
+		# results = []
+		# for term_list in itertools.permutations(terms):
+		# 	pattern = ' .*? '.join(terms)
+		# 	pattern = '.{0,20}' + pattern + '.{0,20}'
+		# 	results.extend(re.findall(pattern, doc))
+		# # import pdb; pdb.set_trace()
+		# if len(results) > 0:
+		# 	return '...' + reduce(minimizer, results) + '...'
+		# else:
+		# 	# import pdb; pdb.set_trace()
+		# 	new_term_lists = [list(terms) for _ in range(len(terms))]
+		# 	for i,term in enumerate(terms):
+		# 		new_term_lists[i].remove(term)
+		# 	new_results = [self.get_highlighted_text(new_term_lists[i]) for i in range(len(terms))]
+		# 	# import pdb; pdb.set_trace()
+		# 	return reduce(minimizer, new_results)
 
 class CourseRenderer(object):
 	def __init__(self, course_info_dict, planner):
@@ -127,4 +182,4 @@ class CourseRenderer(object):
 		self.planner = planner
 		
 	def get_course(self, course_id):
-		return Course(self.course_info_dict[course_id], self.planner)
+		return Course(self.course_info_dict[course_id], self.planner, course_id)
