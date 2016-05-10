@@ -2,6 +2,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 {% block content %}
+<script src="{{ url_for('static', filename='scripts/registrar.js') }}"></script>
 <div id="resultPrompt">
   Based on your past courses, we recommend...
 </div>
@@ -41,18 +42,26 @@
   </div>
 
   <div class="resultData">
+    <div class="registrarLink" onclick="registrarRedirect( '{{result.course_id}}' , '{{result.default_term}}' )">Link</div>
     <div class="resultScoreData">
-     <div id="starRating_{{loop.index}}" style="display:inline"></div>
-     <div class="resultScore">
-      {{result.get_default_term_text()}}: {{result.get_most_recent_overall_rating()}}
+      <div id="starRating_{{loop.index}}" style="display:inline"></div>
+      <div class="resultScore">
+        {{result.get_default_term_text()}}: {{result.get_most_recent_overall_rating()}}
+      </div>
+    </div>
+    <div class="resultComments">
+      {% if result.get_comments()[2] %}
+      "{{result.get_comments()[2]}}""
+      {% else %}
+      <font color:"black">No student feedback</font>
+      {% endif %}
+
+      {% if result.get_comments()[3] %}
+      <br/>
+      "{{result.get_comments()[3]}}"
+      {% endif %}
     </div>
   </div>
-  <div class="resultComments">
-   {{result.get_comments()[0]}}
-   <br/>
-   {{result.get_comments()[1]}}
- </div>
-</div>
 </div>
 <script> 
   text = "<font size='6px'>";
