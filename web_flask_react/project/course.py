@@ -35,6 +35,9 @@ class Course(object):
 		else:
 			self.default_term = sorted(term_info_dict.keys())[-1]
 
+	def get_url_courseid(self):
+		return '0'*(6-len(self.course_id)) + self.course_id
+
 	def get_default_term_text(self):
 		return self.term_ids[self.default_term]
 

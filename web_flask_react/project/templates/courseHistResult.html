@@ -42,7 +42,7 @@
   </div>
 
   <div class="resultData">
-    <div class="registrarLink" onclick="registrarRedirect( '{{result.course_id}}' , '{{result.default_term}}' )">Link</div>
+    <div class="registrarLink" onclick="registrarRedirect( '{{result.get_url_courseid()}}' , '{{result.default_term}}' )"><u>Registrar's page</u></div>
     <div class="resultScoreData">
       <div id="starRating_{{loop.index}}" style="display:inline"></div>
       <div class="resultScore">
