@@ -2,6 +2,9 @@ import cPickle as pickle
 import re
 import itertools
 
+distributions = ['LA', 'HA', 'SA', 'EM', 'STN', 'STL', 'QR', 'EC']
+
+
 def safe_convert(x):
 	try:
 		return unicode(x, 'utf-8', errors='ignore')
@@ -13,6 +16,11 @@ def minimizer(x,y):
 	if (0 < len(x) < len(y)) or len(y) == 0:
 		return safe_convert(x)
 	return safe_convert(y)
+
+def reconfigure_highlighting(term):
+	if term.upper() in distributions:
+		return ' %s ' % term
+	return term
 
 class Course(object):
 	ratings_order = {'Lectures':0, 
@@ -47,7 +55,13 @@ class Course(object):
 		title = self.term_info_dict[term_id]['title']
 		if not title:
 			title = self.term_info_dict[term_id]['COURSE_TITLE']
-		return title
+		return safe_convert(title)
+
+	def get_area(self, term_id=None):
+		if term_id is None:
+			term_id = self.default_term
+		area = self.term_info_dict[term_id]['area']
+		return area
 
 	def get_course_listings(self, term_id=None):
 		if term_id is None:
@@ -82,7 +96,7 @@ class Course(object):
 
 	# !!!!!!!!!!! 
 	def get_first_professor(self, profs):
-		return profs.split('|')[0]
+		return safe_convert(profs.split('|')[0])
 
 	def get_comments(self, term_id=None):
 		if term_id is None:
@@ -113,6 +127,7 @@ class Course(object):
 	def get_highlighted_text(self, terms):
 		if len(terms) == 0:
 			return ''
+		terms = [reconfigure_highlighting(term) for term in terms]
 		top_num = -1
 		top_comment = ''
 		second_num = -1
@@ -121,7 +136,7 @@ class Course(object):
 			for comment in info_dict["COMMENTS"]:
 				num_terms = 0
 				for term in terms:
-					if term in safe_convert(comment):
+					if term.lower() in safe_convert(comment.lower()):
 						num_terms += 1
 				if num_terms > top_num:
 					second_num = top_num
@@ -129,14 +144,18 @@ class Course(object):
 					top_num = num_terms
 					top_comment = comment
 				elif num_terms > second_num:
-					second_num = num_terms
+					second_num = num_terms	
 					second_comment = comment
 		if top_comment == second_comment:
 			second_comment = ''
 
 		for term in terms:
-			top_comment = top_comment.replace(term, '<u><b>' + term + '</b></u>')
-			second_comment = second_comment.replace(term, '<u><b>' + term + '</b></u>')
+			top_comment = safe_convert(top_comment).replace(term, '<u><b>' + term + '</b></u>')
+			top_comment = safe_convert(top_comment).replace(term.upper(), '<u><b>' + term.upper() + '</b></u>')
+			top_comment = safe_convert(top_comment).replace(term.lower(), '<u><b>' + term.lower() + '</b></u>')
+			second_comment = safe_convert(second_comment).replace(term, '<u><b>' + term + '</b></u>')
+			second_comment = safe_convert(second_comment).replace(term.upper(), '<u><b>' + term.upper() + '</b></u>')
+			second_comment = safe_convert(second_comment).replace(term.lower(), '<u><b>' + term.lower() + '</b></u>')
 		return safe_convert(top_comment), safe_convert(second_comment)
 		# doc =  self.term_info_dict[self.default_term]['document'].lower()
 		# results = []
