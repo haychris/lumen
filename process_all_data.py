@@ -236,12 +236,13 @@ def process_website_necessities():
 
 	print 'Assembling course_association_dictionary'
 	import re
-	course_association_dictionary = defaultdict(list)
+	course_association_dictionary = defaultdict(lambda : defaultdict(int))
 	for course_id, doc in course_doc_dict.items():
 		for other_course_num in course_id_lookup_dict.keys():
 			pattern = other_course_num[:3] + ' ' + other_course_num[3:]
 			if re.search(pattern, doc):
-				course_association_dictionary[course_id].extend(course_id_lookup_dict[other_course_num])
+				for other_course_id in course_id_lookup_dict[other_course_num]:
+					course_association_dictionary[course_id][other_course_id] += 1
 
 	dump((course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k,
 	      vectorizer, tfidf_mat, 

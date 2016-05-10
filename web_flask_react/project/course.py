@@ -2,16 +2,17 @@ import cPickle as pickle
 import re
 import itertools
 
+def safe_convert(x):
+	try:
+		return unicode(x, 'utf-8', errors='ignore')
+	except (TypeError, UnicodeDecodeError) as e:
+		return x
+
+
 def minimizer(x,y):
 	if (0 < len(x) < len(y)) or len(y) == 0:
-		try:
-			return unicode(x, 'utf-8', errors='ignore')
-		except (TypeError, UnicodeDecodeError) as e:
-			return x
-	try:
-		return unicode(y, 'utf-8', errors='ignore')
-	except (TypeError, UnicodeDecodeError) as e:
-		return y
+		return safe_convert(x)
+	return safe_convert(y)
 
 class Course(object):
 	ratings_order = {'Lectures':0, 
@@ -23,7 +24,8 @@ class Course(object):
 	            '1152': "Fall '14", '1154': "Spring '15", 
 	            '1162': "Fall '15", '1164': "Spring '16", 
 	            '1172': "Fall '16"}
-	def __init__(self, term_info_dict, planner):
+	def __init__(self, term_info_dict, planner, course_id):
+		self.course_id = course_id
 		self.term_info_dict = term_info_dict
 		self.planner = planner
 		for term_id in sorted(term_info_dict.keys(), reverse=True):
@@ -108,23 +110,48 @@ class Course(object):
 	def get_highlighted_text(self, terms):
 		if len(terms) == 0:
 			return ''
-		doc =  self.term_info_dict[self.default_term]['document'].lower()
-		results = []
-		for term_list in itertools.permutations(terms):
-			pattern = ' .*? '.join(terms)
-			pattern = '.{0,20}' + pattern + '.{0,20}'
-			results.extend(re.findall(pattern, doc))
-		# import pdb; pdb.set_trace()
-		if len(results) > 0:
-			return '...' + reduce(minimizer, results) + '...'
-		else:
-			# import pdb; pdb.set_trace()
-			new_term_lists = [list(terms) for _ in range(len(terms))]
-			for i,term in enumerate(terms):
-				new_term_lists[i].remove(term)
-			new_results = [self.get_highlighted_text(new_term_lists[i]) for i in range(len(terms))]
-			# import pdb; pdb.set_trace()
-			return reduce(minimizer, new_results)
+		top_num = -1
+		top_comment = ''
+		second_num = -1
+		second_comment = ''
+		for term_id, info_dict in self.term_info_dict.items():
+			for comment in info_dict["COMMENTS"]:
+				num_terms = 0
+				for term in terms:
+					if term in safe_convert(comment):
+						num_terms += 1
+				if num_terms > top_num:
+					second_num = top_num
+					second_comment = top_comment
+					top_num = num_terms
+					top_comment = comment
+				elif num_terms > second_num:
+					second_num = num_terms
+					second_comment = comment
+		if top_comment == second_comment:
+			second_comment = ''
+
+		for term in terms:
+			top_comment = top_comment.replace(term, '<u><b>' + term + '</b></u>')
+			second_comment = second_comment.replace(term, '<u><b>' + term + '</b></u>')
+		return safe_convert(top_comment), safe_convert(second_comment)
+		# doc =  self.term_info_dict[self.default_term]['document'].lower()
+		# results = []
+		# for term_list in itertools.permutations(terms):
+		# 	pattern = ' .*? '.join(terms)
+		# 	pattern = '.{0,20}' + pattern + '.{0,20}'
+		# 	results.extend(re.findall(pattern, doc))
+		# # import pdb; pdb.set_trace()
+		# if len(results) > 0:
+		# 	return '...' + reduce(minimizer, results) + '...'
+		# else:
+		# 	# import pdb; pdb.set_trace()
+		# 	new_term_lists = [list(terms) for _ in range(len(terms))]
+		# 	for i,term in enumerate(terms):
+		# 		new_term_lists[i].remove(term)
+		# 	new_results = [self.get_highlighted_text(new_term_lists[i]) for i in range(len(terms))]
+		# 	# import pdb; pdb.set_trace()
+		# 	return reduce(minimizer, new_results)
 
 class CourseRenderer(object):
 	def __init__(self, course_info_dict, planner):
@@ -133,4 +160,4 @@ class CourseRenderer(object):
 		self.planner = planner
 		
 	def get_course(self, course_id):
-		return Course(self.course_info_dict[course_id], self.planner)
+		return Course(self.course_info_dict[course_id], self.planner, course_id)

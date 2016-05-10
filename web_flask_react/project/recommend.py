@@ -33,7 +33,7 @@ class Recommender(object):
 			probs /= len(cur_course_id_list)
 			cluster_scores[:] += (rating-self.mean_rating)*probs
 
-		major_boost_vector = self.planner.get_major_boost_vector(major, 1.01)
+		major_boost_vector = self.planner.get_major_boost_vector(major, 1.007)
 		certificate_boost_vector = self.planner.get_certificate_boost_vector(certificate, 1.005)
 
 		overall_boost = major_boost_vector * certificate_boost_vector
