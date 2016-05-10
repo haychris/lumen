@@ -57,6 +57,12 @@ class Course(object):
 			title = self.term_info_dict[term_id]['COURSE_TITLE']
 		return safe_convert(title)
 
+	def get_area(self, term_id=None):
+		if term_id is None:
+			term_id = self.default_term
+		area = self.term_info_dict[term_id]['area']
+		return area
+
 	def get_course_listings(self, term_id=None):
 		if term_id is None:
 			term_id = self.default_term

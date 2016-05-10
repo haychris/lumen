@@ -14,7 +14,7 @@
 {% for result in results %}
 <div class="result">
   <div class="fulfillmentNotification">
-    <br/><br/>
+    <br/><br/><br/>
     {% if result.planner.check_all_major_requirements(result.get_list_of_course_nums(), major) %}
     <span class="major"> ✓ Major</span>
     {% endif %}
@@ -36,7 +36,10 @@
         </div>
       </div>
       <div class="resultExpand">
-        (Details)
+        {% if result.get_area() %}
+          <font color="#ed7777">{{result.get_area()}}</font>
+        {% endif %}
+        <br/>(Details)
       </div>
     </div>
   </div>
@@ -51,7 +54,9 @@
   </div>
   <div class="resultComments">
    {% for comment in result.get_highlighted_text(terms) %}
+    {% if comment %}
     "{{comment | safe}}"<br/>
+    {% endif %}
    {% endfor %}
  </div>
 </div>
@@ -137,10 +142,10 @@
       var options = {
         title: "Most Recent Class Ratings for {{result.get_course_listings()}}",
         titleTextStyle: { color: "#f3f3f3"},
-        width: 800,
+        width: 900,
         height: 150,
         bar: {groupWidth: "55%"},
-        chartArea: {left:250},
+        chartArea: {left:235, right:10},
         legend: { position: "none" },
         hAxis: {
           minValue: 0,
