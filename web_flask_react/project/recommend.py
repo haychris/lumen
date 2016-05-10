@@ -48,7 +48,7 @@ class Recommender(object):
 			if len(recommendations) >= num_results:
 				break
 			cur_id = self.course_id_list[doc_num]
-			if cur_id not in course_id_taken:
+			if cur_id not in course_id_taken and not any(map(lambda x: 'FRS' in x, self.class_number_lookup_dict[cur_id])):
 				recommendations.append(cur_id)
 		# recommendations = [self.course_id_list[doc_num] for doc_num in sorted_docs[:num_results]]
 		# import pdb; pdb.set_trace()
