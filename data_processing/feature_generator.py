@@ -6,7 +6,7 @@ input_file_name = sys.argv[1]
 input_file = open(input_file_name)
 json_data = json.load(input_file)
 
-# For list entries in the json, concatenate all entries in the list, 
+# For list entries in the json, concatenate all entries in the list,
 # separated by whatever separator is defined as
 seperator = ' '
 for class_data in json_data:
@@ -15,7 +15,6 @@ for class_data in json_data:
 	class_data['all_listings_string'] = seperator.join([listing['dept'] + ' ' + listing['number'] for listing in class_data['listings']])
 
 
-# features = ['termid', 'courseid', 'title', 'prof_string', 'all_listings_string', 'area', 'prereqs', 'descrip']
 features = ['termid', 'courseid', 'title', 'prof_string', 'all_listings_string', 'area', 'prereqs', 'descrip']
 
 
@@ -28,7 +27,7 @@ def reformat_for_csv(out):
 	out = out.replace('"', '\\"')
 	out = out.replace(',', ' ')
 	ascii_out = out.encode('utf-8')
-	sanitized_string = '\"%s\"' % ascii_out 
+	sanitized_string = '\"%s\"' % ascii_out
 	return sanitized_string
 
 # Print out header
