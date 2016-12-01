@@ -61,33 +61,33 @@
  </div>
 </div>
 </div>
-<script> 
+<script>
   text = "<font size='6px'>";
   score = Math.round(2*parseFloat({{result.get_most_recent_overall_rating()}}))/2.0;
   numstars = Math.floor(score);
   halfStars = Math.round(score - numstars);
 
   if (score != 0) {
-    for (i = 0; i < numstars; i++) { 
+    for (i = 0; i < numstars; i++) {
       text += "<font color='gold'>★</font>"
     }
     for (i = 0; i < halfStars; i++) {
       text += "<font color='gold'>⋆</font>"
     }
-    for (i = numstars+halfStars; i < 5; i++) { 
+    for (i = numstars+halfStars; i < 5; i++) {
       text += "<font color='black'>☆</font>"
     }
   }
 
   text += "</font>";
-  document.getElementById("starRating_{{loop.index}}").innerHTML = text; 
+  document.getElementById("starRating_{{loop.index}}").innerHTML = text;
 </script>
 
 <div class="result" class="expandedResult" id="result_hidden_{{loop.index}}" style="display:none; margin-top:0; height:150px">
 
   <div id="chart_{{loop.index}}"></div>
 <!--
-        <div id="term_tags"> 
+        <div id="term_tags">
           <div style="display:inline">Fall '14</div>
           <div style="display:inline">Fall '15</div>
         </div>
@@ -101,21 +101,18 @@
           div.style.display = "none";
         else
           div.style.display = "block";
-      } 
+      }
     </script>
 
     <script type="text/javascript">
     // google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ["Element", "Rating", { role: "style" } ],
-        ["Lectures", parseFloat({{result.get_ratings_dict()['Lectures']}}), "color: #bcdf8a"],
-        ["Coursework & Exams", parseFloat({{result.get_ratings_dict()['Papers; Reports; Problem Sets; Examinations']}}), "color: #f5f9ad"],
-        ["Readings", parseFloat({{result.get_ratings_dict()['Readings']}}), "color: #94c0cc"],
-        ["Feedback", parseFloat({{result.get_ratings_dict()['Feedback for other students:']}}), "color: #fad48b"],
-        ["Overall Quality", parseFloat({{result.get_ratings_dict()['Overall Quality of the Course']}}), "color: #ed7777"]
-        ]);
+      var arr = [["Element", "Rating", { role: "style" } ]];
+      var arr2 = {{result.get_ordered_ratings()|safe}};
+      if (arr2.length == 0) {return;}
+      arr.push.apply(arr, arr2);
+      var data = google.visualization.arrayToDataTable(arr);
 
       var view = new google.visualization.DataView(data);
       view.setColumns([0, 1,
@@ -159,4 +156,3 @@
 <!--    <div id="barchart_values" style="width: 900px; height: 300px;"></div>
 -->
 {% endblock content %}
-

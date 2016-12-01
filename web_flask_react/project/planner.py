@@ -30,7 +30,7 @@ class Planner(object):
         for i, certificate in enumerate(self.certificate_requirements.keys()):
             self.certificate_row_dict[certificate] = i
 
-        print 'Finished contsructing planner'
+        print 'Finished constructing planner'
         # self.course_num_col_dict = {}
         # for i, course_id in enumerate(self.course_id_list):
         # 	self.course_num_col_dict[course_num] = i

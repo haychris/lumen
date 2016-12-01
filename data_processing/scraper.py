@@ -393,6 +393,8 @@ class CourseProcessor(object):
         out_file.write(']\n')
 
 
+# TODO: add flags for fetching registrar, fetching reviews,
+# redowloading already present, etc.
 if __name__ == "__main__":
     if len(sys.argv) >= 3:
         root_path = '/'.join(sys.argv[0].split('/')[:-1])
