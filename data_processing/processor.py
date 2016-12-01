@@ -37,21 +37,17 @@ class LemmaTokenizer(object):
         return self.wnl.lemmatize(x)
 
 
-# (course_id_lookup_dict, class_number_lookup_dict,
-#       course_cluster_probs_dict, k, vectorizer, tfidf_mat, word_dict,
-#       course_doc_dict, course_id_list, course_info_dict,
-#       course_association_dictionary, pagerank_dict),
-#      open(website_necessities_filename, 'wb'))
 class FullClassProcessor(object):
-    def __init__(self, processed_data_path):
+    def __init__(self, processed_data_path, verbose=False):
         # auxiliary
         # self.__processed_data = {}
+        self.verbose = verbose
 
         # continually updated necessities
         self.course_id_lookup_dict = defaultdict(set)
         self.class_number_lookup_dict = defaultdict(set)
         self.course_doc_dict = defaultdict(str)
-        self.course_info_dict = None  # TODO: add this
+        self.course_info_dict = defaultdict(dict)
 
         # necessities that must be rebuilt
         self.vectorizer = None
@@ -68,6 +64,8 @@ class FullClassProcessor(object):
         term_data_files = os.listdir(processed_data_path)
         for i, file_name in enumerate(term_data_files):
             path = '%s/%s' % (processed_data_path, file_name)
+            if self.verbose:
+                print 'Adding ', path
             f = open(path)
             term_data = json.load(f)
             f.close()
@@ -82,12 +80,13 @@ class FullClassProcessor(object):
         dump((self.course_id_lookup_dict, self.class_number_lookup_dict,
               self.course_cluster_probs_dict, self.k, self.vectorizer,
               self.tfidf_mat, self.word_dict, self.course_doc_dict,
-              self.course_id_list, self.course_info_dict,
+              self.__get_course_id_list(), self.course_info_dict,
               self.course_association_dictionary, self.pagerank_dict),
              open(file_name, 'wb'))
 
     def add_course(self, course, rebuild=True):
         self.__update_course_id_lookup(course)
+        self.__update_course_info_dict(course)
         self.__update_course_doc_dict(course)
 
         if rebuild:
@@ -99,6 +98,9 @@ class FullClassProcessor(object):
         self.__build_course_graph()
 
     def __build_word_vec(self):
+        if self.verbose:
+            print 'Building word vectorizer and tfidf_mat'
+
         doc_list = self.__get_doc_list()
         self.vectorizer = TfidfVectorizer(
             input='content',
@@ -122,10 +124,15 @@ class FullClassProcessor(object):
         return self.course_doc_dict.keys()
 
     def __build_clustering(self):
+        if self.verbose:
+            print 'Running KMeans clustering'
         self.k = 50
         km = KMeans(
             n_clusters=self.k, init='k-means++', max_iter=300, n_init=20)
         km.fit(self.tfidf_mat)
+
+        if self.verbose:
+            print 'Calculating similarity to cluster means for each class'
 
         def similarity_func(x):
             return 1. / (km.transform(x)**3 + 0.05)
@@ -139,7 +146,8 @@ class FullClassProcessor(object):
             self.course_cluster_probs_dict[course_id] = probs
 
     def __build_course_graph(self):
-        # calculate directed edge weights via number of mentions
+        if self.verbose:
+            print "calculating directed edge weights via number of mentions"
         self.course_association_dictionary = defaultdict(
             lambda: defaultdict(int))
         for course_id, doc in self.course_doc_dict.items():
@@ -151,7 +159,8 @@ class FullClassProcessor(object):
                         self.course_association_dictionary[course_id][
                             other_course_id] += 1
 
-        # build graph
+        if self.verbose:
+            print "building course graph"
         self.course_graph = nx.Graph()
         self.course_graph.add_nodes_from(self.__get_course_id_list())
         for course_id, mentions_dict in self.course_association_dictionary.items(
@@ -174,7 +183,8 @@ class FullClassProcessor(object):
                         self.course_graph.add_edge(
                             course_id, mention, weight=num)
 
-        # perform graph analysis
+        if self.verbose:
+            print "performing graph analysis (calculating pagerank)"
         self.pagerank_dict = nx.pagerank(self.course_graph)
 
     def __update_course_id_lookup(self, course):
@@ -182,6 +192,14 @@ class FullClassProcessor(object):
             name = listing['dept'] + listing['number']
             self.course_id_lookup_dict[name].add(course['courseid'])
             self.class_number_lookup_dict[course['courseid']].add(name)
+
+    def __update_course_info_dict(self, course):
+        course_id = course['courseid']
+        term_id = course['termid']
+        course['prof_string'] = self.get_prof_string(course)
+        course['all_listings_string'] = self.get_listings_string(course)
+        course['document'] = self.make_document(course)
+        self.course_info_dict[course_id][term_id] = course
 
     def __update_course_doc_dict(self, course):
         doc = self.make_document(course)
@@ -195,8 +213,14 @@ class FullClassProcessor(object):
         doc_list.append(course['prereqs'])
         doc_list.append(course['descrip'])
         doc_list.append(course['title'])
-        doc_list.extend(course['reviews'])
+        doc_list.extend(self.get_reviews(course))
         return ' '.join(doc_list)
+
+    def get_reviews(self, course):
+        if 'reviews' in course and course['reviews'] is not None:
+            return filter(bool, course['reviews'])
+        else:
+            return []
 
     def get_prof_string(self, course):
         return ' | '.join([prof['name'] for prof in course['profs']])
@@ -211,7 +235,8 @@ class FullClassProcessor(object):
 
 if __name__ == "__main__":
     root_path = '/'.join(sys.argv[0].split('/')[:-1])
-    processed_data_path = '%s/%s' % (root_path, '/course_processed_data/')
-    save_path = '%s/%s' % (root_path, '/pickled_data/')
-    processor = FullClassProcessor(processed_data_path=processed_data_path)
+    processed_data_path = '%s/%s' % (root_path, 'course_processed_data')
+    save_path = '%s/%s' % (root_path, 'pickled_data/necessities.pickle')
+    processor = FullClassProcessor(
+        processed_data_path=processed_data_path, verbose=True)
     processor.save_necessities(save_path)

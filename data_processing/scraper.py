@@ -343,7 +343,7 @@ class CourseReviewsScraper(object):
             cur = cur.next_sibling.next_sibling
         ratings = list(reversed(ratings))  # flip order to match categories
 
-        return categories, ratings
+        return {cat: rat for cat, rat in zip(categories, ratings)}
 
 
 class CourseProcessor(object):
