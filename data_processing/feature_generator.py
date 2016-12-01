@@ -7,7 +7,7 @@ input_file = open(input_file_name)
 json_data = json.load(input_file)
 
 # For list entries in the json, concatenate all entries in the list,
-# separated by whatever separator is defined as
+# separated by separator
 seperator = ' '
 for class_data in json_data:
     class_data['courseid'] = '0' * (6 - len(class_data['courseid'])
