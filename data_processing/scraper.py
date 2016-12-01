@@ -381,10 +381,11 @@ class CourseProcessor(object):
             course_page_data = self.course_scraper.scrape_page(course_page)
             course_page_data['termid'] = str(term_id)
 
-            review_page = open('%s/%s' % (reviews_path, file_name)).read()
-            review_page_data = self.course_review_scraper.scrape_page(
-                review_page, term_id)
-            course_page_data.update(review_page_data)
+            if self.fetch_reviews:
+                review_page = open('%s/%s' % (reviews_path, file_name)).read()
+                review_page_data = self.course_review_scraper.scrape_page(
+                    review_page, term_id)
+                course_page_data.update(review_page_data)
 
             json.dump(course_page_data, out_file)
             if i < len(cur_files) - 1:
@@ -396,7 +397,7 @@ if __name__ == "__main__":
     if len(sys.argv) >= 3:
         root_path = '/'.join(sys.argv[0].split('/')[:-1])
         if len(sys.argv) > 3:
-            fetch_reviews = sys.argv[3].lower() == 'true'
+            fetch_reviews = sys.argv[3].lower() == 'false'
         else:
             fetch_reviews = False
         processor = CourseProcessor(
