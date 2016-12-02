@@ -1,16 +1,28 @@
 import os
+import cPickle as pickle
+
 from flask import Flask, render_template
 from flask import request
 from flask import url_for
+from flask import redirect
 
-from course import Course, CourseRenderer
+from flask_cas import CAS
+from flask_cas import login_required
+
+
+from course import CourseRenderer
 from recommend import Recommender
 from search import Searcher
 from planner import Planner
 
 app = Flask(__name__)
-
-import cPickle as pickle
+app.secret_key = 'my super secret key is the most secret ever'
+app.config['SECRET_KEY'] = 'my super secret key is the most secret ever'
+cas = CAS(app)
+app.config['CAS_SERVER'] = 'https://fed.princeton.edu/cas/'
+# app.config['CAS_SERVER'] = 'https://signon.cs.princeton.edu/'
+app.config['CAS_AFTER_LOGIN'] = ''
+app.config['SESSION_TYPE'] = 'filesystem'
 
 filename = os.path.join(os.getcwd(), 'project/static/necessities.pickle')
 course_id_lookup_dict, class_number_lookup_dict, course_cluster_probs_dict, k, vectorizer, tfidf_mat, word_dict, course_doc_dict, course_id_list, course_info_dict, course_association_dictionary, pagerank_dict = pickle.load(
@@ -27,12 +39,6 @@ searcher = Searcher(vectorizer, tfidf_mat, word_dict, course_doc_dict,
                     course_id_list, course_id_lookup_dict,
                     class_number_lookup_dict, planner)
 course_renderer = CourseRenderer(course_info_dict, planner)
-# recommender = Recommender(os.path.join(os.getcwd(), 'project/static/recommender_necessities.pickle'))
-# searcher = Searcher(os.path.join(os.getcwd(), 'project/static/search_necessities.pickle'), recommender.course_id_lookup_dict)
-# planner = Planner(os.path.join(os.getcwd(),'project/static/majors.csv'), os.path.join(os.getcwd(),'project/static/certificates.csv'), searcher.course_id_list, recommender.class_number_lookup_dict)
-# searcher.add_planner(planner)
-
-# course_renderer = CourseRenderer(os.path.join(os.getcwd(),'project/static/course_info_necessities.pickle'), planner)
 
 max_results = 20
 
@@ -43,6 +49,7 @@ def index():
 
 
 @app.route('/query')
+@login_required
 def process_query():
     try:
         major = request.cookies['Major']
@@ -51,6 +58,8 @@ def process_query():
         major = ''
         certificate = ''
     query = request.args.get('query')
+    if not query:
+        return redirect(url_for('/'))
     print 'Query: ', query
     terms = query.lower().split()
     results = searcher.search(query.lower(), major, certificate)
@@ -67,11 +76,13 @@ def process_query():
 
 
 @app.route('/userratings')
+@login_required
 def get_user_ratings():
     return render_template('courseHistInput.html')
 
 
 @app.route('/recommend')
+@login_required
 def process_recommendations():
     print request.cookies
     major = request.cookies['Major']

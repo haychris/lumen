@@ -1,7 +1,9 @@
+click==6.6
 cloud==2.8.5
-Flask==0.10.1
+Flask==0.11.1
+Flask-CAS==1.0.1
 itsdangerous==0.24
-Jinja2==2.7.3
+Jinja2==2.8
 MarkupSafe==0.23
 nltk==3.2.1
 numpy==1.8.2
@@ -9,4 +11,5 @@ pkg-resources==0.0.0
 scikit-learn==0.18.1
 scipy==0.18.1
 sklearn==0.0
-Werkzeug==0.9.6
+Werkzeug==0.11.11
+xmltodict==0.10.2
