@@ -4,6 +4,8 @@ import math
 
 
 class Recommender(object):
+    BOOSTS = {'major': 1.007, 'certificate': 1.005, 'pagerank': 1.05}
+
     def __init__(self,
                  course_id_lookup_dict,
                  class_number_lookup_dict,
@@ -49,10 +51,12 @@ class Recommender(object):
             probs /= len(cur_course_id_list)
             cluster_scores[:] += (rating - self.mean_rating) * probs
 
-        major_boost_vector = self.planner.get_major_boost_vector(major, 1.007)
+        major_boost_vector = self.planner.get_major_boost_vector(
+            major, self.BOOSTS['major'])
         certificate_boost_vector = self.planner.get_certificate_boost_vector(
-            certificate, 1.005)
-        pagerank_boost_vector = self.planner.get_pagerank_boost_vector(1.05)
+            certificate, self.BOOSTS['certificate'])
+        pagerank_boost_vector = self.planner.get_pagerank_boost_vector(
+            self.BOOSTS['pagerank'])
 
         overall_boost = major_boost_vector * certificate_boost_vector * pagerank_boost_vector
         ### DEBUG

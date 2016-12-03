@@ -14,6 +14,8 @@ from nltk.stem import WordNetLemmatizer
 
 import networkx as nx
 
+from gensim.models import Word2Vec
+
 
 class LemmaTokenizer(object):
     distributions = ['LA', 'HA', 'SA', 'EM', 'STN', 'STL', 'QR', 'EC', 'W']
@@ -53,6 +55,7 @@ class FullClassProcessor(object):
         self.vectorizer = None
         self.tfidf_mat = None
         self.word_dict = None
+        self.word2vec = None
 
         self.k = None
         self.course_cluster_probs_dict = None
@@ -97,11 +100,38 @@ class FullClassProcessor(object):
         self.__build_clustering()
         self.__build_course_graph()
 
+    def __get_sentences(self):
+        doc_list = self.__get_doc_list()
+        tokenizer = LemmaTokenizer()
+        all_doc_sentences = []
+        for doc in doc_list:
+            all_doc_sentences.append(tokenizer(doc))
+        return all_doc_sentences
+
     def __build_word_vec(self):
         if self.verbose:
             print 'Building word vectorizer and tfidf_mat'
-
         doc_list = self.__get_doc_list()
+
+        all_doc_sentences = self.__get_sentences()
+        self.word2vec = Word2Vec(
+            all_doc_sentences, size=100, min_count=2, workers=4)
+        # import matplotlib.pyplot as plt
+        # from sklearn.decomposition import PCA
+        # keys = self.word2vec.vocab.keys()
+        # weights = [self.word2vec[key] for key in keys]
+        # pca = PCA(n_components=2)
+        # pca.fit(weights)
+        # dat = pca.transform(weights)
+        # xs = [x[0] for x in dat]
+        # ys = [x[1] for x in dat]
+        # fig, ax = plt.subplots()
+        # ax.scatter(xs, ys)
+        #
+        # for i, txt in enumerate(keys):
+        #     ax.annotate(txt, (xs[i], ys[i]))
+        # plt.show()
+        # import pdb; pdb.set_trace()
         self.vectorizer = TfidfVectorizer(
             input='content',
             max_df=0.9,
